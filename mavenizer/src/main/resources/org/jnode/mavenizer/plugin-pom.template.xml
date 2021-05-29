@@ -8,4 +8,12 @@
     <artifactId>@artifactId@</artifactId>
     <version>@version@</version>
     <packaging>@packaging@</packaging>
+
+    <repositories>
+        <repository>
+            <id>sonatype repository</id>
+            <url>https://oss.sonatype.org/service/local/repositories/releases/content/</url>
+        </repository>
+    </repositories>
+
 </project>
