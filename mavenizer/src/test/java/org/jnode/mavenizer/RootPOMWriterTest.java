@@ -18,5 +18,6 @@ public class RootPOMWriterTest extends AbstractPOMWriterTest {
         String pom = assertCommon(projectDir, "project", false,
             pomFile, "pom", "root");
         assertThat(extractModules(pom)).containsExactlyElementsOf(allProjects());
+        assertThat(extractDependencies(pom)).isEmpty();
     }
 }

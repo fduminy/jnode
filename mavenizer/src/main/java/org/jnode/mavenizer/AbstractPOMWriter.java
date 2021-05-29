@@ -32,7 +32,7 @@ abstract class AbstractPOMWriter {
     static final String MODULE_BEGIN = "<module>";
     static final String MODULE_END = "</module>";
     private static final String PROJECT_END = "</project>";
-    private static final String INDENT = "    ";
+    static final String INDENT = "    ";
     protected final DestinationRoot destinationRoot;
 
     AbstractPOMWriter(DestinationRoot destinationRoot) {
@@ -66,15 +66,18 @@ abstract class AbstractPOMWriter {
     }
 
     final void addModules(File pomFile, List<String> modules) {
-        try {
-            StringBuilder modulesXML = new StringBuilder(INDENT).append(MODULES_BEGIN).append(lineSeparator);
-            for (String module : modules) {
-                modulesXML.append(INDENT).append(INDENT).append(MODULE_BEGIN)
-                    .append(module)
-                    .append(MODULE_END).append(lineSeparator);
-            }
-            modulesXML.append(INDENT).append(MODULES_END).append(lineSeparator);
+        StringBuilder modulesXML = new StringBuilder(INDENT).append(MODULES_BEGIN).append(lineSeparator);
+        for (String module : modules) {
+            modulesXML.append(INDENT).append(INDENT).append(MODULE_BEGIN)
+                .append(module)
+                .append(MODULE_END).append(lineSeparator);
+        }
+        modulesXML.append(INDENT).append(MODULES_END).append(lineSeparator);
+        append(pomFile, modulesXML);
+    }
 
+    final void append(File pomFile, StringBuilder modulesXML) {
+        try {
             String pom = readFully(pomFile);
             FileWriter writer = new FileWriter(pomFile);
             try {
@@ -129,7 +132,7 @@ class POMBuilder implements MavenProjectVisitor {
 
     @Override
     public void visitPluginProject(MavenPluginProject project) {
-        pomWriter.write(project.getPluginInfo());
+        pomWriter.write(null, project.getPluginInfo());
 /*
         File projectRoot = project.getBaseDirectory();
         projectRoot.mkdirs();
@@ -178,17 +181,6 @@ class POMBuilder implements MavenProjectVisitor {
         fw.write("</project>\n");
         fw.close();
 */
-    }
-
-    private void writeDependency(Writer fw, String artifactId, String version) throws IOException {
-        fw.write("        <dependency>\n");
-        fw.write("            <groupId>" + GROUP_ID + "</groupId>\n");
-        fw.write("            <artifactId>" + artifactId + "</artifactId>\n");
-
-        writeAttribute(fw, "version", "            ", processVersion(version));
-
-        fw.write("            <scope>compile</scope>\n");
-        fw.write("        </dependency>\n");
     }
 
     private void write(File projectRoot, MavenProject project, Writer w, String id, String name, String providerUrl, String packaging) throws IOException {
@@ -288,7 +280,7 @@ class POMBuilder implements MavenProjectVisitor {
         return getVersion(pluginDescriptor.getVersion());
     }
 
-    private static String getVersion(Version version) {
+    static String getVersion(Version version) {
         return processVersion(version.toString());
     }
 }

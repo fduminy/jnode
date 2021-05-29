@@ -6,11 +6,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.bsf.util.StringUtils.lineSeparator;
 import static org.apache.tools.ant.util.FileUtils.safeReadFully;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jnode.mavenizer.Conditions.childOf;
 import static org.jnode.mavenizer.Constants.JNODE_VERSION;
 import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
+import static org.jnode.mavenizer.PluginPOMWriter.DEPENDENCIES_BEGIN;
+import static org.jnode.mavenizer.PluginPOMWriter.DEPENDENCIES_END;
+import static org.jnode.mavenizer.PluginPOMWriter.DEPENDENCY_BEGIN;
+import static org.jnode.mavenizer.PluginPOMWriter.DEPENDENCY_END;
 import static org.jnode.mavenizer.PluginPOMWriterTest.TEST_PROJECT;
 import static org.jnode.mavenizer.PluginPOMWriterTest.XML_EXTENSION;
 import static org.jnode.mavenizer.ProjectPOMWriter.MODULES_BEGIN;
@@ -46,19 +51,37 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
     }
 
     final List<String> extractModules(String pom) {
-        List<String> modules = new ArrayList<String>();
-        Content modulesContent = extractContent(pom, 0, MODULES_BEGIN, MODULES_END);
-        if (modulesContent != null) {
-            String modulesXML = modulesContent.getValue();
+        return extractItems(pom, MODULES_BEGIN, MODULES_END, MODULE_BEGIN, MODULE_END);
+    }
 
-            Content module;
+    final List<String> extractDependencies(String pom) {
+        List<String> dependencies =
+            extractItems(pom, DEPENDENCIES_BEGIN, DEPENDENCIES_END, DEPENDENCY_BEGIN, DEPENDENCY_END);
+        for (int i = 0; i < dependencies.size(); i++) {
+            String dependency = dependencies.get(i).replace(" ", "").replace(lineSeparator, "");
+            dependency = dependency.replace("<groupId>", "").replace("</groupId>", ":");
+            dependency = dependency.replace("<artifactId>", "").replace("</artifactId>", ":");
+            dependency = dependency.replace("<version>", "").replace("</version>", "");
+            dependency = dependency.trim();
+            dependencies.set(i, dependency);
+        }
+        return dependencies;
+    }
+
+    final List<String> extractItems(String pom, String beginItemsTag, String endItemsTag, String beginItemTag, String endItemTag) {
+        List<String> items = new ArrayList<String>();
+        Content itemsContent = extractContent(pom, 0, beginItemsTag, endItemsTag);
+        if (itemsContent != null) {
+            String itemsXML = itemsContent.getValue();
+
+            Content item;
             int fromIndex = 0;
-            while ((module = extractContent(modulesXML, fromIndex, MODULE_BEGIN, MODULE_END)) != null) {
-                modules.add(module.getValue());
-                fromIndex = module.end + MODULE_END.length();
+            while ((item = extractContent(itemsXML, fromIndex, beginItemTag, endItemTag)) != null) {
+                items.add(item.getValue());
+                fromIndex = item.end + endItemTag.length();
             }
         }
-        return modules;
+        return items;
     }
 
     private Content extractContent(String xml, int fromIndex, String beginTag, String endTag) {

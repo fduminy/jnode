@@ -26,8 +26,7 @@ public class PluginInfo {
     }
 
     public String getId() {
-        String fileName = descriptorFile.getName();
-        return fileName.substring(0, fileName.lastIndexOf('.'));
+        return descriptor.getId();
     }
 
     public boolean isThirdParty() {
@@ -47,5 +46,9 @@ public class PluginInfo {
 
     public PluginDescriptor getPluginDescriptor() {
         return descriptor;
+    }
+
+    public String getProjectId() {
+        return getProject().getDirectory();
     }
 }

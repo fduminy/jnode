@@ -11,6 +11,7 @@ import static org.jnode.mavenizer.PluginPOMWriterTest.JNODE_PLUGIN_ID;
 import static org.jnode.mavenizer.PluginPOMWriterTest.TEST_PROJECT;
 import static org.jnode.mavenizer.PluginPOMWriterTest.THIRD_PARTY_PLUGIN_ID;
 import static org.jnode.mavenizer.PluginPOMWriterTest.XML_EXTENSION;
+import static org.jnode.mavenizer.Project.Core;
 import static org.jnode.mavenizer.Utils.findPlugin;
 
 public class PluginInfoFinderTest {
@@ -34,7 +35,7 @@ public class PluginInfoFinderTest {
                 .isEqualTo(TEST_PROJECT);
             assertThat(info.getId())
                 .as(fileName)
-                .isEqualTo(fileName.substring(0, fileName.lastIndexOf('.')));
+                .isEqualTo(info.getPluginDescriptor().getId());
 
             if (info.isThirdParty()) {
                 nbThirdParty++;
@@ -54,5 +55,23 @@ public class PluginInfoFinderTest {
 
         PluginInfo thirdPartyPlugin = findPlugin(infos, THIRD_PARTY_PLUGIN_ID);
         assertThat(thirdPartyPlugin.isThirdParty()).isTrue();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Test
+    public void find_pluginId_not_equals_to_filename() {
+        List<PluginInfo> infos = new PluginInfoFinder(SRC_ROOT).find(Core);
+
+        String pluginFile = "org.jnode.driver.textscreen_x86.xml";
+        PluginInfo plugin = null;
+        for (PluginInfo info : infos) {
+            if (info.getDescriptorFile().getName().equals(pluginFile)) {
+                plugin = info;
+                break;
+            }
+        }
+
+        assertThat(plugin).overridingErrorMessage("plugin file %s not found", pluginFile).isNotNull();
+        assertThat(plugin.getId()).isEqualTo(plugin.getPluginDescriptor().getId());
     }
 }

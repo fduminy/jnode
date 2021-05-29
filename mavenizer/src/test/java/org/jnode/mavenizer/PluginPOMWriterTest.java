@@ -25,9 +25,20 @@ public class PluginPOMWriterTest extends AbstractPOMWriterTest {
     }
 
     private void write(String pluginId, boolean thirdParty) throws IOException {
-        File pomFile = new PluginPOMWriter(destinationRoot).write(getPluginInfo(pluginId));
+        PluginInfos pluginInfos = new PluginInfos();
+        pluginInfos.add(getPluginInfo("org.jnode.driver.block"));
+        pluginInfos.add(getPluginInfo("org.jnode.fs.service"));
+        pluginInfos.add(getPluginInfo("org.jnode.partitions"));
+
+        File pomFile = new PluginPOMWriter(destinationRoot).write(pluginInfos, getPluginInfo(pluginId));
         String pom = assertCommon(getPluginRoot(pluginId), pluginId, thirdParty, pomFile, "jar",
             TEST_PROJECT.getDirectory());
         assertThat(extractModules(pom)).isEmpty();
+        if (!thirdParty) {
+            assertThat(extractDependencies(pom)).containsExactly(
+                "org.jnode.fs:org.jnode.driver.block:0.2.9-dev",
+                "org.jnode.fs:org.jnode.fs.service:0.2.9-dev",
+                "org.jnode.fs:org.jnode.partitions:0.2.9-dev");
+        }
     }
 }

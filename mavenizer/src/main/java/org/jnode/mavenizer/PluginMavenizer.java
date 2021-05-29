@@ -11,9 +11,11 @@ import org.jnode.mavenizer.Directory.SourceRoot;
  */
 public class PluginMavenizer extends Task {
     private final MavenPluginProject mavenPluginProject;
-    
-    public PluginMavenizer(MavenPluginProject mavenPluginProject) {
+    private final PluginInfos pluginInfos;
+
+    public PluginMavenizer(PluginInfos pluginInfos, MavenPluginProject mavenPluginProject) {
         this.mavenPluginProject = mavenPluginProject;
+        this.pluginInfos = pluginInfos;
         
         setTaskName("PluginMavenizer");
         setDescription("maven a jnode plugin");
@@ -25,7 +27,7 @@ public class PluginMavenizer extends Task {
         PluginInfo pluginInfo = mavenPluginProject.getPluginInfo();
         DestinationRoot destinationRoot = mavenPluginProject.getRoot().getDestinationRoot();
 
-        new PluginPOMWriter(destinationRoot).write(pluginInfo);
+        new PluginPOMWriter(destinationRoot).write(pluginInfos, pluginInfo);
         new PluginDescriptorCopier(srcRoot, destinationRoot).copy(pluginInfo);
         new SourceCopier(srcRoot, destinationRoot).copy(pluginInfo);
     }

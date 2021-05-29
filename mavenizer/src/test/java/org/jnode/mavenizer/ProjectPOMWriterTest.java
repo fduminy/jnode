@@ -19,5 +19,6 @@ public class ProjectPOMWriterTest extends AbstractPOMWriterTest {
         String projectDir = new File(destinationRoot.getDirectory(), TEST_PROJECT.getDirectory()).getAbsolutePath();
         String pom = assertCommon(projectDir, "project", false, pomFile, "pom", TEST_PROJECT.getDirectory());
         assertThat(extractModules(pom)).doesNotHaveDuplicates().hasSize(NB_TEST_PROJECT_MODULES);
+        assertThat(extractDependencies(pom)).isEmpty();
     }
 }

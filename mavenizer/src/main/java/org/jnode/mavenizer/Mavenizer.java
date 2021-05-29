@@ -44,17 +44,22 @@ public class Mavenizer {
         PluginPOMWriter pluginPOMWriter = new PluginPOMWriter(DEST_ROOT);
         ProjectPOMWriter projectPOMWriter = new ProjectPOMWriter(SRC_ROOT, DEST_ROOT);
         new RootPOMWriter(DEST_ROOT).write();
+        PluginInfos pluginInfos = new PluginInfos();
         for (org.jnode.mavenizer.Project project : values()) {
             projectPOMWriter.write(project);
             for (PluginInfo pluginInfo : pluginInfoFinder.find(project)) {
-                pluginPOMWriter.write(pluginInfo);
+                pluginInfos.add(pluginInfo);
             }
         }
+        for (PluginInfo pluginInfo : pluginInfos.plugins()) {
+            pluginPOMWriter.write(pluginInfos, pluginInfo);
+        }
+
         List<PluginDescriptor> systemPlugins = new ArrayList<PluginDescriptor>();
         MavenMultiProject root = buildProjectTree(SRC_ROOT, DEST_ROOT, systemPlugins);
         print(root);
 
-        mavenize(root);
+        mavenize(pluginInfos, root);
     }
 
     public static void check(PluginDescriptor desc) {
@@ -124,7 +129,7 @@ public class Mavenizer {
         }        
     }
 
-    private static void mavenize(MavenMultiProject root) throws Exception {
+    private static void mavenize(final PluginInfos pluginInfos, MavenMultiProject root) throws Exception {
         final Project antProject = createAntProject();
         final Parallel migrator = new Parallel();
         migrator.setProject(antProject);
@@ -138,7 +143,7 @@ public class Mavenizer {
 
             @Override
             public void visitPluginProject(MavenPluginProject mavenPluginProject) {
-                PluginMavenizer mavenizer = new PluginMavenizer(mavenPluginProject);
+                PluginMavenizer mavenizer = new PluginMavenizer(pluginInfos, mavenPluginProject);
                 mavenizer.setProject(antProject);
                 migrator.addTask(mavenizer);
             }
