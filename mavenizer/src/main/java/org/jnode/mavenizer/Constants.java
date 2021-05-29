@@ -14,7 +14,6 @@ public class Constants {
         ANT_PROJECT = createAntProject(true);
         ANT_PROJECT.init();
         configureProject(ANT_PROJECT, new File(SRC_ROOT.getDirectory().getAbsolutePath() + "/all/build.xml"));
-        Log.debug("keyset:" + ANT_PROJECT.getProperties().keySet());
 
         JNODE_VERSION = ANT_PROJECT.getProperty("jnode-ver");
     }

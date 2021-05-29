@@ -139,10 +139,7 @@ public class Utils {
             String content = readFully(descriptor);
             content = content.replace("@VERSION@", JNODE_VERSION);
             root.parseFromReader(new StringReader(content));
-            PluginDescriptor desc = parseDescriptor(root);
-            
-            Mavenizer.check(desc);
-            return desc;
+            return parseDescriptor(root);
         } catch (FileNotFoundException e) {
             throw new BuildException(e);
         } catch (IOException e) {

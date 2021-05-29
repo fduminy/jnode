@@ -34,7 +34,9 @@ public class PluginPOMWriterTest extends AbstractPOMWriterTest {
         String pom = assertCommon(getPluginRoot(pluginId), pluginId, thirdParty, pomFile, "jar",
             TEST_PROJECT.getDirectory());
         assertThat(extractModules(pom)).isEmpty();
-        if (!thirdParty) {
+        if (thirdParty) {
+            assertThat(extractDependencies(pom)).containsExactly("jcifs:jcifs:1.2.6");
+        } else {
             assertThat(extractDependencies(pom)).containsExactly(
                 "org.jnode.fs:org.jnode.driver.block:0.2.9-dev",
                 "org.jnode.fs:org.jnode.fs.service:0.2.9-dev",

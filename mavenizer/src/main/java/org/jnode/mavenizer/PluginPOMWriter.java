@@ -1,7 +1,11 @@
 package org.jnode.mavenizer;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
+import org.apache.tools.ant.BuildException;
 import org.jnode.mavenizer.Directory.DestinationRoot;
+import org.jnode.plugin.Library;
 import org.jnode.plugin.PluginPrerequisite;
 import org.jnode.plugin.PluginReference;
 
@@ -15,32 +19,65 @@ public class PluginPOMWriter extends AbstractPOMWriter {
     static final String DEPENDENCY_BEGIN = "<dependency>";
     static final String DEPENDENCY_END = "</dependency>";
 
+    private final Properties thirdPartyArtifacts = new Properties();
+
     public PluginPOMWriter(DestinationRoot destinationRoot) {
         super(destinationRoot);
+        try {
+            thirdPartyArtifacts.load(PluginPOMWriter.class.getResourceAsStream("third_party_artifacts.properties"));
+        } catch (IOException e) {
+            throw new BuildException(e);
+        }
     }
 
     public final File write(PluginInfos pluginInfos, PluginInfo pluginInfo) {
         File pomDirectory = getPluginHome(destinationRoot, pluginInfo);
         File file = write(pomDirectory, pluginInfo.getProjectId(),
             pluginInfo.getId(), pluginInfo.getVersion(), "jar");
-        if (!pluginInfo.isThirdParty()) {
-            addDependencies(file, pluginInfos, pluginInfo);
+
+        StringBuilder xml = new StringBuilder(INDENT).append(DEPENDENCIES_BEGIN).append(lineSeparator);
+        if (pluginInfo.isThirdParty()) {
+            for (Library lib : pluginInfo.getPluginDescriptor().getRuntime().getLibraries()) {
+                addDependency(pluginInfo, xml, lib);
+            }
+        } else {
+            for (PluginPrerequisite dependency : pluginInfo.getPluginDescriptor().getPrerequisites()) {
+                addDependency(pluginInfos, pluginInfo, xml, dependency);
+            }
         }
+        xml.append(INDENT).append(DEPENDENCIES_END).append(lineSeparator);
+        append(file, xml);
+
         return file;
     }
 
-    private void addDependencies(File pomFile, PluginInfos pluginInfos, PluginInfo pluginInfo) {
-        StringBuilder xml = new StringBuilder(INDENT).append(DEPENDENCIES_BEGIN).append(lineSeparator);
-        for (PluginPrerequisite dependency : pluginInfo.getPluginDescriptor().getPrerequisites()) {
-            PluginReference reference = dependency.getPluginReference();
-            indent(xml).append(DEPENDENCY_BEGIN).append(lineSeparator);
-            appendValue(xml,"groupId", "org.jnode." + getProjectId(pluginInfo.getId(), pluginInfos, reference));
-            appendValue(xml,"artifactId", reference.getId());
-            appendValue(xml,"version", getVersion(reference.getVersion()));
-            indent(xml).append(DEPENDENCY_END).append(lineSeparator);
+    private void addDependency(PluginInfo pluginInfo, StringBuilder xml, Library library) {
+        String property = thirdPartyArtifacts.getProperty(library.getName());
+        if (property == null) {
+            Log.warn("Third party artifact not defined for " + library.getName() + " in plugin " + pluginInfo.getId());
+            return;
         }
-        xml.append(INDENT).append(DEPENDENCIES_END).append(lineSeparator);
-        append(pomFile, xml);
+        String[] mavenArtifact = property.split(":");
+        if (mavenArtifact.length < 3) {
+            Log.warn("Invalid third party artifact for " + library.getName() + " in plugin " + pluginInfo.getId());
+            return;
+        }
+        addDependency(xml, mavenArtifact[0], mavenArtifact[1], mavenArtifact[2]);
+    }
+
+    private void addDependency(PluginInfos pluginInfos, PluginInfo pluginInfo, StringBuilder xml,
+                           PluginPrerequisite dependency) {
+        PluginReference reference = dependency.getPluginReference();
+        String groupId = "org.jnode." + getProjectId(pluginInfo.getId(), pluginInfos, reference);
+        addDependency(xml, groupId, reference.getId(), getVersion(reference.getVersion()));
+    }
+
+    private void addDependency(StringBuilder xml, String groupId, String artifactId, String version) {
+        indent(xml).append(DEPENDENCY_BEGIN).append(lineSeparator);
+        appendValue(xml,"groupId", groupId);
+        appendValue(xml,"artifactId", artifactId);
+        appendValue(xml,"version", version);
+        indent(xml).append(DEPENDENCY_END).append(lineSeparator);
     }
 
     private String getProjectId(String pluginId, PluginInfos pluginInfos, PluginReference reference) {

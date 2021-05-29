@@ -1,24 +1,17 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Parallel;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 import org.jnode.mavenizer.Directory.SourceRoot;
-import org.jnode.plugin.Library;
 import org.jnode.plugin.PluginDescriptor;
 
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.emptyList;
-import static org.jnode.mavenizer.Constants.ANT_PROJECT;
 import static org.jnode.mavenizer.Directory.DestinationRoot.destinationRoot;
 import static org.jnode.mavenizer.Directory.SourceRoot.sourceRoot;
 import static org.jnode.mavenizer.FileFinder.delete;
-import static org.jnode.mavenizer.Project.*;
-import static org.jnode.mavenizer.ProjectPrinter.print;
+import static org.jnode.mavenizer.Project.values;
 import static org.jnode.mavenizer.ProjectTreeBuilder.buildProjectTree;
 import static org.jnode.mavenizer.Utils.createAntProject;
 
@@ -57,76 +50,8 @@ public class Mavenizer {
 
         List<PluginDescriptor> systemPlugins = new ArrayList<PluginDescriptor>();
         MavenMultiProject root = buildProjectTree(SRC_ROOT, DEST_ROOT, systemPlugins);
-        print(root);
 
         mavenize(pluginInfos, root);
-    }
-
-    public static void check(PluginDescriptor desc) {
-        // check exports
-        if (desc.getRuntime() == null) {
-            Log.warn(desc.getId() + ": no runtime");
-        } else if (desc.getRuntime().getLibraries() == null) {
-            Log.warn(desc.getId() + ": a runtime without library");
-        } else {
-            for (Library lib : desc.getRuntime().getLibraries()) {
-                boolean exist = ANT_PROJECT.getProperties().containsKey(lib.getName());
-                List<String> classes = exist ? scanLibrary(ANT_PROJECT.getProperty(lib.getName())) : EMPTY_LIST;
-                
-                boolean error1 = false;
-                boolean error2 = false;
-                boolean error3 = false;
-                for (String export : lib.getExports()) {                    
-                    if ((export == null) || export.isEmpty()) {
-                        if (!error1) {
-                            error1 = true;
-                            Log.warn(desc.getId() + ": null or empty export");
-                        }
-                    } else if ("*".equals(export)) {
-                        if (!exist) {
-                            if (!error2) {
-                                error2 = true;
-                                Log.warn(desc.getId() + ": too generic (only a single '*') without a library path");
-                            }
-                        }
-                    } else if (!export.endsWith(".*")) {
-                        if (!error3) {
-                            error3 = true;
-                            Log.warn(desc.getId() + ": doesn't end with \".*\")");
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    private static List<String> scanLibrary(String filepath) {
-        try {
-            File f = new File(filepath);
-            if (!f.exists()) {
-                Log.warn("`nNOT FOUND : " + filepath + "\n");
-            }
-            if (!filepath.endsWith("/classes")) {
-                if (!filepath.endsWith(".jar")) {
-                    Log.warn("NOT A JAR : " + f.getCanonicalPath());
-                } else {
-                    Log.debug("LIB:" + filepath);
-                }
-            }
-            return emptyList();
-            
-//            List<String> classes = new ArrayList<String>();
-//            File f = new File(filepath);
-//            JarFile jar = new JarFile(f);
-//            for (Enumeration<JarEntry> e = jar.entries() ; e.hasMoreElements(); ) {
-//                JarEntry entry = e.nextElement();
-//                classes.add(entry.getName());
-//            }
-//            return classes;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return emptyList();
-        }        
     }
 
     private static void mavenize(final PluginInfos pluginInfos, MavenMultiProject root) throws Exception {
