@@ -11,19 +11,6 @@ import static org.jnode.mavenizer.FileFinder.Action.STOP;
  * 
  */
 public class FileFinder<T> {
-    public static File findFirstMatch(File dir, final String suffix) {
-        return new FileFinder<File>() {
-            protected Action processFile(File f) {
-                Action action = CONTINUE;
-                if (f.getAbsolutePath().endsWith(suffix)) {
-                    setResult(f);
-                    action = STOP;
-                }               
-                return action;
-            }
-        }.iterate(dir);
-    }
-    
     public static void delete(final File root) {
         new FileFinder<Object>() {
             @SuppressWarnings("ResultOfMethodCallIgnored")

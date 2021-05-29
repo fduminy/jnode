@@ -3,26 +3,17 @@ package org.jnode.mavenizer;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FilterSet;
 import org.jnode.mavenizer.Directory.DestinationRoot;
-import org.jnode.plugin.PluginDescriptor;
-import org.jnode.plugin.PluginPrerequisite;
 import org.jnode.util.Version;
 
 import static org.apache.bsf.util.StringUtils.lineSeparator;
-import static org.jnode.mavenizer.Constants.JNODE_VERSION;
-import static org.jnode.mavenizer.Mavenizer.JNODE_HOME;
-import static org.jnode.mavenizer.Utils.ALIAS_JNODE_VERSION;
 import static org.jnode.mavenizer.Utils.createAntProject;
-import static org.jnode.mavenizer.Utils.getUniqueArtifactId;
-import static org.jnode.mavenizer.Utils.getUniqueName;
 import static org.jnode.mavenizer.Utils.processVersion;
 import static org.jnode.mavenizer.Utils.readFully;
 
@@ -94,46 +85,18 @@ abstract class AbstractPOMWriter {
 }
 
 //TODO extract useful stuff from that class ?
-class POMBuilder implements MavenProjectVisitor {
+class POMBuilder  {
     private static final String GROUP_ID = "jnode";
 
-    private final org.apache.tools.ant.Project antProject;
-    private final List<PluginDescriptor> systemPlugins;
-    private final Map<String, List<String>> systemDependencies;
     private final PluginPOMWriter pomWriter;
 
-    public POMBuilder(Project antProject, List<PluginDescriptor> systemPlugins,
-                      Map<String, List<String>> systemDependencies, PluginPOMWriter pomWriter) {
-        this.antProject = antProject;
-        this.systemPlugins = systemPlugins;
-        this.systemDependencies = systemDependencies;
+    public POMBuilder(PluginPOMWriter pomWriter) {
         this.pomWriter = pomWriter;
     }
 
-    @Override
-    public void visitMultiProject(MavenMultiProject project) throws IOException {
-        File projectRoot = project.getBaseDirectory();
-        projectRoot.mkdirs();
-
-        File out = new File(projectRoot, "pom.xml");
-        FileWriter fw = new FileWriter(out);
-
-        write(projectRoot, project, fw, getUniqueArtifactId(project) , getUniqueName(project), null, "pom");
-
-        fw.write("    <modules>\n");
-        for (String child : project.getChildrenNames()) {
-            fw.write("        <module>" + child + "</module>\n");
-        }
-        fw.write("    </modules>\n");
-
-        fw.write("</project>\n");
-        fw.close();
-    }
-
-    @Override
-    public void visitPluginProject(MavenPluginProject project) {
-        pomWriter.write(null, project.getPluginInfo());
+    public void visitPluginProject() {
 /*
+        pomWriter.write(null, project.getPluginInfo());
         File projectRoot = project.getBaseDirectory();
         projectRoot.mkdirs();
         PluginDescriptor desc = null; //FIXME project.getPluginDescriptor();
@@ -183,7 +146,8 @@ class POMBuilder implements MavenProjectVisitor {
 */
     }
 
-    private void write(File projectRoot, MavenProject project, Writer w, String id, String name, String providerUrl, String packaging) throws IOException {
+    private void write() {
+/*
 
         w.write("<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
         w.write("xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">\n");
@@ -199,7 +163,9 @@ class POMBuilder implements MavenProjectVisitor {
             if (project instanceof MavenPluginProject) {
                 // use plugin descriptor properties
                 MavenPluginProject pp = (MavenPluginProject) project;
-                version = getVersion((PluginDescriptor) null /*FIXME pp.getPluginDescriptor()*/);
+                version = getVersion((PluginDescriptor) null */
+/*FIXME pp.getPluginDescriptor()*//*
+);
             }
             writeAttribute(w, "version", tab, processVersion(version));
 
@@ -246,38 +212,7 @@ class POMBuilder implements MavenProjectVisitor {
             w.write("       </plugins>\n");
             w.write("    </build>\n");
         }
-    }
-
-    private void writeAttribute(Writer w, String attribute, String tab, String value) throws IOException {
-        writeAttribute(w, attribute, tab, value, null);
-    }
-
-    private void writeAttribute(Writer w, String attribute, String tab, String value, String defaultValue) throws IOException {
-        if (Utils.isBlank(value)) {
-            value = defaultValue;
-        }
-
-        if ((value != null) && !value.trim().isEmpty()) {
-            w.write(tab);
-
-            w.write('<');
-            w.write(attribute);
-            w.write('>');
-
-            w.write(value.trim());
-
-            w.write("</");
-            w.write(attribute);
-            w.write(">\n");
-        }
-    }
-
-    private static String getVersion(PluginPrerequisite pluginPrerequisite) {
-        return getVersion(pluginPrerequisite.getPluginReference().getVersion());
-    }
-
-    private static String getVersion(PluginDescriptor pluginDescriptor) {
-        return getVersion(pluginDescriptor.getVersion());
+*/
     }
 
     static String getVersion(Version version) {

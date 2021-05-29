@@ -69,31 +69,6 @@ public class Utils {
         }
     };
 
-    public static String getUniqueArtifactId(MavenProject project) {
-        return getUniqueId(project, '_');
-    }
-    
-    public static String getUniqueName(MavenProject project) {
-        return getUniqueId(project, '/');
-    }
-
-    private static String getUniqueId(MavenProject project, char separator) {
-        if (project.getParent() == null) {
-            return "jnode";
-        }
-        
-        StringBuilder sb = new StringBuilder();            
-        while (project != null) {
-            if (sb.length() > 0) {
-                sb.insert(0, separator);
-            }
-            
-            sb.insert(0,project.getBaseDirectory().getName());
-            project = project.getParent();
-        }
-        return sb.toString();
-    }
-
     public static boolean isEmpty(Object[] array) {
         return (array == null) || (array.length == 0);
     }
