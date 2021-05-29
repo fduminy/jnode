@@ -11,10 +11,13 @@ import static org.jnode.mavenizer.Constants.JNODE_VERSION;
 public class ProjectPOMWriter extends AbstractPOMWriter {
 
     private final SourceRoot sourceRoot;
+    private final PluginInfos pluginInfos;
 
-    public ProjectPOMWriter(SourceRoot sourceRoot, DestinationRoot destinationRoot) {
+    public ProjectPOMWriter(SourceRoot sourceRoot, DestinationRoot destinationRoot,
+                            PluginInfos pluginInfos) {
         super(destinationRoot);
         this.sourceRoot = sourceRoot;
+        this.pluginInfos = pluginInfos;
     }
 
     public final File write(Project project) {
@@ -29,10 +32,20 @@ public class ProjectPOMWriter extends AbstractPOMWriter {
         File[] descriptors = project.getDescriptorsDirectory(sourceRoot).listFiles();
         if ((descriptors != null) && (descriptors.length > 0)) {
             for (File file : descriptors) {
-                String name = file.getName();
-                modules.add(name.substring(0, name.lastIndexOf('.')));
+                modules.add(findPlugin(file).getId());
             }
         }
         return modules;
+    }
+
+    private PluginInfo findPlugin(File file) {
+        PluginInfo result = null;
+        for (PluginInfo pluginInfo : pluginInfos.plugins()) {
+            if (pluginInfo.getDescriptorFile().equals(file)) {
+                result = pluginInfo;
+                break;
+            }
+        }
+        return result;
     }
 }

@@ -26,23 +26,38 @@ public class Mavenizer {
         Log.debug("Migration from " + SRC_ROOT + " to " + DEST_ROOT);
         delete(DEST_ROOT.getDirectory());
 
-        PluginInfoFinder pluginInfoFinder = new PluginInfoFinder(SRC_ROOT);
+        new RootPOMWriter(DEST_ROOT).write();
+        PluginInfos pluginInfos = findPlugins();
+        writeProjectPOMs(pluginInfos);
+        buildPluginProjects(pluginInfos);
+    }
+
+    private static void buildPluginProjects(PluginInfos pluginInfos) {
         PluginPOMWriter pluginPOMWriter = new PluginPOMWriter(DEST_ROOT);
-        ProjectPOMWriter projectPOMWriter = new ProjectPOMWriter(SRC_ROOT, DEST_ROOT);
         PluginDescriptorCopier pluginDescriptorCopier = new PluginDescriptorCopier(SRC_ROOT, DEST_ROOT);
         SourceCopier sourceCopier = new SourceCopier(SRC_ROOT, DEST_ROOT);
-        new RootPOMWriter(DEST_ROOT).write();
-        PluginInfos pluginInfos = new PluginInfos();
-        for (org.jnode.mavenizer.Project project : values()) {
-            projectPOMWriter.write(project);
-            for (PluginInfo pluginInfo : pluginInfoFinder.find(project)) {
-                pluginInfos.add(pluginInfo);
-            }
-        }
         for (PluginInfo pluginInfo : pluginInfos.plugins()) {
             pluginPOMWriter.write(pluginInfos, pluginInfo);
             pluginDescriptorCopier.copy(pluginInfo);
             sourceCopier.copy(pluginInfo);
         }
+    }
+
+    private static void writeProjectPOMs(PluginInfos pluginInfos) {
+        ProjectPOMWriter projectPOMWriter = new ProjectPOMWriter(SRC_ROOT, DEST_ROOT, pluginInfos);
+        for (Project project : values()) {
+            projectPOMWriter.write(project);
+        }
+    }
+
+    private static PluginInfos findPlugins() {
+        PluginInfoFinder pluginInfoFinder = new PluginInfoFinder(SRC_ROOT);
+        PluginInfos pluginInfos = new PluginInfos();
+        for (Project project : values()) {
+            for (PluginInfo pluginInfo : pluginInfoFinder.find(project)) {
+                pluginInfos.add(pluginInfo);
+            }
+        }
+        return pluginInfos;
     }
 }
