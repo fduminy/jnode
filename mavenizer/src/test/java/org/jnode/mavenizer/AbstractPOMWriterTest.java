@@ -44,6 +44,10 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
     }
 
     static PluginInfo getPluginInfo(Project project, String pluginId) {
+        return new PluginInfo(project, getDescriptorFile(project, pluginId));
+    }
+
+    static File getDescriptorFile(Project project, String pluginId) {
         File root = new File(SRC_ROOT.getDirectory(), project.getDirectory());
         File descriptorsDir = new File(root, "descriptors");
         File descriptorFile = new File(descriptorsDir, pluginId + '.' + XML_EXTENSION);
@@ -55,7 +59,7 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
                 }
             }
         }
-        return new PluginInfo(project, descriptorFile);
+        return descriptorFile;
     }
 
     final List<String> extractModules(String pom) {

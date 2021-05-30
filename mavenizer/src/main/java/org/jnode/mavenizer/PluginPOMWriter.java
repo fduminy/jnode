@@ -12,7 +12,6 @@ import org.jnode.plugin.PluginReference;
 
 import static java.io.File.separator;
 import static org.apache.bsf.util.StringUtils.lineSeparator;
-import static org.jnode.mavenizer.POMBuilder.getVersion;
 import static org.jnode.mavenizer.Utils.createAntProject;
 import static org.jnode.mavenizer.Utils.getLibrary;
 import static org.jnode.mavenizer.Utils.getPluginHome;
@@ -46,7 +45,7 @@ public class PluginPOMWriter extends AbstractPOMWriter {
             }
         } else {
             for (PluginPrerequisite dependency : pluginInfo.getPluginDescriptor().getPrerequisites()) {
-                addDependency(pluginInfos, pluginInfo, xml, dependency);
+                addDependency(pluginInfos, xml, dependency);
             }
         }
         xml.append(INDENT).append(DEPENDENCIES_END).append(lineSeparator);
@@ -97,11 +96,12 @@ public class PluginPOMWriter extends AbstractPOMWriter {
             "system", "${project.basedir}/lib" + separator + libraryFile.getName()};
     }
 
-    private void addDependency(PluginInfos pluginInfos, PluginInfo pluginInfo, StringBuilder xml,
-                           PluginPrerequisite dependency) {
+    private void addDependency(PluginInfos pluginInfos, StringBuilder xml, PluginPrerequisite dependency) {
         PluginReference reference = dependency.getPluginReference();
-        String groupId = "org.jnode." + getProjectId(pluginInfo.getId(), pluginInfos, reference);
-        addDependency(xml, groupId, reference.getId(), getVersion(reference.getVersion()), null, null);
+        PluginInfo dependencyInfo = pluginInfos.getPlugin(reference.getId());
+        String groupId = "org.jnode." + dependencyInfo.getProjectId();
+        String version = dependencyInfo.getVersion(); // don't use reference.getVersion() which default to jnode version if unspecified
+        addDependency(xml, groupId, reference.getId(), version, null, null);
     }
 
     private void addDependency(StringBuilder xml, String groupId, String artifactId, String version,

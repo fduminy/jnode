@@ -10,11 +10,9 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FilterSet;
 import org.jnode.mavenizer.Directory.DestinationRoot;
-import org.jnode.util.Version;
 
 import static org.apache.bsf.util.StringUtils.lineSeparator;
 import static org.jnode.mavenizer.Utils.createAntProject;
-import static org.jnode.mavenizer.Utils.processVersion;
 import static org.jnode.mavenizer.Utils.readFully;
 
 abstract class AbstractPOMWriter {
@@ -213,9 +211,5 @@ class POMBuilder  {
             w.write("    </build>\n");
         }
 */
-    }
-
-    static String getVersion(Version version) {
-        return processVersion(version.toString());
     }
 }
