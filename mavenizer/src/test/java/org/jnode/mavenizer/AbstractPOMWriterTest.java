@@ -21,6 +21,7 @@ import static org.jnode.mavenizer.ProjectPOMWriter.MODULES_BEGIN;
 import static org.jnode.mavenizer.ProjectPOMWriter.MODULES_END;
 import static org.jnode.mavenizer.ProjectPOMWriter.MODULE_BEGIN;
 import static org.jnode.mavenizer.ProjectPOMWriter.MODULE_END;
+import static org.jnode.mavenizer.Utils.readDescriptor;
 
 public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
     final String assertCommon(String pomDirectory, String pluginId, boolean thirdParty, File pomFile,
@@ -46,6 +47,14 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
         File root = new File(SRC_ROOT.getDirectory(), project.getDirectory());
         File descriptorsDir = new File(root, "descriptors");
         File descriptorFile = new File(descriptorsDir, pluginId + '.' + XML_EXTENSION);
+        if (!descriptorFile.exists()) {
+            for (File descFile : project.getDescriptorFiles()) {
+                if (readDescriptor(descFile).getId().equals(pluginId)) {
+                    descriptorFile = descFile;
+                    break;
+                }
+            }
+        }
         return new PluginInfo(project, descriptorFile);
     }
 

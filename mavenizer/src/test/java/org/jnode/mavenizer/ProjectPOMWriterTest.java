@@ -40,11 +40,8 @@ public class ProjectPOMWriterTest extends AbstractPOMWriterTest {
 
     private List<String> write(Project project, int nbModules) throws IOException {
         List<PluginInfo> plugins = new ArrayList<PluginInfo>();
-        File[] descriptorFiles = project.getDescriptorsDirectory(SRC_ROOT).listFiles();
-        if (descriptorFiles != null) {
-            for (File file : descriptorFiles) {
-                plugins.add(new PluginInfo(project, file));
-            }
+        for (File file : project.getDescriptorFiles()) {
+            plugins.add(new PluginInfo(project, file));
         }
         doReturn(plugins).when(pluginInfos).plugins();
 

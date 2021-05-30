@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
 import static org.jnode.mavenizer.Utils.isEmpty;
 
 /**
@@ -67,6 +68,11 @@ public enum Project {
 
     public final File getDescriptorsDirectory(SourceRoot root) {
         return new File(new File(root.getDirectory(), directory), "descriptors");
+    }
+
+    public final File[] getDescriptorFiles() {
+        File[] descriptorFiles = getDescriptorsDirectory(SRC_ROOT).listFiles();
+        return (descriptorFiles != null) ? descriptorFiles : new File[0];
     }
 
     public final File getRoot(Directory root) {
