@@ -9,12 +9,11 @@ import org.jnode.mavenizer.Directory.SourceRoot;
 import org.jnode.plugin.Library;
 import org.jnode.plugin.Runtime;
 
-import static org.jnode.mavenizer.Constants.ANT_PROJECT;
 import static org.jnode.mavenizer.SourceFileType.JAVA;
 import static org.jnode.mavenizer.SourceFileType.RESOURCES;
 import static org.jnode.mavenizer.Utils.createAntProject;
+import static org.jnode.mavenizer.Utils.getLibrary;
 import static org.jnode.mavenizer.Utils.getPluginHome;
-import static org.jnode.mavenizer.Utils.isBlank;
 
 public class SourceCopier {
     private final SourceRoot sourceRoot;
@@ -55,22 +54,17 @@ public class SourceCopier {
             Runtime runtime = pluginInfo.getPluginDescriptor().getRuntime();
             if (srcDir.exists() && (runtime != null) && (runtime.getLibraries() != null)) {
                 for (Library library : runtime.getLibraries()) {
-                    String libPath = ANT_PROJECT.getProperty(library.getName());
-                    if (!isBlank(libPath)) {
-                        File libFile = new File(libPath);
+                    File libFile = getLibrary(library.getName());
+                    if ((libFile != null) && libFile.isDirectory()) {
+                        FileSet fs = new FileSet();
+                        fs.setDir(srcDir);
+                        sourceIsDefined = true;
 
-                        if (libFile.isDirectory()) {
-                            FileSet fs = new FileSet();
-
-                            fs.setDir(srcDir);
-                            sourceIsDefined = true;
-
-                            final String[] exports = library.getExports();
-                            for (String export : exports) {
-                                addIncludes(fs, export, type);
-                            }
-                            c.addFileset(fs);
+                        String[] exports = library.getExports();
+                        for (String export : exports) {
+                            addIncludes(fs, export, type);
                         }
+                        c.addFileset(fs);
                     }
                 }
             }

@@ -11,15 +11,16 @@ import static org.jnode.mavenizer.Conditions.extension;
 import static org.jnode.mavenizer.FileFinder.Action.CONTINUE;
 import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
 import static org.jnode.mavenizer.PluginPOMWriterTest.JNODE_PLUGIN_ID;
+import static org.jnode.mavenizer.PluginPOMWriterTest.TEST_PROJECT;
 import static org.jnode.mavenizer.PluginPOMWriterTest.THIRD_PARTY_PLUGIN_ID;
-import static org.jnode.mavenizer.PluginPOMWriterTest.getPluginInfo;
+import static org.jnode.mavenizer.AbstractPOMWriterTest.getPluginInfo;
 
 public class SourceCopierTest extends AbstractTestWithDestinationRoot {
     @Test
     public void copy_jnode_plugin() {
-        new SourceCopier(SRC_ROOT, destinationRoot).copy(getPluginInfo(JNODE_PLUGIN_ID));
+        new SourceCopier(SRC_ROOT, destinationRoot).copy(getPluginInfo(TEST_PROJECT, JNODE_PLUGIN_ID));
 
-        File pluginRoot = new File(getPluginRoot(JNODE_PLUGIN_ID));
+        File pluginRoot = new File(getPluginRoot(TEST_PROJECT, JNODE_PLUGIN_ID));
         List<String> files = files(new File(pluginRoot, "src/main/java"));
         int nbJavaFiles = 40;
         assertThat(files).hasSize(nbJavaFiles).haveExactly(nbJavaFiles, extension("java"));
@@ -34,8 +35,8 @@ public class SourceCopierTest extends AbstractTestWithDestinationRoot {
 
     @Test
     public void copy_third_party_plugin() {
-        new SourceCopier(SRC_ROOT, destinationRoot).copy(getPluginInfo(THIRD_PARTY_PLUGIN_ID));
-        File pluginRoot = new File(getPluginRoot(THIRD_PARTY_PLUGIN_ID));
+        new SourceCopier(SRC_ROOT, destinationRoot).copy(getPluginInfo(TEST_PROJECT, THIRD_PARTY_PLUGIN_ID));
+        File pluginRoot = new File(getPluginRoot(TEST_PROJECT, THIRD_PARTY_PLUGIN_ID));
         assertThat(pluginRoot).doesNotExist();
     }
 

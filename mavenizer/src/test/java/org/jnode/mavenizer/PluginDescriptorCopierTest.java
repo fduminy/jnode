@@ -6,8 +6,9 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
 import static org.jnode.mavenizer.PluginPOMWriterTest.JNODE_PLUGIN_ID;
+import static org.jnode.mavenizer.PluginPOMWriterTest.TEST_PROJECT;
 import static org.jnode.mavenizer.PluginPOMWriterTest.THIRD_PARTY_PLUGIN_ID;
-import static org.jnode.mavenizer.PluginPOMWriterTest.getPluginInfo;
+import static org.jnode.mavenizer.AbstractPOMWriterTest.getPluginInfo;
 import static org.jnode.mavenizer.SourceFileType.RESOURCES;
 
 public class PluginDescriptorCopierTest extends AbstractTestWithDestinationRoot {
@@ -22,10 +23,10 @@ public class PluginDescriptorCopierTest extends AbstractTestWithDestinationRoot 
     }
 
     private void copy(String pluginId) {
-        PluginInfo pluginInfo = getPluginInfo(pluginId);
+        PluginInfo pluginInfo = getPluginInfo(TEST_PROJECT, pluginId);
         new PluginDescriptorCopier(SRC_ROOT, destinationRoot).copy(pluginInfo);
 
-        File pluginRoot = new File(getPluginRoot(pluginId));
+        File pluginRoot = new File(getPluginRoot(TEST_PROJECT, pluginId));
         File srcMainResources = new File(pluginRoot, "src/main/" + RESOURCES.getMavenDirectory());
         File descriptorFile = new File(srcMainResources, "plugin.xml");
         assertThat(descriptorFile).hasContentEqualTo(pluginInfo.getDescriptorFile());

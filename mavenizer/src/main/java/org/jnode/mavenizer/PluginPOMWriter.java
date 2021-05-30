@@ -4,13 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.taskdefs.Copy;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 import org.jnode.plugin.Library;
 import org.jnode.plugin.PluginPrerequisite;
 import org.jnode.plugin.PluginReference;
 
+import static java.io.File.separator;
 import static org.apache.bsf.util.StringUtils.lineSeparator;
 import static org.jnode.mavenizer.POMBuilder.getVersion;
+import static org.jnode.mavenizer.Utils.createAntProject;
+import static org.jnode.mavenizer.Utils.getLibrary;
 import static org.jnode.mavenizer.Utils.getPluginHome;
 
 public class PluginPOMWriter extends AbstractPOMWriter {
@@ -53,30 +57,54 @@ public class PluginPOMWriter extends AbstractPOMWriter {
 
     private void addDependency(PluginInfo pluginInfo, StringBuilder xml, Library library) {
         String property = thirdPartyArtifacts.getProperty(library.getName());
+        String[] mavenArtifact;
         if (property == null) {
-            Log.warn("Third party artifact not defined for " + library.getName() + " in plugin " + pluginInfo.getId());
-            return;
+            File libraryFile = getLibrary(library.getName());
+            if (libraryFile == null) {
+                Log.warn(
+                    "Provided third party library not found for " + library.getName() + " in plugin " + pluginInfo.getId());
+                return;
+            } else if (libraryFile.isDirectory()) {
+                Log.warn(
+                    "Library " + library.getName() + " is a directory in plugin " + pluginInfo.getId());
+                return;
+            }
+            Copy copy = new Copy();
+            copy.setProject(createAntProject());
+            copy.setFailOnError(true);
+            copy.setFile(libraryFile);
+            copy.setTodir(new File(getPluginHome(destinationRoot, pluginInfo), "lib"));
+            copy.execute();
+
+            mavenArtifact = new String[]{"org.jnode.provided.library", pluginInfo.getId(), "1.0.0",
+                "system", "${project.basedir}/lib" + separator + libraryFile.getName()};
+        } else {
+            mavenArtifact = property.split(":");
         }
-        String[] mavenArtifact = property.split(":");
         if (mavenArtifact.length < 3) {
             Log.warn("Invalid third party artifact for " + library.getName() + " in plugin " + pluginInfo.getId());
             return;
         }
-        addDependency(xml, mavenArtifact[0], mavenArtifact[1], mavenArtifact[2]);
+        addDependency(xml, mavenArtifact[0], mavenArtifact[1], mavenArtifact[2],
+            (mavenArtifact.length > 3) ? mavenArtifact[3] : null,
+            (mavenArtifact.length > 4) ? mavenArtifact[4] : null);
     }
 
     private void addDependency(PluginInfos pluginInfos, PluginInfo pluginInfo, StringBuilder xml,
                            PluginPrerequisite dependency) {
         PluginReference reference = dependency.getPluginReference();
         String groupId = "org.jnode." + getProjectId(pluginInfo.getId(), pluginInfos, reference);
-        addDependency(xml, groupId, reference.getId(), getVersion(reference.getVersion()));
+        addDependency(xml, groupId, reference.getId(), getVersion(reference.getVersion()), null, null);
     }
 
-    private void addDependency(StringBuilder xml, String groupId, String artifactId, String version) {
+    private void addDependency(StringBuilder xml, String groupId, String artifactId, String version,
+                               String scope, String systemPath) {
         indent(xml).append(DEPENDENCY_BEGIN).append(lineSeparator);
         appendValue(xml,"groupId", groupId);
         appendValue(xml,"artifactId", artifactId);
         appendValue(xml,"version", version);
+        appendValue(xml,"scope", scope);
+        appendValue(xml,"systemPath", systemPath);
         indent(xml).append(DEPENDENCY_END).append(lineSeparator);
     }
 
@@ -97,10 +125,13 @@ public class PluginPOMWriter extends AbstractPOMWriter {
     }
 
     private StringBuilder appendValue(StringBuilder xml, String tag, String value) {
-        return indent(xml).append(INDENT)
-            .append('<').append(tag).append('>')
-            .append(value)
-            .append("</").append(tag).append('>')
-            .append(lineSeparator);
+        if (value != null) {
+            indent(xml).append(INDENT)
+                .append('<').append(tag).append('>')
+                .append(value)
+                .append("</").append(tag).append('>')
+                .append(lineSeparator);
+        }
+        return xml;
     }
 }

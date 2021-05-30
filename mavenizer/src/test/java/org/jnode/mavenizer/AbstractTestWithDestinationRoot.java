@@ -8,7 +8,6 @@ import org.junit.rules.TemporaryFolder;
 
 import static org.jnode.mavenizer.Conditions.getExpectedPath;
 import static org.jnode.mavenizer.Directory.DestinationRoot.destinationRoot;
-import static org.jnode.mavenizer.PluginPOMWriterTest.TEST_PROJECT;
 
 abstract public class AbstractTestWithDestinationRoot {
     @Rule
@@ -22,7 +21,7 @@ abstract public class AbstractTestWithDestinationRoot {
         destinationRoot = destinationRoot(temporaryFolder.getRoot().getAbsolutePath());
     }
 
-    String getPluginRoot(String pluginId) {
-        return getExpectedPath(destinationRoot, TEST_PROJECT, pluginId);
+    String getPluginRoot(Project project, String pluginId) {
+        return getExpectedPath(destinationRoot, project, pluginId);
     }
 }

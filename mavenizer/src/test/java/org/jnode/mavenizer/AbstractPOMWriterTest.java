@@ -16,7 +16,6 @@ import static org.jnode.mavenizer.PluginPOMWriter.DEPENDENCIES_BEGIN;
 import static org.jnode.mavenizer.PluginPOMWriter.DEPENDENCIES_END;
 import static org.jnode.mavenizer.PluginPOMWriter.DEPENDENCY_BEGIN;
 import static org.jnode.mavenizer.PluginPOMWriter.DEPENDENCY_END;
-import static org.jnode.mavenizer.PluginPOMWriterTest.TEST_PROJECT;
 import static org.jnode.mavenizer.PluginPOMWriterTest.XML_EXTENSION;
 import static org.jnode.mavenizer.ProjectPOMWriter.MODULES_BEGIN;
 import static org.jnode.mavenizer.ProjectPOMWriter.MODULES_END;
@@ -43,11 +42,11 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
         return pom;
     }
 
-    static PluginInfo getPluginInfo(String pluginId) {
-        File root = new File(SRC_ROOT.getDirectory(), TEST_PROJECT.getDirectory());
+    static PluginInfo getPluginInfo(Project project, String pluginId) {
+        File root = new File(SRC_ROOT.getDirectory(), project.getDirectory());
         File descriptorsDir = new File(root, "descriptors");
         File descriptorFile = new File(descriptorsDir, pluginId + '.' + XML_EXTENSION);
-        return new PluginInfo(TEST_PROJECT, descriptorFile);
+        return new PluginInfo(project, descriptorFile);
     }
 
     final List<String> extractModules(String pom) {
@@ -59,10 +58,13 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
             extractItems(pom, DEPENDENCIES_BEGIN, DEPENDENCIES_END, DEPENDENCY_BEGIN, DEPENDENCY_END);
         for (int i = 0; i < dependencies.size(); i++) {
             String dependency = dependencies.get(i).replace(" ", "").replace(lineSeparator, "");
-            dependency = dependency.replace("<groupId>", "").replace("</groupId>", ":");
-            dependency = dependency.replace("<artifactId>", "").replace("</artifactId>", ":");
-            dependency = dependency.replace("<version>", "").replace("</version>", "");
-            dependency = dependency.trim();
+            Content groupId = extractContent(dependency, 0, "<groupId>", "</groupId>");
+            Content artifactId = extractContent(dependency, 0, "<artifactId>", "</artifactId>");
+            Content version = extractContent(dependency, 0, "<version>", "</version>");
+            assertThat(groupId).isNotNull();
+            assertThat(artifactId).isNotNull();
+            assertThat(version).isNotNull();
+            dependency = groupId.getValue() + ':' + artifactId.getValue() + ':' + version.getValue();
             dependencies.set(i, dependency);
         }
         return dependencies;

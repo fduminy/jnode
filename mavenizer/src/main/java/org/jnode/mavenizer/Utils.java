@@ -164,6 +164,15 @@ public class Utils {
         return project;
     }
 
+    static File getLibrary(String libraryName) {
+        File library = null;
+        String libPath = ANT_PROJECT.getProperty(libraryName);
+        if (!isBlank(libPath)) {
+            library = new File(libPath);
+        }
+        return library;
+    }
+
     private static void addJNodeProperties(Project antProject) {
         // copy properties from jnode's ant project
         Map<?,?> properties = ANT_PROJECT.getProperties();
