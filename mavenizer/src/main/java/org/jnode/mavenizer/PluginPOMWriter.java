@@ -59,25 +59,10 @@ public class PluginPOMWriter extends AbstractPOMWriter {
         String property = thirdPartyArtifacts.getProperty(library.getName());
         String[] mavenArtifact;
         if (property == null) {
-            File libraryFile = getLibrary(library.getName());
-            if (libraryFile == null) {
-                Log.warn(
-                    "Provided third party library not found for " + library.getName() + " in plugin " + pluginInfo.getId());
-                return;
-            } else if (libraryFile.isDirectory()) {
-                Log.warn(
-                    "Library " + library.getName() + " is a directory in plugin " + pluginInfo.getId());
+            mavenArtifact = getProvidedLibrary(pluginInfo, library);
+            if (mavenArtifact == null) {
                 return;
             }
-            Copy copy = new Copy();
-            copy.setProject(createAntProject());
-            copy.setFailOnError(true);
-            copy.setFile(libraryFile);
-            copy.setTodir(new File(getPluginHome(destinationRoot, pluginInfo), "lib"));
-            copy.execute();
-
-            mavenArtifact = new String[]{"org.jnode.provided.library", pluginInfo.getId(), "1.0.0",
-                "system", "${project.basedir}/lib" + separator + libraryFile.getName()};
         } else {
             mavenArtifact = property.split(":");
         }
@@ -88,6 +73,28 @@ public class PluginPOMWriter extends AbstractPOMWriter {
         addDependency(xml, mavenArtifact[0], mavenArtifact[1], mavenArtifact[2],
             (mavenArtifact.length > 3) ? mavenArtifact[3] : null,
             (mavenArtifact.length > 4) ? mavenArtifact[4] : null);
+    }
+
+    private String[] getProvidedLibrary(PluginInfo pluginInfo, Library library) {
+        File libraryFile = getLibrary(library.getName());
+        if (libraryFile == null) {
+            Log.warn(
+                "Provided third party library not found for " + library.getName() + " in plugin " + pluginInfo.getId());
+            return null;
+        } else if (libraryFile.isDirectory()) {
+            Log.warn(
+                "Library " + library.getName() + " is a directory in plugin " + pluginInfo.getId());
+            return null;
+        }
+        Copy copy = new Copy();
+        copy.setProject(createAntProject());
+        copy.setFailOnError(true);
+        copy.setFile(libraryFile);
+        copy.setTodir(new File(getPluginHome(destinationRoot, pluginInfo), "lib"));
+        copy.execute();
+
+        return new String[]{"org.jnode.provided.library", pluginInfo.getId(), "1.0.0",
+            "system", "${project.basedir}/lib" + separator + libraryFile.getName()};
     }
 
     private void addDependency(PluginInfos pluginInfos, PluginInfo pluginInfo, StringBuilder xml,
