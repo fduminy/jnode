@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildException;
@@ -12,12 +14,17 @@ import org.apache.tools.ant.BuildListener;
 import org.apache.tools.ant.Project;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 import org.jnode.nanoxml.XMLElement;
+import org.jnode.plugin.Library;
 import org.jnode.plugin.PluginDescriptor;
 import org.jnode.plugin.PluginException;
+import org.jnode.plugin.Runtime;
 
 import static java.lang.String.valueOf;
+import static java.nio.file.Files.exists;
+import static java.nio.file.Files.isDirectory;
 import static java.nio.file.Files.newBufferedReader;
 import static java.nio.file.Paths.get;
+import static java.util.Arrays.asList;
 import static org.apache.tools.ant.util.FileUtils.safeReadFully;
 import static org.jnode.mavenizer.Constants.ANT_PROJECT;
 import static org.jnode.mavenizer.Constants.JNODE_VERSION;
@@ -125,6 +132,20 @@ public class Utils {
             library = get(libPath);
         }
         return library;
+    }
+
+    static List<Export> getExports(Path projectSourceDirectory, PluginInfo pluginInfo) {
+        List<Export> exports = new ArrayList<>();
+        Runtime runtime = pluginInfo.getPluginDescriptor().getRuntime();
+        if (exists(projectSourceDirectory) && (runtime != null) && (runtime.getLibraries() != null)) {
+            for (Library library : runtime.getLibraries()) {
+                Path libFile = getLibrary(library.getName());
+                if ((libFile != null) && isDirectory(libFile)) {
+                    exports.add(new Export(projectSourceDirectory, asList(library.getExports())));
+                }
+            }
+        }
+        return exports;
     }
 
     private static void addJNodeProperties(Project antProject) {

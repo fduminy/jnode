@@ -8,17 +8,13 @@ import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FileSet;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 import org.jnode.mavenizer.Directory.SourceRoot;
-import org.jnode.plugin.Library;
-import org.jnode.plugin.Runtime;
 
 import static java.nio.file.Files.createDirectories;
-import static java.nio.file.Files.exists;
-import static java.nio.file.Files.isDirectory;
 import static java.nio.file.Paths.get;
 import static org.jnode.mavenizer.SourceFileType.JAVA;
 import static org.jnode.mavenizer.SourceFileType.RESOURCES;
 import static org.jnode.mavenizer.Utils.createAntProject;
-import static org.jnode.mavenizer.Utils.getLibrary;
+import static org.jnode.mavenizer.Utils.getExports;
 import static org.jnode.mavenizer.Utils.getPluginHome;
 
 public record SourceCopier(SourceRoot sourceRoot, DestinationRoot destinationRoot) {
@@ -58,22 +54,15 @@ public record SourceCopier(SourceRoot sourceRoot, DestinationRoot destinationRoo
         boolean sourceIsDefined = false;
 
         for (Path srcDir : srcDirectories) {
-            Runtime runtime = pluginInfo.getPluginDescriptor().getRuntime();
-            if (exists(srcDir) && (runtime != null) && (runtime.getLibraries() != null)) {
-                for (Library library : runtime.getLibraries()) {
-                    Path libFile = getLibrary(library.getName());
-                    if ((libFile != null) && isDirectory(libFile)) {
-                        FileSet fs = new FileSet();
-                        fs.setDir(srcDir.toFile());
-                        sourceIsDefined = true;
+            for (Export export : getExports(srcDir, pluginInfo)) {
+                FileSet fs = new FileSet();
+                fs.setDir(srcDir.toFile());
+                sourceIsDefined = true;
 
-                        String[] exports = library.getExports();
-                        for (String export : exports) {
-                            addIncludes(fs, export, type);
-                        }
-                        c.addFileset(fs);
-                    }
+                for (String incl : export.getPackageFilters()) {
+                    addIncludes(fs, incl, type);
                 }
+                c.addFileset(fs);
             }
         }
 
