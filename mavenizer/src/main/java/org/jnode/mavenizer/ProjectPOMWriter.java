@@ -1,7 +1,6 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
-import java.util.ArrayList;
+import java.nio.file.Path;
 import java.util.List;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 import org.jnode.mavenizer.Directory.SourceRoot;
@@ -20,25 +19,20 @@ public class ProjectPOMWriter extends AbstractPOMWriter {
         this.pluginInfos = pluginInfos;
     }
 
-    public final File write(Project project) {
-        File pomDirectory = new File(destinationRoot.getDirectory(), project.getDirectory());
-        File file = write(pomDirectory, project.getDirectory(), "project", JNODE_VERSION, "pom");
+    public final Path write(Project project) {
+        Path pomDirectory = destinationRoot.getDirectory().resolve(project.getDirectory());
+        Path file = write(pomDirectory, project.getDirectory(), "project", JNODE_VERSION, "pom");
         addModules(file, getModules(project));
         return file;
     }
 
     private List<String> getModules(Project project) {
-        List<String> modules = new ArrayList<String>();
-        File[] descriptors = project.getDescriptorsDirectory(sourceRoot).listFiles();
-        if ((descriptors != null) && (descriptors.length > 0)) {
-            for (File file : descriptors) {
-                modules.add(findPlugin(file).getId());
-            }
-        }
-        return modules;
+        return project.getDescriptorFiles(sourceRoot).stream()
+            .map(file -> findPlugin(file).getId())
+            .toList();
     }
 
-    private PluginInfo findPlugin(File file) {
+    private PluginInfo findPlugin(Path file) {
         PluginInfo result = null;
         for (PluginInfo pluginInfo : pluginInfos.plugins()) {
             if (pluginInfo.getDescriptorFile().equals(file)) {

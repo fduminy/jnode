@@ -1,14 +1,18 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import static java.nio.file.Files.exists;
+import static java.nio.file.Files.readString;
+import static java.nio.file.Paths.get;
 import static org.apache.bsf.util.StringUtils.lineSeparator;
-import static org.apache.tools.ant.util.FileUtils.safeReadFully;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.jnode.mavenizer.Conditions.childOf;
 import static org.jnode.mavenizer.Constants.JNODE_VERSION;
 import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
@@ -23,22 +27,25 @@ import static org.jnode.mavenizer.ProjectPOMWriter.MODULE_BEGIN;
 import static org.jnode.mavenizer.ProjectPOMWriter.MODULE_END;
 import static org.jnode.mavenizer.Utils.readDescriptor;
 
+@ExtendWith(SoftAssertionsExtension.class)
 public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
-    final String assertCommon(String pomDirectory, String pluginId, boolean thirdParty, File pomFile,
+    @InjectSoftAssertions
+    SoftAssertions softly;
+
+    final String assertCommon(Path pomDirectory, String pluginId, boolean thirdParty, Path pomFile,
                               String packaging, String projectId) throws IOException {
-        assertThat(pomFile).isNotNull();
-        assertThat(pomFile)
-            .hasName("pom.xml")
+        softly.assertThat(pomFile).isNotNull();
+        softly.assertThat(pomFile).endsWith(get("pom.xml"))
             .is(childOf(pomDirectory));
-        String pom = safeReadFully(new FileReader(pomFile));
-        assertThat(pom)
+        String pom = readString(pomFile);
+        softly.assertThat(pom)
             .contains("<groupId>org.jnode." + projectId + "</groupId>")
             .contains("<artifactId>" + pluginId + "</artifactId>")
             .contains("<packaging>" + packaging + "</packaging>");
         if (thirdParty) {
-            assertThat(pom).doesNotContain("<version>" + JNODE_VERSION + "</version>");
+            softly.assertThat(pom).doesNotContain("<version>" + JNODE_VERSION + "</version>");
         } else {
-            assertThat(pom).contains("<version>" + JNODE_VERSION + "</version>");
+            softly.assertThat(pom).contains("<version>" + JNODE_VERSION + "</version>");
         }
         return pom;
     }
@@ -47,12 +54,12 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
         return new PluginInfo(project, getDescriptorFile(project, pluginId));
     }
 
-    static File getDescriptorFile(Project project, String pluginId) {
-        File root = new File(SRC_ROOT.getDirectory(), project.getDirectory());
-        File descriptorsDir = new File(root, "descriptors");
-        File descriptorFile = new File(descriptorsDir, pluginId + '.' + XML_EXTENSION);
-        if (!descriptorFile.exists()) {
-            for (File descFile : project.getDescriptorFiles()) {
+    static Path getDescriptorFile(Project project, String pluginId) {
+        Path root = SRC_ROOT.getDirectory().resolve(project.getDirectory());
+        Path descriptorsDir = root.resolve("descriptors");
+        Path descriptorFile = descriptorsDir.resolve(pluginId + '.' + XML_EXTENSION);
+        if (!exists(descriptorFile)) {
+            for (Path descFile : project.getDescriptorFiles()) {
                 if (readDescriptor(descFile).getId().equals(pluginId)) {
                     descriptorFile = descFile;
                     break;
@@ -74,9 +81,9 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
             Content groupId = extractContent(dependency, 0, "<groupId>", "</groupId>");
             Content artifactId = extractContent(dependency, 0, "<artifactId>", "</artifactId>");
             Content version = extractContent(dependency, 0, "<version>", "</version>");
-            assertThat(groupId).isNotNull();
-            assertThat(artifactId).isNotNull();
-            assertThat(version).isNotNull();
+            softly.assertThat(groupId).isNotNull();
+            softly.assertThat(artifactId).isNotNull();
+            softly.assertThat(version).isNotNull();
             dependency = groupId.getValue() + ':' + artifactId.getValue() + ':' + version.getValue();
             dependencies.set(i, dependency);
         }
@@ -84,7 +91,7 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
     }
 
     final List<String> extractItems(String pom, String beginItemsTag, String endItemsTag, String beginItemTag, String endItemTag) {
-        List<String> items = new ArrayList<String>();
+        List<String> items = new ArrayList<>();
         Content itemsContent = extractContent(pom, 0, beginItemsTag, endItemsTag);
         if (itemsContent != null) {
             String itemsXML = itemsContent.getValue();
@@ -107,22 +114,12 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
         begin += beginTag.length();
 
         int end = xml.indexOf(endTag, begin);
-        assertThat(end).isGreaterThan(0);
+        softly.assertThat(end).isGreaterThan(0);
 
         return new Content(xml, begin, end);
     }
 
-    private static class Content {
-        private final String xml;
-        private final int begin;
-        private final int end;
-
-        private Content(String xml, int begin, int end) {
-            this.xml = xml;
-            this.begin = begin;
-            this.end = end;
-        }
-
+    private record Content(String xml, int begin, int end) {
         private String getValue() {
             return xml.substring(begin, end);
         }

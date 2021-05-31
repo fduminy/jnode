@@ -1,13 +1,11 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import java.nio.file.Path;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static java.nio.file.Files.writeString;
 import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
 import static org.jnode.mavenizer.Project.Core;
 import static org.jnode.mavenizer.Project.FS;
@@ -20,14 +18,11 @@ public class PluginPOMWriterTest extends AbstractPOMWriterTest {
     static final String JNODE_PLUGIN_ID = "org.jnode.fs";
     static final String THIRD_PARTY_PLUGIN_ID = "jcifs";
 
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
     private PluginInfos pluginInfos;
 
-    @Before
-    public void seUp() throws IOException {
+    @BeforeEach
+    public void setUp() {
         pluginInfos = new PluginInfos();
-        temporaryFolder.create();
     }
 
     @Test
@@ -38,7 +33,7 @@ public class PluginPOMWriterTest extends AbstractPOMWriterTest {
         PluginInfo pluginInfo = getPluginInfo(TEST_PROJECT, JNODE_PLUGIN_ID);
         String pom = write(pluginInfo, false);
 
-        assertThat(extractDependencies(pom)).containsExactly(
+        softly.assertThat(extractDependencies(pom)).containsExactly(
             "org.jnode.fs:org.jnode.driver.block:0.2.9-dev",
             "org.jnode.fs:org.jnode.fs.service:0.2.9-dev",
             "org.jnode.fs:org.jnode.partitions:0.2.9-dev");
@@ -49,7 +44,7 @@ public class PluginPOMWriterTest extends AbstractPOMWriterTest {
         PluginInfo pluginInfo = getPluginInfo(TEST_PROJECT, THIRD_PARTY_PLUGIN_ID);
         String pom = write(pluginInfo, true);
 
-        assertThat(extractDependencies(pom)).containsExactly("jcifs:jcifs:1.2.6");
+        softly.assertThat(extractDependencies(pom)).containsExactly("jcifs:jcifs:1.2.6");
     }
 
     @Test
@@ -68,7 +63,7 @@ public class PluginPOMWriterTest extends AbstractPOMWriterTest {
 
         String pom = write(pluginInfo, false);
 
-        assertThat(extractDependencies(pom)).contains("org.jnode.core:org.apache.jakarta.log4j:1.2.8");
+        softly.assertThat(extractDependencies(pom)).contains("org.jnode.core:org.apache.jakarta.log4j:1.2.8");
     }
 
     @Test
@@ -78,30 +73,25 @@ public class PluginPOMWriterTest extends AbstractPOMWriterTest {
         String pom = write(pluginInfo, false);
 
         String pathToLib = "lib/mauve.jar";
-        assertThat(new File(getPluginHome(destinationRoot, pluginInfo), pathToLib))
-            .hasContentEqualTo(new File(project.getRoot(SRC_ROOT), pathToLib));
-        assertThat(extractDependencies(pom)).containsExactly("org.jnode.provided.library:gnu.mauve:1.0.0");
-        assertThat(pom)
+        softly.assertThat(getPluginHome(destinationRoot, pluginInfo).resolve(pathToLib))
+            .hasSameBinaryContentAs(project.getRoot(SRC_ROOT).resolve(pathToLib));
+        softly.assertThat(extractDependencies(pom)).containsExactly("org.jnode.provided.library:gnu.mauve:1.0.0");
+        softly.assertThat(pom)
             .contains("<scope>system</scope>")
             .contains("<systemPath>${project.basedir}/" + pathToLib + "</systemPath>");
     }
 
     private PluginInfo buildPluginInfo(String xml) throws IOException {
-        File descriptorFile = temporaryFolder.newFile("plugin.xml");
-        FileWriter writer = new FileWriter(descriptorFile);
-        try {
-            writer.write(xml);
-        } finally {
-            writer.close();
-        }
+        Path descriptorFile = temporaryFolder.resolve("plugin.xml");
+        writeString(descriptorFile, xml);
         return new PluginInfo(Core, descriptorFile);
     }
 
     private String write(PluginInfo pluginInfo, boolean thirdParty) throws IOException {
-        File pomFile = new PluginPOMWriter(destinationRoot).write(pluginInfos, pluginInfo);
+        Path pomFile = new PluginPOMWriter(destinationRoot).write(pluginInfos, pluginInfo);
         String pom = assertCommon(getPluginRoot(pluginInfo.getProject(), pluginInfo.getId()), pluginInfo.getId(), thirdParty, pomFile, "jar",
             pluginInfo.getProject().getDirectory());
-        assertThat(extractModules(pom)).isEmpty();
+        softly.assertThat(extractModules(pom)).isEmpty();
         return pom;
     }
 }

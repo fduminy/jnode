@@ -1,9 +1,10 @@
 package org.jnode.mavenizer;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -11,6 +12,7 @@ import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FilterSet;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 
+import static java.nio.file.Files.newBufferedWriter;
 import static org.apache.bsf.util.StringUtils.lineSeparator;
 import static org.jnode.mavenizer.Utils.createAntProject;
 import static org.jnode.mavenizer.Utils.readFully;
@@ -28,17 +30,17 @@ abstract class AbstractPOMWriter {
         this.destinationRoot = destinationRoot;
     }
 
-    final File write(File directory, String projectId, String artifactId, String version, String packaging) {
+    final Path write(Path directory, String projectId, String artifactId, String version, String packaging) {
         URL pomTemplate = PluginPOMWriter.class.getResource("plugin-pom.template.xml");
         if (pomTemplate == null) {
             throw new RuntimeException("POM template not found");
         }
-        File file = new File(directory, "pom.xml");
+        Path file = directory.resolve("pom.xml");
 
         Project antProject = createAntProject();
         Copy copy = new Copy();
         copy.setProject(antProject);
-        copy.setTofile(file);
+        copy.setTofile(file.toFile());
         copy.setOverwrite(true);
         copy.setFailOnError(true);
         copy.setFile(new File(pomTemplate.getFile()));
@@ -54,27 +56,22 @@ abstract class AbstractPOMWriter {
         return file;
     }
 
-    final void addModules(File pomFile, List<String> modules) {
+    final void addModules(Path pomFile, List<String> modules) {
         StringBuilder modulesXML = new StringBuilder(INDENT).append(MODULES_BEGIN).append(lineSeparator);
-        for (String module : modules) {
-            modulesXML.append(INDENT).append(INDENT).append(MODULE_BEGIN)
-                .append(module)
-                .append(MODULE_END).append(lineSeparator);
-        }
+        modules.forEach(module -> modulesXML.append(INDENT).append(INDENT).append(MODULE_BEGIN)
+            .append(module)
+            .append(MODULE_END).append(lineSeparator));
         modulesXML.append(INDENT).append(MODULES_END).append(lineSeparator);
         append(pomFile, modulesXML);
     }
 
-    final void append(File pomFile, StringBuilder modulesXML) {
+    final void append(Path pomFile, StringBuilder modulesXML) {
         try {
             String pom = readFully(pomFile);
-            FileWriter writer = new FileWriter(pomFile);
-            try {
+            try (Writer writer = newBufferedWriter(pomFile)) {
                 writer.write(pom.substring(0, pom.lastIndexOf(PROJECT_END)));
                 writer.write(modulesXML.toString());
                 writer.write(PROJECT_END);
-            } finally {
-                writer.close();
             }
         } catch (IOException e) {
             throw new BuildException(e.getMessage(), e);
@@ -83,6 +80,7 @@ abstract class AbstractPOMWriter {
 }
 
 //TODO extract useful stuff from that class ?
+@SuppressWarnings("ALL")
 class POMBuilder  {
     private static final String GROUP_ID = "jnode";
 

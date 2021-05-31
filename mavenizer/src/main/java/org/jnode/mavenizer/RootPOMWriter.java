@@ -1,6 +1,6 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
+import java.nio.file.Path;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 
 import static org.jnode.mavenizer.Constants.JNODE_VERSION;
@@ -11,9 +11,9 @@ public class RootPOMWriter extends AbstractPOMWriter {
         super(destinationRoot);
     }
 
-    public final File write() {
-        File pomDirectory = destinationRoot.getDirectory();
-        File file = write(pomDirectory, "root", "project", JNODE_VERSION, "pom");
+    public final Path write() {
+        Path pomDirectory = destinationRoot.getDirectory();
+        Path file = write(pomDirectory, "root", "project", JNODE_VERSION, "pom");
         addModules(file, allProjects());
         return file;
     }

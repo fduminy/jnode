@@ -1,25 +1,32 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import org.apache.tools.ant.BuildException;
 import org.assertj.core.api.Condition;
 
 import static java.lang.String.format;
+import static java.nio.file.Files.isSameFile;
 
 public class Conditions {
     @SuppressWarnings("SameParameterValue")
-    static Condition<File> childOf(final Directory root, final Project project, final String subDirectory) {
+    static Condition<Path> childOf(final Directory root, final Project project, final String subDirectory) {
         return childOf(getExpectedPath(root, project, subDirectory));
     }
 
     @SuppressWarnings("SameParameterValue")
-    static Condition<File> childOf(final String expectedPath) {
-        return new Condition<File>() {
+    static Condition<Path> childOf(final Path expectedPath) {
+        return new Condition<>() {
             @Override
-            public boolean matches(File file) {
-                if ((file == null) || (file.getParentFile() == null)) {
+            public boolean matches(Path file) {
+                if ((file == null) || (file.getParent() == null)) {
                     return false;
                 }
-                return file.getParentFile().getAbsolutePath().equals(expectedPath);
+                try {
+                    return isSameFile(file.getParent(), expectedPath);
+                } catch (IOException e) {
+                    throw new BuildException(e);
+                }
             }
 
             @Override
@@ -29,11 +36,11 @@ public class Conditions {
         };
     }
 
-    public static Condition<? super String> extension(final String extension) {
-        return new Condition<String>() {
+    public static Condition<Path> extension(final String extension) {
+        return new Condition<>() {
             @Override
-            public boolean matches(String value) {
-                return value.endsWith("." + extension);
+            public boolean matches(Path value) {
+                return value.getFileName().toString().endsWith("." + extension);
             }
 
             @Override
@@ -43,7 +50,7 @@ public class Conditions {
         };
     }
 
-    static String getExpectedPath(Directory root, Project project, String subDirectory) {
-        return new File(new File(root.getDirectory(), project.getDirectory()), subDirectory).getAbsolutePath();
+    static Path getExpectedPath(Directory root, Project project, String subDirectory) {
+        return root.getDirectory().resolve(project.getDirectory()).resolve(subDirectory).toAbsolutePath();
     }
 }

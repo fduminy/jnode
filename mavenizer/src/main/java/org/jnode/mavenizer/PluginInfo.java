@@ -1,6 +1,6 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
+import java.nio.file.Path;
 import org.jnode.plugin.Library;
 import org.jnode.plugin.PluginDescriptor;
 
@@ -8,10 +8,10 @@ import static org.jnode.mavenizer.Utils.readDescriptor;
 
 public class PluginInfo {
     private final Project project;
-    private final File descriptorFile;
+    private final Path descriptorFile;
     private final PluginDescriptor descriptor;
 
-    public PluginInfo(Project project, File descriptorFile) {
+    public PluginInfo(Project project, Path descriptorFile) {
         this.project = project;
         this.descriptorFile = descriptorFile;
         descriptor = readDescriptor(descriptorFile);
@@ -21,7 +21,7 @@ public class PluginInfo {
         return project;
     }
 
-    public File getDescriptorFile() {
+    public Path getDescriptorFile() {
         return descriptorFile;
     }
 

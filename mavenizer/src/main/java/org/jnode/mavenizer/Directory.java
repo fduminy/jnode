@@ -1,43 +1,43 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * @author Fabien DUMINY (fduminy@jnode.org)
  *
  */
 public class Directory {
-    private final File directory;
+    private final Path directory;
 
-    private Directory(File directory) {
+    private Directory(Path directory) {
         this.directory = directory;
     }
 
-    public File getDirectory() {
+    public Path getDirectory() {
         return directory;
     }
 
     @Override
     public String toString() {
-        return directory.getAbsolutePath();
+        return directory.toAbsolutePath().toString();
     }
 
     public static class SourceRoot extends Directory {
-        public static SourceRoot sourceRoot(String directory) {
-            return new SourceRoot(new File(directory));
+        public static SourceRoot sourceRoot(Path directory) {
+            return new SourceRoot(directory);
         }
 
-        private SourceRoot(File directory) {
+        private SourceRoot(Path directory) {
             super(directory);
         }
     }
 
     public static class DestinationRoot extends Directory {
-        public static DestinationRoot destinationRoot(String directory) {
-            return new DestinationRoot(new File(directory));
+        public static DestinationRoot destinationRoot(Path directory) {
+            return new DestinationRoot(directory);
         }
 
-        private DestinationRoot(File directory) {
+        private DestinationRoot(Path directory) {
             super(directory);
         }
     }

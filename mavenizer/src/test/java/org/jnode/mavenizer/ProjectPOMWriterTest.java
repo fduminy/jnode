@@ -1,27 +1,31 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static java.util.stream.Collectors.toCollection;
 import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
 import static org.jnode.mavenizer.PluginInfoFinderTest.NB_TEST_PROJECT_MODULES;
 import static org.jnode.mavenizer.PluginPOMWriterTest.TEST_PROJECT;
 import static org.jnode.mavenizer.Project.Core;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class ProjectPOMWriterTest extends AbstractPOMWriterTest {
+    @Mock
     private PluginInfos pluginInfos;
+
     private ProjectPOMWriter writer;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        pluginInfos = mock(PluginInfos.class);
         writer = new ProjectPOMWriter(SRC_ROOT, destinationRoot, pluginInfos);
     }
 
@@ -33,25 +37,22 @@ public class ProjectPOMWriterTest extends AbstractPOMWriterTest {
     @Test
     public void write_jnode_vm_plugin() throws IOException {
         List<String> modules = write(Core, 88);
-        assertThat(modules)
+        softly.assertThat(modules)
             .doesNotContain("org.classpath.core.vm").contains("rt.vm")
             .doesNotContain("org.classpath.core").contains("rt");
     }
 
     private List<String> write(Project project, int nbModules) throws IOException {
-        List<PluginInfo> plugins = new ArrayList<PluginInfo>();
-        for (File file : project.getDescriptorFiles()) {
-            plugins.add(new PluginInfo(project, file));
-        }
-        doReturn(plugins).when(pluginInfos).plugins();
+        when(pluginInfos.plugins()).thenReturn(project.getDescriptorFiles().stream()
+            .map(file -> new PluginInfo(project, file)).collect(toCollection(ArrayList::new)));
 
-        File pomFile = writer.write(project);
+        Path pomFile = writer.write(project);
 
-        String projectDir = new File(destinationRoot.getDirectory(), project.getDirectory()).getAbsolutePath();
+        Path projectDir = destinationRoot.getDirectory().resolve(project.getDirectory()).toAbsolutePath();
         String pom = assertCommon(projectDir, "project", false, pomFile, "pom", project.getDirectory());
         List<String> modules = extractModules(pom);
-        assertThat(modules).doesNotHaveDuplicates().hasSize(nbModules);
-        assertThat(extractDependencies(pom)).isEmpty();
+        softly.assertThat(modules).doesNotHaveDuplicates().hasSize(nbModules);
+        softly.assertThat(extractDependencies(pom)).isEmpty();
         return modules;
     }
 }

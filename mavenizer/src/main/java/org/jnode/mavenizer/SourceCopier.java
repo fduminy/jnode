@@ -1,7 +1,9 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
+import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FileSet;
 import org.jnode.mavenizer.Directory.DestinationRoot;
@@ -9,55 +11,60 @@ import org.jnode.mavenizer.Directory.SourceRoot;
 import org.jnode.plugin.Library;
 import org.jnode.plugin.Runtime;
 
+import static java.nio.file.Files.createDirectories;
+import static java.nio.file.Files.exists;
+import static java.nio.file.Files.isDirectory;
+import static java.nio.file.Paths.get;
 import static org.jnode.mavenizer.SourceFileType.JAVA;
 import static org.jnode.mavenizer.SourceFileType.RESOURCES;
 import static org.jnode.mavenizer.Utils.createAntProject;
 import static org.jnode.mavenizer.Utils.getLibrary;
 import static org.jnode.mavenizer.Utils.getPluginHome;
 
-public class SourceCopier {
-    private final SourceRoot sourceRoot;
-    private final DestinationRoot destinationRoot;
-
-    public SourceCopier(SourceRoot sourceRoot, DestinationRoot destinationRoot) {
-        this.sourceRoot = sourceRoot;
-        this.destinationRoot = destinationRoot;
-    }
-
+public record SourceCopier(SourceRoot sourceRoot, DestinationRoot destinationRoot) {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void copy(PluginInfo pluginInfo) {
         if (pluginInfo.isThirdParty()) {
             return;
         }
-        File pluginHome = getPluginHome(destinationRoot, pluginInfo);
-        pluginHome.mkdirs();
+        Path pluginHome = getPluginHome(destinationRoot, pluginInfo);
+        try {
+            createDirectories(pluginHome);
+        } catch (IOException e) {
+            throw new BuildException(e);
+        }
 
         copy("main", true, pluginInfo, pluginHome, pluginInfo.getProject().getSourceDirectories(sourceRoot));
         copy("test", false, pluginInfo, pluginHome, pluginInfo.getProject().getTestDirectory(sourceRoot));
     }
 
 
-    private void copy(String mavenPart, boolean mandatory, PluginInfo pluginInfo, File pluginHome, File... srcDirectories) {
+    private void copy(String mavenPart, boolean mandatory, PluginInfo pluginInfo, Path pluginHome,
+                      Path... srcDirectories) {
         copyImpl(pluginInfo, pluginHome, mavenPart, JAVA, mandatory, srcDirectories);
         copyImpl(pluginInfo, pluginHome, mavenPart, RESOURCES, false, srcDirectories);
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void copyImpl(PluginInfo pluginInfo, File pluginHome, String mavenPart, SourceFileType type, boolean mandatory, File... srcDirectories) {
+    private void copyImpl(PluginInfo pluginInfo, Path pluginHome, String mavenPart, SourceFileType type,
+                          boolean mandatory, Path... srcDirectories) {
         Copy c = new Copy();
-        File target = new File(pluginHome, "src/" + mavenPart + '/' + type.getMavenDirectory());
-        c.setTodir(target);
-        target.mkdirs();
+        Path target = pluginHome.resolve(get("src", mavenPart, type.getMavenDirectory()));
+        c.setTodir(target.toFile());
+        try {
+            createDirectories(target);
+        } catch (IOException e) {
+            throw new BuildException(e);
+        }
         boolean sourceIsDefined = false;
 
-        for (File srcDir : srcDirectories) {
+        for (Path srcDir : srcDirectories) {
             Runtime runtime = pluginInfo.getPluginDescriptor().getRuntime();
-            if (srcDir.exists() && (runtime != null) && (runtime.getLibraries() != null)) {
+            if (exists(srcDir) && (runtime != null) && (runtime.getLibraries() != null)) {
                 for (Library library : runtime.getLibraries()) {
-                    File libFile = getLibrary(library.getName());
-                    if ((libFile != null) && libFile.isDirectory()) {
+                    Path libFile = getLibrary(library.getName());
+                    if ((libFile != null) && isDirectory(libFile)) {
                         FileSet fs = new FileSet();
-                        fs.setDir(srcDir);
+                        fs.setDir(srcDir.toFile());
                         sourceIsDefined = true;
 
                         String[] exports = library.getExports();
@@ -84,8 +91,8 @@ public class SourceCopier {
 //            if (export.equals("*")) {
 //            addInclude(fileSet, "**/*" + fileExtension);
 //            } else {
-                String exp = export.replace('.', '/');
-                addInclude(fileSet, exp + fileExtension);
+            String exp = export.replace('.', '/');
+            addInclude(fileSet, exp + fileExtension);
 //            }
         }
     }

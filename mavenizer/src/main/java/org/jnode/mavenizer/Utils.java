@@ -1,10 +1,9 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
+import java.nio.file.Path;
 import java.util.Hashtable;
 import java.util.Map;
 import org.apache.tools.ant.BuildEvent;
@@ -17,6 +16,8 @@ import org.jnode.plugin.PluginDescriptor;
 import org.jnode.plugin.PluginException;
 
 import static java.lang.String.valueOf;
+import static java.nio.file.Files.newBufferedReader;
+import static java.nio.file.Paths.get;
 import static org.apache.tools.ant.util.FileUtils.safeReadFully;
 import static org.jnode.mavenizer.Constants.ANT_PROJECT;
 import static org.jnode.mavenizer.Constants.JNODE_VERSION;
@@ -66,44 +67,31 @@ public class Utils {
         }
     };
 
-    public static boolean isEmpty(Object[] array) {
-        return (array == null) || (array.length == 0);
-    }
-    
     public static boolean isBlank(String value) {
         return (value == null) || value.trim().isEmpty();
     }
 
-    public static PluginDescriptor readDescriptor(File descriptor) {
+    public static PluginDescriptor readDescriptor(Path descriptor) {
         try {
-            final XMLElement root = new XMLElement(new Hashtable(), true, false);
+            final XMLElement root = new XMLElement(new Hashtable<>(), true, false);
             String content = readFully(descriptor);
             content = content.replace("@VERSION@", JNODE_VERSION);
             root.parseFromReader(new StringReader(content));
             return parseDescriptor(root);
-        } catch (FileNotFoundException e) {
-            throw new BuildException(e);
-        } catch (IOException e) {
-            throw new BuildException(e);
-        } catch (PluginException e) {
+        } catch (IOException | PluginException e) {
             throw new BuildException(e);
         }
     }
 
-    static String readFully(File file) throws IOException {
-        FileReader reader = new FileReader(file);
-        String content;
-        try {
-            content = safeReadFully(reader);
-        } finally {
-            reader.close();
+    static String readFully(Path file) throws IOException {
+        try (Reader reader = newBufferedReader(file)) {
+            return safeReadFully(reader);
         }
-        return content;
     }
 
-    static File getPluginHome(DestinationRoot destinationRoot, PluginInfo pluginInfo) {
-        File projectRoot = new File(destinationRoot.getDirectory(), pluginInfo.getProject().getDirectory());
-        return new File(projectRoot, pluginInfo.getId());
+    static Path getPluginHome(DestinationRoot destinationRoot, PluginInfo pluginInfo) {
+        Path projectRoot = destinationRoot.getDirectory().resolve(pluginInfo.getProject().getDirectory());
+        return projectRoot.resolve(pluginInfo.getId());
     }
 
     static PluginInfo findPlugin(Iterable<PluginInfo> infos, String id) {
@@ -130,11 +118,11 @@ public class Utils {
         return project;
     }
 
-    static File getLibrary(String libraryName) {
-        File library = null;
+    static Path getLibrary(String libraryName) {
+        Path library = null;
         String libPath = ANT_PROJECT.getProperty(libraryName);
         if (!isBlank(libPath)) {
-            library = new File(libPath);
+            library = get(libPath);
         }
         return library;
     }

@@ -1,10 +1,9 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
 import java.io.IOException;
-import org.junit.Test;
+import java.nio.file.Path;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.jnode.mavenizer.Project.allProjects;
 
 public class RootPOMWriterTest extends AbstractPOMWriterTest {
@@ -12,12 +11,12 @@ public class RootPOMWriterTest extends AbstractPOMWriterTest {
     public void write() throws IOException {
         RootPOMWriter writer = new RootPOMWriter(destinationRoot);
 
-        File pomFile = writer.write();
+        Path pomFile = writer.write();
 
-        String projectDir = destinationRoot.getDirectory().getAbsolutePath();
+        Path projectDir = destinationRoot.getDirectory().toAbsolutePath();
         String pom = assertCommon(projectDir, "project", false,
             pomFile, "pom", "root");
-        assertThat(extractModules(pom)).containsExactlyElementsOf(allProjects());
-        assertThat(extractDependencies(pom)).isEmpty();
+        softly.assertThat(extractModules(pom)).containsExactlyElementsOf(allProjects());
+        softly.assertThat(extractDependencies(pom)).isEmpty();
     }
 }

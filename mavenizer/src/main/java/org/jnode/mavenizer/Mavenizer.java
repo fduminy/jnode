@@ -1,11 +1,14 @@
 package org.jnode.mavenizer;
 
+import java.io.IOException;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 import org.jnode.mavenizer.Directory.SourceRoot;
 
+import static java.nio.file.Paths.get;
+import static java.util.Arrays.stream;
 import static org.jnode.mavenizer.Directory.DestinationRoot.destinationRoot;
 import static org.jnode.mavenizer.Directory.SourceRoot.sourceRoot;
-import static org.jnode.mavenizer.FileFinder.delete;
+import static org.jnode.mavenizer.Files.deleteAll;
 import static org.jnode.mavenizer.Project.values;
 
 /**
@@ -14,17 +17,17 @@ import static org.jnode.mavenizer.Project.values;
  */
 public class Mavenizer {
     public static final String JNODE_HOME = "/home/fabien/projets/jnode/jnode2021";
-    static final SourceRoot SRC_ROOT = sourceRoot(JNODE_HOME);
+    static final SourceRoot SRC_ROOT = sourceRoot(get(JNODE_HOME));
     protected static final String MAVEN_PLUGINS_DIR = "maven_plugins"; 
     protected static final String MAVEN_MIGRATION_DIR = "maven"; 
     
     // for faster process, use memory filesystem
-    static final DestinationRoot DEST_ROOT = destinationRoot("/dev/shm/jnode_maven");
-//    private static final DestinationRoot DEST_ROOT = destinationRoot(JNODE_HOME + "/jnode_maven");
+    static final DestinationRoot DEST_ROOT = destinationRoot(get("/dev", "shm", "jnode_maven"));
+//    private static final DestinationRoot DEST_ROOT = destinationRoot(get(JNODE_HOME, "/jnode_maven"));
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         Log.debug("Migration from " + SRC_ROOT + " to " + DEST_ROOT);
-        delete(DEST_ROOT.getDirectory());
+        deleteAll(DEST_ROOT.getDirectory());
 
         new RootPOMWriter(DEST_ROOT).write();
         PluginInfos pluginInfos = findPlugins();
@@ -36,28 +39,22 @@ public class Mavenizer {
         PluginPOMWriter pluginPOMWriter = new PluginPOMWriter(DEST_ROOT);
         PluginDescriptorCopier pluginDescriptorCopier = new PluginDescriptorCopier(SRC_ROOT, DEST_ROOT);
         SourceCopier sourceCopier = new SourceCopier(SRC_ROOT, DEST_ROOT);
-        for (PluginInfo pluginInfo : pluginInfos.plugins()) {
+        pluginInfos.plugins().forEach(pluginInfo -> {
             pluginPOMWriter.write(pluginInfos, pluginInfo);
             pluginDescriptorCopier.copy(pluginInfo);
             sourceCopier.copy(pluginInfo);
-        }
+        });
     }
 
     private static void writeProjectPOMs(PluginInfos pluginInfos) {
         ProjectPOMWriter projectPOMWriter = new ProjectPOMWriter(SRC_ROOT, DEST_ROOT, pluginInfos);
-        for (Project project : values()) {
-            projectPOMWriter.write(project);
-        }
+        stream(values()).forEach(projectPOMWriter::write);
     }
 
     private static PluginInfos findPlugins() {
         PluginInfoFinder pluginInfoFinder = new PluginInfoFinder(SRC_ROOT);
         PluginInfos pluginInfos = new PluginInfos();
-        for (Project project : values()) {
-            for (PluginInfo pluginInfo : pluginInfoFinder.find(project)) {
-                pluginInfos.add(pluginInfo);
-            }
-        }
+        stream(values()).flatMap(project -> pluginInfoFinder.find(project).stream()).forEach(pluginInfos::add);
         return pluginInfos;
     }
 }

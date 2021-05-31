@@ -1,18 +1,20 @@
 package org.jnode.mavenizer;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Properties;
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.taskdefs.Copy;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 import org.jnode.plugin.Library;
 import org.jnode.plugin.PluginPrerequisite;
 import org.jnode.plugin.PluginReference;
 
-import static java.io.File.separator;
+import static java.nio.file.Files.copy;
+import static java.nio.file.Files.createDirectories;
+import static java.nio.file.Files.isDirectory;
+import static java.nio.file.Paths.get;
+import static java.util.Arrays.stream;
 import static org.apache.bsf.util.StringUtils.lineSeparator;
-import static org.jnode.mavenizer.Utils.createAntProject;
 import static org.jnode.mavenizer.Utils.getLibrary;
 import static org.jnode.mavenizer.Utils.getPluginHome;
 
@@ -33,20 +35,18 @@ public class PluginPOMWriter extends AbstractPOMWriter {
         }
     }
 
-    public final File write(PluginInfos pluginInfos, PluginInfo pluginInfo) {
-        File pomDirectory = getPluginHome(destinationRoot, pluginInfo);
-        File file = write(pomDirectory, pluginInfo.getProjectId(),
+    public final Path write(PluginInfos pluginInfos, PluginInfo pluginInfo) {
+        Path pomDirectory = getPluginHome(destinationRoot, pluginInfo);
+        Path file = write(pomDirectory, pluginInfo.getProjectId(),
             pluginInfo.getId(), pluginInfo.getVersion(), "jar");
 
         StringBuilder xml = new StringBuilder(INDENT).append(DEPENDENCIES_BEGIN).append(lineSeparator);
         if (pluginInfo.isThirdParty()) {
-            for (Library lib : pluginInfo.getPluginDescriptor().getRuntime().getLibraries()) {
-                addDependency(pluginInfo, xml, lib);
-            }
+            stream(pluginInfo.getPluginDescriptor().getRuntime().getLibraries())
+                .forEach(lib -> addDependency(pluginInfo, xml, lib));
         } else {
-            for (PluginPrerequisite dependency : pluginInfo.getPluginDescriptor().getPrerequisites()) {
-                addDependency(pluginInfos, xml, dependency);
-            }
+            stream(pluginInfo.getPluginDescriptor().getPrerequisites())
+                .forEach(dependency -> addDependency(pluginInfos, xml, dependency));
         }
         xml.append(INDENT).append(DEPENDENCIES_END).append(lineSeparator);
         append(file, xml);
@@ -75,25 +75,26 @@ public class PluginPOMWriter extends AbstractPOMWriter {
     }
 
     private String[] getProvidedLibrary(PluginInfo pluginInfo, Library library) {
-        File libraryFile = getLibrary(library.getName());
+        Path libraryFile = getLibrary(library.getName());
         if (libraryFile == null) {
             Log.warn(
                 "Provided third party library not found for " + library.getName() + " in plugin " + pluginInfo.getId());
             return null;
-        } else if (libraryFile.isDirectory()) {
-            Log.warn(
-                "Library " + library.getName() + " is a directory in plugin " + pluginInfo.getId());
+        } else if (isDirectory(libraryFile)) {
+            Log.warn("Library " + library.getName() + " is a directory in plugin " + pluginInfo.getId());
             return null;
         }
-        Copy copy = new Copy();
-        copy.setProject(createAntProject());
-        copy.setFailOnError(true);
-        copy.setFile(libraryFile);
-        copy.setTodir(new File(getPluginHome(destinationRoot, pluginInfo), "lib"));
-        copy.execute();
+        try {
+            Path libraryDirectory = getPluginHome(destinationRoot, pluginInfo).resolve("lib");
+            createDirectories(libraryDirectory);
+            copy(libraryFile, libraryDirectory.resolve(libraryFile.getFileName()));
+        } catch (IOException e) {
+            throw new BuildException(e);
+        }
 
+        Path libDirectory = get("${project.basedir}", "lib");
         return new String[]{"org.jnode.provided.library", pluginInfo.getId(), "1.0.0",
-            "system", "${project.basedir}/lib" + separator + libraryFile.getName()};
+            "system", libDirectory.resolve(libraryFile.getFileName().toString()).toString()};
     }
 
     private void addDependency(PluginInfos pluginInfos, StringBuilder xml, PluginPrerequisite dependency) {
@@ -115,23 +116,11 @@ public class PluginPOMWriter extends AbstractPOMWriter {
         indent(xml).append(DEPENDENCY_END).append(lineSeparator);
     }
 
-    private String getProjectId(String pluginId, PluginInfos pluginInfos, PluginReference reference) {
-        try {
-            String projectId = pluginInfos.getPlugin(reference.getId()).getProjectId();
-            Log.trace("FOUND plugin " + reference.getId() + " required by plugin " + pluginId);
-            return projectId;
-        } catch (Exception e) {
-            String message = "Can't find plugin " + reference.getId() + " required by plugin " + pluginId;
-            Log.warn(message);
-            return message;
-        }
-    }
-
     private StringBuilder indent(StringBuilder xml) {
         return xml.append(INDENT).append(INDENT);
     }
 
-    private StringBuilder appendValue(StringBuilder xml, String tag, String value) {
+    private void appendValue(StringBuilder xml, String tag, String value) {
         if (value != null) {
             indent(xml).append(INDENT)
                 .append('<').append(tag).append('>')
@@ -139,6 +128,5 @@ public class PluginPOMWriter extends AbstractPOMWriter {
                 .append("</").append(tag).append('>')
                 .append(lineSeparator);
         }
-        return xml;
     }
 }
