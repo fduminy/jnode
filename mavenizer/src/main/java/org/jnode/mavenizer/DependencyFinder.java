@@ -3,6 +3,8 @@ package org.jnode.mavenizer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -26,12 +28,12 @@ public class DependencyFinder {
     private final Map<Path, SortedSet<String>> javaFileToDependencies = synchronizedMap(new TreeMap<>());
 
     SortedSet<String> find(IAntProject project, Path start, PluginInfo pluginInfo) {
-        List<Export> exports = getExports(project, start, pluginInfo);
+        Collection<String> exportedPackages = exportedPackages(getExports(project, start, pluginInfo));
         try {
             return walk(start).parallel()
                 .filter(this::javaFile)
-                .filter(path -> isExported(exports, start.relativize(path).getParent().toString()))
-                .map(this::findInJavaFile)
+                .filter(path -> isExported(exportedPackages, start.relativize(path).getParent().toString()))
+                .map(javaFile -> findInJavaFile(exportedPackages, javaFile))
                 .reduce(new TreeSet<>(), (a, b) -> {
                     a.addAll(b);
                     return a;
@@ -41,20 +43,27 @@ public class DependencyFinder {
         }
     }
 
-    private boolean isExported(List<Export> exports, String relativePathToPackage) {
+    private Collection<String> exportedPackages(List<Export> exports) {
+        List<String> exportedPackages = new ArrayList<>();
         for (Export export : exports) {
             for (String packageFilter : export.getPackageFilters()) {
-                packageFilter = removeDotStarFilterAtTheEndOf(packageFilter);
-                packageFilter = packageFilter.replace(".", separator);
-                if (relativePathToPackage.equals(packageFilter)) {
-                    return true;
-                }
+                exportedPackages.add(removeDotStarFilterAtTheEndOf(packageFilter));
+            }
+        }
+        return exportedPackages;
+    }
+
+    private boolean isExported(Collection<String> exportedPackages, String relativePathToPackage) {
+        for (String exportedPackage : exportedPackages) {
+            String packageFilter = exportedPackage.replace(".", separator);
+            if (relativePathToPackage.equals(packageFilter)) {
+                return true;
             }
         }
         return false;
     }
 
-    private SortedSet<String> findInJavaFile(Path javaFile) {
+    private SortedSet<String> findInJavaFile(Collection<String> exportedPackages, Path javaFile) {
         return javaFileToDependencies.computeIfAbsent(javaFile, file -> {
             SortedSet<String> dependencies = new TreeSet<>();
             try (BufferedReader reader = newBufferedReader(javaFile)) {
@@ -64,7 +73,7 @@ public class DependencyFinder {
                         break;
                     }
                     String packageName = extractPackage(line);
-                    if (packageName != null) {
+                    if ((packageName != null) && !exportedPackages.contains(packageName)) {
                         dependencies.add(packageName);
                     }
                 }
