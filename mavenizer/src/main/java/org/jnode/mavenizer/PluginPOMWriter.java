@@ -9,12 +9,12 @@ import org.jnode.plugin.Library;
 import org.jnode.plugin.PluginPrerequisite;
 import org.jnode.plugin.PluginReference;
 
+import static java.lang.System.lineSeparator;
 import static java.nio.file.Files.copy;
 import static java.nio.file.Files.createDirectories;
 import static java.nio.file.Files.isDirectory;
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.stream;
-import static org.apache.bsf.util.StringUtils.lineSeparator;
 import static org.jnode.mavenizer.Utils.getLibrary;
 import static org.jnode.mavenizer.Utils.getPluginHome;
 
@@ -40,7 +40,7 @@ public class PluginPOMWriter extends AbstractPOMWriter {
         Path file = write(pomDirectory, pluginInfo.getProjectId(),
             pluginInfo.getId(), pluginInfo.getVersion(), "jar");
 
-        StringBuilder xml = new StringBuilder(INDENT).append(DEPENDENCIES_BEGIN).append(lineSeparator);
+        StringBuilder xml = new StringBuilder(INDENT).append(DEPENDENCIES_BEGIN).append(lineSeparator());
         if (pluginInfo.isThirdParty()) {
             stream(pluginInfo.getPluginDescriptor().getRuntime().getLibraries())
                 .forEach(lib -> addDependency(pluginInfo, xml, lib));
@@ -48,7 +48,7 @@ public class PluginPOMWriter extends AbstractPOMWriter {
             stream(pluginInfo.getPluginDescriptor().getPrerequisites())
                 .forEach(dependency -> addDependency(pluginInfos, xml, dependency));
         }
-        xml.append(INDENT).append(DEPENDENCIES_END).append(lineSeparator);
+        xml.append(INDENT).append(DEPENDENCIES_END).append(lineSeparator());
         append(file, xml);
 
         return file;
@@ -107,13 +107,13 @@ public class PluginPOMWriter extends AbstractPOMWriter {
 
     private void addDependency(StringBuilder xml, String groupId, String artifactId, String version,
                                String scope, String systemPath) {
-        indent(xml).append(DEPENDENCY_BEGIN).append(lineSeparator);
+        indent(xml).append(DEPENDENCY_BEGIN).append(lineSeparator());
         appendValue(xml,"groupId", groupId);
         appendValue(xml,"artifactId", artifactId);
         appendValue(xml,"version", version);
         appendValue(xml,"scope", scope);
         appendValue(xml,"systemPath", systemPath);
-        indent(xml).append(DEPENDENCY_END).append(lineSeparator);
+        indent(xml).append(DEPENDENCY_END).append(lineSeparator());
     }
 
     private StringBuilder indent(StringBuilder xml) {
@@ -126,7 +126,7 @@ public class PluginPOMWriter extends AbstractPOMWriter {
                 .append('<').append(tag).append('>')
                 .append(value)
                 .append("</").append(tag).append('>')
-                .append(lineSeparator);
+                .append(lineSeparator());
         }
     }
 }

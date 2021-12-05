@@ -9,10 +9,10 @@ import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import static java.lang.System.lineSeparator;
 import static java.nio.file.Files.exists;
 import static java.nio.file.Files.readString;
 import static java.nio.file.Paths.get;
-import static org.apache.bsf.util.StringUtils.lineSeparator;
 import static org.jnode.mavenizer.Conditions.childOf;
 import static org.jnode.mavenizer.Constants.JNODE_VERSION;
 import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
@@ -77,7 +77,7 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
         List<String> dependencies =
             extractItems(pom, DEPENDENCIES_BEGIN, DEPENDENCIES_END, DEPENDENCY_BEGIN, DEPENDENCY_END);
         for (int i = 0; i < dependencies.size(); i++) {
-            String dependency = dependencies.get(i).replace(" ", "").replace(lineSeparator, "");
+            String dependency = dependencies.get(i).replace(" ", "").replace(lineSeparator(), "");
             Content groupId = extractContent(dependency, 0, "<groupId>", "</groupId>");
             Content artifactId = extractContent(dependency, 0, "<artifactId>", "</artifactId>");
             Content version = extractContent(dependency, 0, "<version>", "</version>");

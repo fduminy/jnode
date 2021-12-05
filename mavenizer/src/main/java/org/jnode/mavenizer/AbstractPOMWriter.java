@@ -12,8 +12,8 @@ import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FilterSet;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 
+import static java.lang.System.lineSeparator;
 import static java.nio.file.Files.newBufferedWriter;
-import static org.apache.bsf.util.StringUtils.lineSeparator;
 import static org.jnode.mavenizer.Utils.createAntProject;
 import static org.jnode.mavenizer.Utils.readFully;
 
@@ -57,11 +57,11 @@ abstract class AbstractPOMWriter {
     }
 
     final void addModules(Path pomFile, List<String> modules) {
-        StringBuilder modulesXML = new StringBuilder(INDENT).append(MODULES_BEGIN).append(lineSeparator);
+        StringBuilder modulesXML = new StringBuilder(INDENT).append(MODULES_BEGIN).append(lineSeparator());
         modules.forEach(module -> modulesXML.append(INDENT).append(INDENT).append(MODULE_BEGIN)
             .append(module)
-            .append(MODULE_END).append(lineSeparator));
-        modulesXML.append(INDENT).append(MODULES_END).append(lineSeparator);
+            .append(MODULE_END).append(lineSeparator()));
+        modulesXML.append(INDENT).append(MODULES_END).append(lineSeparator());
         append(pomFile, modulesXML);
     }
 
