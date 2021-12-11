@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.jnode.mavenizer.AbstractPOMWriterTest.getPluginInfo;
+import static org.jnode.mavenizer.Constants.ANT_PROJECT;
 import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
 import static org.jnode.mavenizer.Project.Core;
 
@@ -18,7 +19,7 @@ class UtilsTest {
         Path projectSourceDirectory = Core.getSourceDirectories(SRC_ROOT)[0];
         PluginInfo pluginInfo = getPluginInfo(Core, "org.jnode.security");
 
-        List<Export> exports = Utils.getExports(projectSourceDirectory, pluginInfo);
+        List<Export> exports = Utils.getExports(ANT_PROJECT, projectSourceDirectory, pluginInfo);
 
         softly.assertThat(exports).hasSize(1);
         if (softly.wasSuccess()) {

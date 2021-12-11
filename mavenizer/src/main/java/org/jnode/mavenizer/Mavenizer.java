@@ -6,6 +6,7 @@ import org.jnode.mavenizer.Directory.SourceRoot;
 
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.stream;
+import static org.jnode.mavenizer.Constants.ANT_PROJECT;
 import static org.jnode.mavenizer.Directory.DestinationRoot.destinationRoot;
 import static org.jnode.mavenizer.Directory.SourceRoot.sourceRoot;
 import static org.jnode.mavenizer.Files.deleteAll;
@@ -36,9 +37,9 @@ public class Mavenizer {
     }
 
     private static void buildPluginProjects(PluginInfos pluginInfos) {
-        PluginPOMWriter pluginPOMWriter = new PluginPOMWriter(DEST_ROOT);
+        PluginPOMWriter pluginPOMWriter = new PluginPOMWriter(ANT_PROJECT, DEST_ROOT);
         PluginDescriptorCopier pluginDescriptorCopier = new PluginDescriptorCopier(SRC_ROOT, DEST_ROOT);
-        SourceCopier sourceCopier = new SourceCopier(SRC_ROOT, DEST_ROOT);
+        SourceCopier sourceCopier = new SourceCopier(ANT_PROJECT, SRC_ROOT, DEST_ROOT);
         pluginInfos.plugins().forEach(pluginInfo -> {
             pluginPOMWriter.write(pluginInfos, pluginInfo);
             pluginDescriptorCopier.copy(pluginInfo);

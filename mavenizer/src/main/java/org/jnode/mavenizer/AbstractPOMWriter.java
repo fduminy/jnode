@@ -7,14 +7,12 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FilterSet;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 
 import static java.lang.System.lineSeparator;
 import static java.nio.file.Files.newBufferedWriter;
-import static org.jnode.mavenizer.Utils.createAntProject;
 import static org.jnode.mavenizer.Utils.readFully;
 
 abstract class AbstractPOMWriter {
@@ -37,9 +35,9 @@ abstract class AbstractPOMWriter {
         }
         Path file = directory.resolve("pom.xml");
 
-        Project antProject = createAntProject();
+        IAntProject antProject = new MavenizerAntProject();
         Copy copy = new Copy();
-        copy.setProject(antProject);
+        antProject.setProjectFor(copy);
         copy.setTofile(file.toFile());
         copy.setOverwrite(true);
         copy.setFailOnError(true);

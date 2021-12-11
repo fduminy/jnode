@@ -19,14 +19,14 @@ public class ProjectPOMWriter extends AbstractPOMWriter {
         this.pluginInfos = pluginInfos;
     }
 
-    public final Path write(Project project) {
+    public final Path write(IProject project) {
         Path pomDirectory = destinationRoot.getDirectory().resolve(project.getDirectory());
         Path file = write(pomDirectory, project.getDirectory(), "project", JNODE_VERSION, "pom");
         addModules(file, getModules(project));
         return file;
     }
 
-    private List<String> getModules(Project project) {
+    private List<String> getModules(IProject project) {
         return project.getDescriptorFiles(sourceRoot).stream()
             .map(file -> findPlugin(file).getId())
             .toList();

@@ -7,17 +7,17 @@ import org.jnode.plugin.PluginDescriptor;
 import static org.jnode.mavenizer.Utils.readDescriptor;
 
 public class PluginInfo {
-    private final Project project;
+    private final IProject project;
     private final Path descriptorFile;
     private final PluginDescriptor descriptor;
 
-    public PluginInfo(Project project, Path descriptorFile) {
+    public PluginInfo(IProject project, Path descriptorFile) {
         this.project = project;
         this.descriptorFile = descriptorFile;
         descriptor = readDescriptor(descriptorFile);
     }
 
-    public Project getProject() {
+    public IProject getProject() {
         return project;
     }
 
@@ -50,5 +50,14 @@ public class PluginInfo {
 
     public String getProjectId() {
         return getProject().getDirectory();
+    }
+
+    @Override
+    public String toString() {
+        return "PluginInfo{" +
+            "project=" + project +
+            ", descriptorFile=" + descriptorFile +
+            ", descriptor=" + descriptor +
+            '}';
     }
 }

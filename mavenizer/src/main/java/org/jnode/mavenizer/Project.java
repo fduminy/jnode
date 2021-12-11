@@ -18,18 +18,17 @@ import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
 
 /**
  * @author Fabien DUMINY (fduminy@jnode.org)
- *
  */
-public enum Project {
+public enum Project implements IProject {
     Builder("builder") {
         protected String[] getExcludeDirectories() {
             return new String[]{Mavenizer.MAVEN_MIGRATION_DIR, Mavenizer.MAVEN_PLUGINS_DIR};
-        }        
+        }
     },
 
     Core("core") {
         public String[] getSpecialSourceDirectories() {
-            return new String[] {"classpath", "openjdk"};
+            return new String[]{"classpath", "openjdk"};
         }
     },
 
@@ -71,10 +70,12 @@ public enum Project {
         return root.getDirectory().resolve(directory).resolve("descriptors");
     }
 
+    @Override
     public final Collection<Path> getDescriptorFiles() {
         return getDescriptorFiles(SRC_ROOT);
     }
 
+    @Override
     public final Collection<Path> getDescriptorFiles(SourceRoot sourceRoot) {
         File[] descriptorFiles = getDescriptorsDirectory(sourceRoot).toFile().listFiles();
         return (descriptorFiles != null) ?
@@ -85,27 +86,28 @@ public enum Project {
     public final Path getRoot(Directory root) {
         return root.getDirectory().resolve(directory);
     }
-        
+
     public final Path getRootSourceDirectory(SourceRoot root) {
         return getRoot(root).resolve(SOURCE_DIRECTORY);
     }
 
+    @Override
     public final Path[] getSourceDirectories(SourceRoot root) {
         return getDirectoriesImpl(getRootSourceDirectory(root), TEST_DIRECTORY, getSpecialSourceDirectories());
     }
-    
+
+    @Override
     public final Path getTestDirectory(SourceRoot root) {
         return getRootSourceDirectory(root).resolve(TEST_DIRECTORY);
     }
-    
+
     protected String[] getSpecialSourceDirectories() {
         return new String[0];
     }
-    
+
     protected String[] getExcludeDirectories() {
         return new String[0];
     }
-
 
     private Path[] getDirectoriesImpl(Path baseDir, final String excludeSubDir, String... specialDirs) {
         final List<String> specialDirectories = asList(specialDirs);
@@ -138,6 +140,7 @@ public enum Project {
         return result.toArray(new Path[0]);
     }
 
+    @Override
     public String getDirectory() {
         return directory;
     }

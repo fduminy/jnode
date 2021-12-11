@@ -42,7 +42,7 @@ public class ProjectPOMWriterTest extends AbstractPOMWriterTest {
             .doesNotContain("org.classpath.core").contains("rt");
     }
 
-    private List<String> write(Project project, int nbModules) throws IOException {
+    private List<String> write(IProject project, int nbModules) throws IOException {
         when(pluginInfos.plugins()).thenReturn(project.getDescriptorFiles().stream()
             .map(file -> new PluginInfo(project, file)).collect(toCollection(ArrayList::new)));
 

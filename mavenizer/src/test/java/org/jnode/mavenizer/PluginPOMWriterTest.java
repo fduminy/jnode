@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static java.nio.file.Files.writeString;
+import static org.jnode.mavenizer.Constants.ANT_PROJECT;
 import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
 import static org.jnode.mavenizer.Project.Core;
 import static org.jnode.mavenizer.Project.FS;
@@ -88,9 +89,11 @@ public class PluginPOMWriterTest extends AbstractPOMWriterTest {
     }
 
     private String write(PluginInfo pluginInfo, boolean thirdParty) throws IOException {
-        Path pomFile = new PluginPOMWriter(destinationRoot).write(pluginInfos, pluginInfo);
-        String pom = assertCommon(getPluginRoot(pluginInfo.getProject(), pluginInfo.getId()), pluginInfo.getId(), thirdParty, pomFile, "jar",
-            pluginInfo.getProject().getDirectory());
+        Path pomFile = new PluginPOMWriter(ANT_PROJECT, destinationRoot).write(pluginInfos, pluginInfo);
+        String pom =
+            assertCommon(getPluginRoot(pluginInfo.getProject(), pluginInfo.getId()), pluginInfo.getId(), thirdParty,
+                pomFile, "jar",
+                pluginInfo.getProject().getDirectory());
         softly.assertThat(extractModules(pom)).isEmpty();
         return pom;
     }

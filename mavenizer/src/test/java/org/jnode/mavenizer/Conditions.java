@@ -50,7 +50,7 @@ public class Conditions {
         };
     }
 
-    static Path getExpectedPath(Directory root, Project project, String subDirectory) {
+    static Path getExpectedPath(Directory root, IProject project, String subDirectory) {
         return root.getDirectory().resolve(project.getDirectory()).resolve(subDirectory).toAbsolutePath();
     }
 }

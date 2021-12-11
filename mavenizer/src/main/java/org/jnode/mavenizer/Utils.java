@@ -7,11 +7,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.BuildListener;
-import org.apache.tools.ant.Project;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 import org.jnode.nanoxml.XMLElement;
 import org.jnode.plugin.Library;
@@ -19,14 +17,12 @@ import org.jnode.plugin.PluginDescriptor;
 import org.jnode.plugin.PluginException;
 import org.jnode.plugin.Runtime;
 
-import static java.lang.String.valueOf;
 import static java.nio.file.Files.exists;
 import static java.nio.file.Files.isDirectory;
 import static java.nio.file.Files.newBufferedReader;
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static org.apache.tools.ant.util.FileUtils.safeReadFully;
-import static org.jnode.mavenizer.Constants.ANT_PROJECT;
 import static org.jnode.mavenizer.Constants.JNODE_VERSION;
 import static org.jnode.plugin.model.Factory.parseDescriptor;
 
@@ -36,7 +32,7 @@ import static org.jnode.plugin.model.Factory.parseDescriptor;
  */
 public class Utils {
 
-    private static final BuildListener LISTENER = new BuildListener() {
+    static final BuildListener LISTENER = new BuildListener() {
 
         @Override
         public void buildFinished(BuildEvent arg0) {
@@ -112,53 +108,26 @@ public class Utils {
         return result;
     }
 
-    static Project createAntProject() {
-        return createAntProject(false);
-    }
-
-    static Project createAntProject(boolean fromJNode) {
-        Project project = new Project();
-        project.addBuildListener(LISTENER);
-        if (!fromJNode) {
-            addJNodeProperties(project);
-        }
-        return project;
-    }
-
-    static Path getLibrary(String libraryName) {
+    static Path getLibrary(IAntProject project, String libraryName) {
         Path library = null;
-        String libPath = ANT_PROJECT.getProperty(libraryName);
+        String libPath = project.getProperty(libraryName);
         if (!isBlank(libPath)) {
             library = get(libPath);
         }
         return library;
     }
 
-    static List<Export> getExports(Path projectSourceDirectory, PluginInfo pluginInfo) {
+    static List<Export> getExports(IAntProject project, Path projectSourceDirectory, PluginInfo pluginInfo) {
         List<Export> exports = new ArrayList<>();
         Runtime runtime = pluginInfo.getPluginDescriptor().getRuntime();
         if (exists(projectSourceDirectory) && (runtime != null) && (runtime.getLibraries() != null)) {
             for (Library library : runtime.getLibraries()) {
-                Path libFile = getLibrary(library.getName());
+                Path libFile = getLibrary(project, library.getName());
                 if ((libFile != null) && isDirectory(libFile)) {
                     exports.add(new Export(projectSourceDirectory, asList(library.getExports())));
                 }
             }
         }
         return exports;
-    }
-
-    private static void addJNodeProperties(Project antProject) {
-        // copy properties from jnode's ant project
-        Map<?,?> properties = ANT_PROJECT.getProperties();
-        for (Object key : properties.keySet()) {
-            String name = valueOf(key);
-            String value = antProject.getProperty(name);
-            if (value == null) {
-                // define property only if not already defined
-                // (avoid overwriting internal default ant properties)
-                antProject.setProperty(name, valueOf(properties.get(name)));
-            }
-        }
     }
 }

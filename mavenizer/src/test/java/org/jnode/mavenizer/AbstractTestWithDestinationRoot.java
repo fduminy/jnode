@@ -19,7 +19,7 @@ abstract public class AbstractTestWithDestinationRoot {
         destinationRoot = destinationRoot(temporaryFolder.toAbsolutePath());
     }
 
-    Path getPluginRoot(Project project, String pluginId) {
+    final Path getPluginRoot(IProject project, String pluginId) {
         return getExpectedPath(destinationRoot, project, pluginId);
     }
 }

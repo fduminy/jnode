@@ -25,9 +25,11 @@ public class PluginPOMWriter extends AbstractPOMWriter {
     static final String DEPENDENCY_END = "</dependency>";
 
     private final Properties thirdPartyArtifacts = new Properties();
+    private final IAntProject jnodeAntProject;
 
-    public PluginPOMWriter(DestinationRoot destinationRoot) {
+    public PluginPOMWriter(IAntProject jnodeAntProject, DestinationRoot destinationRoot) {
         super(destinationRoot);
+        this.jnodeAntProject = jnodeAntProject;
         try {
             thirdPartyArtifacts.load(PluginPOMWriter.class.getResourceAsStream("third_party_artifacts.properties"));
         } catch (IOException e) {
@@ -75,7 +77,7 @@ public class PluginPOMWriter extends AbstractPOMWriter {
     }
 
     private String[] getProvidedLibrary(PluginInfo pluginInfo, Library library) {
-        Path libraryFile = getLibrary(library.getName());
+        Path libraryFile = getLibrary(jnodeAntProject, library.getName());
         if (libraryFile == null) {
             Log.warn(
                 "Provided third party library not found for " + library.getName() + " in plugin " + pluginInfo.getId());

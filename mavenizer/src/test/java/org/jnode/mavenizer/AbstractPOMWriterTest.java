@@ -54,7 +54,7 @@ public class AbstractPOMWriterTest extends AbstractTestWithDestinationRoot {
         return new PluginInfo(project, getDescriptorFile(project, pluginId));
     }
 
-    static Path getDescriptorFile(Project project, String pluginId) {
+    static Path getDescriptorFile(IProject project, String pluginId) {
         Path root = SRC_ROOT.getDirectory().resolve(project.getDirectory());
         Path descriptorsDir = root.resolve("descriptors");
         Path descriptorFile = descriptorsDir.resolve(pluginId + '.' + XML_EXTENSION);

@@ -14,6 +14,7 @@ import static java.nio.file.Paths.get;
 import static java.util.Collections.emptyList;
 import static org.jnode.mavenizer.AbstractPOMWriterTest.getPluginInfo;
 import static org.jnode.mavenizer.Conditions.extension;
+import static org.jnode.mavenizer.Constants.ANT_PROJECT;
 import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
 import static org.jnode.mavenizer.PluginPOMWriterTest.JNODE_PLUGIN_ID;
 import static org.jnode.mavenizer.PluginPOMWriterTest.TEST_PROJECT;
@@ -23,7 +24,7 @@ import static org.jnode.mavenizer.PluginPOMWriterTest.THIRD_PARTY_PLUGIN_ID;
 public class SourceCopierTest extends AbstractTestWithDestinationRoot {
     @Test
     public void copy_jnode_plugin(SoftAssertions softly) throws IOException {
-        new SourceCopier(SRC_ROOT, destinationRoot).copy(getPluginInfo(TEST_PROJECT, JNODE_PLUGIN_ID));
+        new SourceCopier(ANT_PROJECT, SRC_ROOT, destinationRoot).copy(getPluginInfo(TEST_PROJECT, JNODE_PLUGIN_ID));
 
         Path pluginRoot = getPluginRoot(TEST_PROJECT, JNODE_PLUGIN_ID);
         Path srcMainJava = pluginRoot.resolve(get("src", "main", "java"));
@@ -44,7 +45,8 @@ public class SourceCopierTest extends AbstractTestWithDestinationRoot {
 
     @Test
     public void copy_third_party_plugin(SoftAssertions softly) {
-        new SourceCopier(SRC_ROOT, destinationRoot).copy(getPluginInfo(TEST_PROJECT, THIRD_PARTY_PLUGIN_ID));
+        new SourceCopier(ANT_PROJECT, SRC_ROOT, destinationRoot).copy(
+            getPluginInfo(TEST_PROJECT, THIRD_PARTY_PLUGIN_ID));
         Path pluginRoot = getPluginRoot(TEST_PROJECT, THIRD_PARTY_PLUGIN_ID);
         softly.assertThat(pluginRoot).doesNotExist();
     }

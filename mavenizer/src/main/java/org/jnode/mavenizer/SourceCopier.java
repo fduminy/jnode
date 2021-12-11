@@ -13,12 +13,10 @@ import static java.nio.file.Files.createDirectories;
 import static java.nio.file.Paths.get;
 import static org.jnode.mavenizer.SourceFileType.JAVA;
 import static org.jnode.mavenizer.SourceFileType.RESOURCES;
-import static org.jnode.mavenizer.Utils.createAntProject;
 import static org.jnode.mavenizer.Utils.getExports;
 import static org.jnode.mavenizer.Utils.getPluginHome;
 
-public record SourceCopier(SourceRoot sourceRoot, DestinationRoot destinationRoot) {
-    @SuppressWarnings("ResultOfMethodCallIgnored")
+public record SourceCopier(IAntProject jnodeAntProject, SourceRoot sourceRoot, DestinationRoot destinationRoot) {
     public void copy(PluginInfo pluginInfo) {
         if (pluginInfo.isThirdParty()) {
             return;
@@ -54,7 +52,7 @@ public record SourceCopier(SourceRoot sourceRoot, DestinationRoot destinationRoo
         boolean sourceIsDefined = false;
 
         for (Path srcDir : srcDirectories) {
-            for (Export export : getExports(srcDir, pluginInfo)) {
+            for (Export export : getExports(jnodeAntProject, srcDir, pluginInfo)) {
                 FileSet fs = new FileSet();
                 fs.setDir(srcDir.toFile());
                 sourceIsDefined = true;
@@ -67,7 +65,8 @@ public record SourceCopier(SourceRoot sourceRoot, DestinationRoot destinationRoo
         }
 
         if (sourceIsDefined) {
-            c.setProject(createAntProject());
+            IAntProject antProject = new MavenizerAntProject();
+            antProject.setProjectFor(c);
             c.execute();
         } else if (mandatory) {
             Log.warn("No source file to copy from " + Arrays.toString(srcDirectories));
