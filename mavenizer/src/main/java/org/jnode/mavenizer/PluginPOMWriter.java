@@ -3,11 +3,10 @@ package org.jnode.mavenizer;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Properties;
+import java.util.SortedSet;
 import org.apache.tools.ant.BuildException;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 import org.jnode.plugin.Library;
-import org.jnode.plugin.PluginPrerequisite;
-import org.jnode.plugin.PluginReference;
 
 import static java.lang.System.lineSeparator;
 import static java.nio.file.Files.copy;
@@ -26,8 +25,10 @@ public class PluginPOMWriter extends AbstractPOMWriter {
 
     private final Properties thirdPartyArtifacts = new Properties();
     private final IAntProject jnodeAntProject;
+    private final MissingDependencyFinder missingDependencyFinder;
 
-    public PluginPOMWriter(IAntProject jnodeAntProject, DestinationRoot destinationRoot) {
+    public PluginPOMWriter(IAntProject jnodeAntProject, DestinationRoot destinationRoot,
+                           MissingDependencyFinder missingDependencyFinder) {
         super(destinationRoot);
         this.jnodeAntProject = jnodeAntProject;
         try {
@@ -35,6 +36,7 @@ public class PluginPOMWriter extends AbstractPOMWriter {
         } catch (IOException e) {
             throw new BuildException(e);
         }
+        this.missingDependencyFinder = missingDependencyFinder;
     }
 
     public final Path write(PluginInfos pluginInfos, PluginInfo pluginInfo) {
@@ -48,8 +50,15 @@ public class PluginPOMWriter extends AbstractPOMWriter {
                 .forEach(lib -> addDependency(pluginInfo, xml, lib));
         } else {
             stream(pluginInfo.getPluginDescriptor().getPrerequisites())
-                .forEach(dependency -> addDependency(pluginInfos, xml, dependency));
+                .forEach(dependency -> addDependency(pluginInfos, xml, dependency.getPluginReference().getId()));
+
+            SortedSet<String> missingDependencies = missingDependencyFinder.findMissingDependencies(pluginInfo);
+            missingDependencies.forEach(missingDependency -> {
+                Log.debug("Adding missing dependency " + missingDependency);
+                addDependency(pluginInfos, xml, missingDependency);
+            });
         }
+
         xml.append(INDENT).append(DEPENDENCIES_END).append(lineSeparator());
         append(file, xml);
 
@@ -99,19 +108,19 @@ public class PluginPOMWriter extends AbstractPOMWriter {
             "system", libDirectory.resolve(libraryFile.getFileName().toString()).toString()};
     }
 
-    private void addDependency(PluginInfos pluginInfos, StringBuilder xml, PluginPrerequisite dependency) {
-        PluginReference reference = dependency.getPluginReference();
-        PluginInfo dependencyInfo = pluginInfos.getPlugin(reference.getId());
+    private void addDependency(PluginInfos pluginInfos, StringBuilder xml, String artifactId) {
+        PluginInfo dependencyInfo = pluginInfos.getPlugin(artifactId);
         String groupId = "org.jnode." + dependencyInfo.getProjectId();
-        String version = dependencyInfo.getVersion(); // don't use reference.getVersion() which default to jnode version if unspecified
-        addDependency(xml, groupId, reference.getId(), version, null, null);
+        String version =
+            dependencyInfo.getVersion(); // don't use reference.getVersion() which default to jnode version if unspecified
+        addDependency(xml, groupId, artifactId, version, null, null);
     }
 
     private void addDependency(StringBuilder xml, String groupId, String artifactId, String version,
                                String scope, String systemPath) {
         indent(xml).append(DEPENDENCY_BEGIN).append(lineSeparator());
-        appendValue(xml,"groupId", groupId);
-        appendValue(xml,"artifactId", artifactId);
+        appendValue(xml, "groupId", groupId);
+        appendValue(xml, "artifactId", artifactId);
         appendValue(xml,"version", version);
         appendValue(xml,"scope", scope);
         appendValue(xml,"systemPath", systemPath);

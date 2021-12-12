@@ -130,4 +130,11 @@ public class Utils {
         }
         return exports;
     }
+
+    /**
+     * Removes ".*" at the end of the string.
+     */
+    static String removeDotStarFilterAtTheEndOf(String filter) {
+        return filter.substring(0, filter.length() - 2);
+    }
 }

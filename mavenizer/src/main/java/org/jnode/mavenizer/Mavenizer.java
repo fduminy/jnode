@@ -37,7 +37,10 @@ public class Mavenizer {
     }
 
     private static void buildPluginProjects(PluginInfos pluginInfos) {
-        PluginPOMWriter pluginPOMWriter = new PluginPOMWriter(ANT_PROJECT, DEST_ROOT);
+        DependencyFinder dependencyFinder = new DependencyFinder();
+        MissingDependencyFinder missingDependencyFinder =
+            new MissingDependencyFinder(ANT_PROJECT, pluginInfos, dependencyFinder, SRC_ROOT);
+        PluginPOMWriter pluginPOMWriter = new PluginPOMWriter(ANT_PROJECT, DEST_ROOT, missingDependencyFinder);
         PluginDescriptorCopier pluginDescriptorCopier = new PluginDescriptorCopier(SRC_ROOT, DEST_ROOT);
         SourceCopier sourceCopier = new SourceCopier(ANT_PROJECT, SRC_ROOT, DEST_ROOT);
         pluginInfos.plugins().forEach(pluginInfo -> {
