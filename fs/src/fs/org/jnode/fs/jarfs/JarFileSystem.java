@@ -23,7 +23,6 @@ package org.jnode.fs.jarfs;
 import java.io.IOException;
 import java.util.Map;
 import java.util.jar.JarFile;
-import org.jnode.driver.block.JarFileDevice;
 import org.jnode.fs.FSDirectory;
 import org.jnode.fs.FSEntry;
 import org.jnode.fs.FSFile;

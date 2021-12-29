@@ -18,13 +18,15 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
  
-package org.jnode.driver.block;
+package org.jnode.fs.jarfs;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.jar.JarFile;
+import org.jnode.driver.block.FSBlockDeviceAPI;
+import org.jnode.driver.block.FileDevice;
 import org.jnode.fs.ReadOnlyFileSystemException;
 
 /**

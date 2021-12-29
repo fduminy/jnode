@@ -21,7 +21,6 @@
 package org.jnode.fs.jarfs;
 
 import org.jnode.driver.Device;
-import org.jnode.driver.block.JarFileDevice;
 import org.jnode.fs.FileSystemException;
 import org.jnode.fs.FileSystemType;
 
