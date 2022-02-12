@@ -16,4 +16,4 @@ classlib.pack.gz
 /.metadata
 /mavenizer/target/**
 **/.shelf/
-/.idea/
+**/.idea/
