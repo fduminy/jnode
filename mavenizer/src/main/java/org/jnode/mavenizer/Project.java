@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 import org.apache.tools.ant.BuildException;
 import org.jnode.mavenizer.Directory.SourceRoot;
 
@@ -14,6 +15,7 @@ import static java.nio.file.Files.walk;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Collections.emptySet;
+import static org.jnode.mavenizer.Mavenizer.PROJECT_FILTER;
 import static org.jnode.mavenizer.Mavenizer.SRC_ROOT;
 
 /**
@@ -55,15 +57,19 @@ public enum Project implements IProject {
 
     private static final String SOURCE_DIRECTORY = "src";
     private static final String TEST_DIRECTORY = "test";
-    
+
     private final String directory;
-                         
+
     Project(String directory) {
         this.directory = directory;
     }
 
-    public static List<String> allProjects() {
-        return stream(Project.values()).map(Project::getDirectory).toList();
+    public static List<String> allProjectDirectories() {
+        return allProjects().map(Project::getDirectory).toList();
+    }
+
+    public static Stream<Project> allProjects() {
+        return stream(Project.values()).filter(PROJECT_FILTER);
     }
 
     public final Path getDescriptorsDirectory(SourceRoot root) {

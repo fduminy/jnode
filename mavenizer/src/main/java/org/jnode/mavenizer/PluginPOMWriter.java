@@ -110,6 +110,10 @@ public class PluginPOMWriter extends AbstractPOMWriter {
 
     private void addDependency(PluginInfos pluginInfos, StringBuilder xml, String artifactId) {
         PluginInfo dependencyInfo = pluginInfos.getPlugin(artifactId);
+        if (dependencyInfo == null) {
+            Log.warn("artifact " + artifactId + " not found");
+            return;
+        }
         String groupId = "org.jnode." + dependencyInfo.getProjectId();
         String version =
             dependencyInfo.getVersion(); // don't use reference.getVersion() which default to jnode version if unspecified

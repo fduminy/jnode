@@ -1,30 +1,38 @@
 package org.jnode.mavenizer;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.function.Predicate;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 import org.jnode.mavenizer.Directory.SourceRoot;
 
 import static java.nio.file.Paths.get;
-import static java.util.Arrays.stream;
+import static java.util.Arrays.asList;
 import static org.jnode.mavenizer.Constants.ANT_PROJECT;
 import static org.jnode.mavenizer.Directory.DestinationRoot.destinationRoot;
 import static org.jnode.mavenizer.Directory.SourceRoot.sourceRoot;
 import static org.jnode.mavenizer.Files.deleteAll;
-import static org.jnode.mavenizer.Project.values;
+import static org.jnode.mavenizer.Project.allProjects;
 
 /**
  * @author Fabien DUMINY (fduminy@jnode.org)
- *
  */
 public class Mavenizer {
     public static final String JNODE_HOME = "/home/fabien/projets/jnode/jnode2021";
     static final SourceRoot SRC_ROOT = sourceRoot(get(JNODE_HOME));
-    protected static final String MAVEN_PLUGINS_DIR = "maven_plugins"; 
-    protected static final String MAVEN_MIGRATION_DIR = "maven"; 
-    
+    protected static final String MAVEN_PLUGINS_DIR = "maven_plugins";
+    protected static final String MAVEN_MIGRATION_DIR = "maven";
+
     // for faster process, use memory filesystem
     static final DestinationRoot DEST_ROOT = destinationRoot(get("/dev", "shm", "jnode_maven"));
-//    private static final DestinationRoot DEST_ROOT = destinationRoot(get(JNODE_HOME, "/jnode_maven"));
+    //    private static final DestinationRoot DEST_ROOT = destinationRoot(get(JNODE_HOME, "/jnode_maven"));
+    static final Predicate<Project> PROJECT_FILTER = Project.FS::equals;
+    static final Predicate<PluginInfo> PLUGIN_FILTER = pluginInfo -> {
+        List<String> plugins = asList(
+            "org.jnode.driver.block", "org.jnode.fs", "org.jnode.partitions", "org.jnode.fs.service",
+            "org.jnode.fs.jarfs");
+        return true; //plugins.contains(pluginInfo.getId());
+    };
 
     public static void main(String[] args) throws IOException {
         Log.debug("Migration from " + SRC_ROOT + " to " + DEST_ROOT);
@@ -43,7 +51,7 @@ public class Mavenizer {
         PluginPOMWriter pluginPOMWriter = new PluginPOMWriter(ANT_PROJECT, DEST_ROOT, missingDependencyFinder);
         PluginDescriptorCopier pluginDescriptorCopier = new PluginDescriptorCopier(SRC_ROOT, DEST_ROOT);
         SourceCopier sourceCopier = new SourceCopier(ANT_PROJECT, SRC_ROOT, DEST_ROOT);
-        pluginInfos.plugins().forEach(pluginInfo -> {
+        pluginInfos.plugins().stream().filter(PLUGIN_FILTER).forEach(pluginInfo -> {
             pluginPOMWriter.write(pluginInfos, pluginInfo);
             pluginDescriptorCopier.copy(pluginInfo);
             sourceCopier.copy(pluginInfo);
@@ -52,13 +60,13 @@ public class Mavenizer {
 
     private static void writeProjectPOMs(PluginInfos pluginInfos) {
         ProjectPOMWriter projectPOMWriter = new ProjectPOMWriter(SRC_ROOT, DEST_ROOT, pluginInfos);
-        stream(values()).forEach(projectPOMWriter::write);
+        allProjects().forEach(projectPOMWriter::write);
     }
 
     private static PluginInfos findPlugins() {
         PluginInfoFinder pluginInfoFinder = new PluginInfoFinder(SRC_ROOT);
         PluginInfos pluginInfos = new PluginInfos();
-        stream(values()).flatMap(project -> pluginInfoFinder.find(project).stream()).forEach(pluginInfos::add);
+        allProjects().flatMap(project -> pluginInfoFinder.find(project).stream()).forEach(pluginInfos::add);
         return pluginInfos;
     }
 }

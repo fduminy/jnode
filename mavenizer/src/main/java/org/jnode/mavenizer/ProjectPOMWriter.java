@@ -28,7 +28,9 @@ public class ProjectPOMWriter extends AbstractPOMWriter {
 
     private List<String> getModules(IProject project) {
         return project.getDescriptorFiles(sourceRoot).stream()
-            .map(file -> findPlugin(file).getId())
+            .map(this::findPlugin)
+            .filter(Mavenizer.PLUGIN_FILTER)
+            .map(PluginInfo::getId)
             .toList();
     }
 
