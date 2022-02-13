@@ -95,6 +95,7 @@ The default list of (non-system) plugins to be included in the init-jar.
     <plugin id="org.jnode.driver.block.usb.storage"/>
     <plugin id="org.jnode.driver.block.usb.storage.scsi"/>
     <plugin id="org.jnode.driver.bus.firewire"/>
+    <plugin id="org.jnode.driver.bus.i2c"/>
     <plugin id="org.jnode.driver.bus.ide"/>
     <plugin id="org.jnode.driver.bus.ide.atapi"/>
     <plugin id="org.jnode.driver.bus.pci"/>
@@ -153,9 +154,9 @@ The default list of (non-system) plugins to be included in the init-jar.
     <plugin id="org.jnode.fs.fat"/>
     <plugin id="org.jnode.fs.fat.command"/>
     <plugin id="org.jnode.fs.jfat"/>
-    <plugin id="org.jnode.fs.jfat.command"/>        
+    <plugin id="org.jnode.fs.jfat.command"/>
     <plugin id="org.jnode.fs.iso9660"/>
-    <plugin id="org.jnode.fs.ntfs"/>    
+    <plugin id="org.jnode.fs.ntfs"/>
     <plugin id="org.jnode.fs.jifs"/>
     <plugin id="org.jnode.fs.jifs.command"/>
     <plugin id="org.jnode.fs.jifs.def"/>
