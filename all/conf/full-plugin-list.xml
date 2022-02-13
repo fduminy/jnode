@@ -29,6 +29,7 @@
 
   <plugin id="sun.tools"/>
   <plugin id="javax.ext.tools"/>
+  <plugin id="javax.cache"/>
   <plugin id="com.sun.tools.javac"/>
   <plugin id="com.sun.tools.jdi"/>
     
