@@ -40,6 +40,7 @@
       <export name="org.jnode.awt.geom.*"/>
       <export name="org.jnode.awt.image.*"/>
       <export name="org.jnode.awt.util.*"/>
+      <export name="org.jnode.awt.java2d.loops.*"/>
     </library>
   </runtime>
 
