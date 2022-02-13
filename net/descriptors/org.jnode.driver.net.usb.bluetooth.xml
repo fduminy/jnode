@@ -32,6 +32,7 @@
         
   <runtime>
     <library name="jnode-net.jar">
+      <export name="org.jnode.driver.net.usb.*"/>
       <export name="org.jnode.driver.net.usb.bluetooth.*"/>
     </library>
   </runtime>
