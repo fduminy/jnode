@@ -20,178 +20,217 @@
  
 package org.jnode.driver.video.vesa;
 
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.nio.ByteBuffer;
+import java.util.List;
 
 import javax.naming.NameNotFoundException;
 
-import org.jnode.naming.InitialNaming;
-import org.jnode.system.resource.MemoryResource;
-import org.jnode.system.resource.ResourceManager;
-import org.jnode.system.resource.ResourceNotFreeException;
-import org.jnode.system.resource.ResourceOwner;
-import org.jnode.system.resource.SimpleResourceOwner;
-import org.jnode.util.NumberUtils;
 import org.jnode.vm.Unsafe;
-import org.jnode.vm.scheduler.VmProcessor;
+import org.jnode.vm.x86.UnsafeX86;
 import org.vmmagic.unboxed.Address;
-import org.vmmagic.unboxed.ObjectReference;
 
 /**
+ * VESA command to display VBE information provided by GRUB
  * 
  * @author Fabien DUMINY (fduminy at jnode.org)
  * 
  */
 public class VESACommand {
-    private static ResourceManager manager;
-    private static ResourceOwner owner = new SimpleResourceOwner("VESACommand");
 
     private static void print(String message) {
-        // Unsafe.debug(message);
+        System.out.print(message);
     }
 
     private static void println(String message) {
-        print(message + "\n");
+        System.out.println(message);
     }
 
     private static void printError(String message) {
-        println(message);
+        System.err.println("ERROR: " + message);
     }
 
-    public static void main(String[] args) throws NameNotFoundException, ResourceNotFreeException {
-        println("VESA detected : " + detect());
-    }
-
-    public static ByteBuffer getBiosMemory() throws NameNotFoundException, ResourceNotFreeException {
-        // steps 1 & 2 : allocate new buffer and copy the bios image to it
-        manager = InitialNaming.lookup(ResourceManager.NAME);
-        Address start = Address.fromInt(0xC0000);
-        // int size = 0x8000; // 32 Kb
-        int size = 0x10000; // 64 Kb
-        int mode = ResourceManager.MEMMODE_NORMAL;
-        MemoryResource resource = manager.claimMemoryResource(owner, start, size, mode);
-        ByteBuffer buffer = null;
+    public static void main(String[] args) {
         try {
-            buffer = ByteBuffer.allocate(size);
-            for (int i = 0; i < size; i++) {
-                buffer.put(resource.getByte(i));
-            }
-            buffer.rewind();
-        } finally {
-            resource.release();
+            println("=== JNode VESA Information ===");
+            displayVbeInfo();
+        } catch (Exception e) {
+            printError("Failed to display VESA information: " + e.getMessage());
+            e.printStackTrace();
         }
-        
-        return buffer;
     }
 
-    public static PMInfoBlock detect() throws NameNotFoundException, ResourceNotFreeException {
-        ByteBuffer biosMemory = getBiosMemory();
+    /**
+     * Display VBE Control and Mode information provided by GRUB
+     */
+    public static void displayVbeInfo() {
+        try {
+            println("\n--- VBE Control Information ---");
+            Address vbeControlInfo = UnsafeX86.getVbeControlInfos();
+            VbeInfoBlock vbeInfoBlock = new VbeInfoBlock(vbeControlInfo);
 
-        // step 3 : scan to the bios image to find signature and check the
-        // validity of the checksum
-        final int signatureLength = 4;
-        PMInfoBlock pmInfoBlock = null;
-
-        for (int offset = 0; offset < biosMemory.limit() - (signatureLength - 1); offset++) {
-            int pos = biosMemory.position() + 1;
-
-            boolean p = (biosMemory.get() == (byte) 'P');
-            boolean m = (biosMemory.get() == (byte) 'M');
-            boolean i = (biosMemory.get() == (byte) 'I');
-            boolean d = (biosMemory.get() == (byte) 'D');
-            /*
-             * byte b0 = biosMemory.get(); boolean p = (b0 == (byte)'P') || (b0 ==
-             * (byte)'D'); byte b = biosMemory.get(); boolean m = (b ==
-             * (byte)'M') || (b == (byte)'I'); b = biosMemory.get(); boolean i =
-             * (b == (byte)'I') || (b == (byte)'M'); b = biosMemory.get();
-             * boolean d = (b == (byte)'D') || (b == (byte)'P');
-             */
-            if (p) {
-                // println("offset="+NumberUtils.hex(offset)+" value="+b+"
-                // p="+p+" m="+m+" i="+i+" d="+d);
-                // println("offset="+NumberUtils.hex(offset)+" p="+p+" m="+m+"
-                // i="+i+" d="+d);
+            if (vbeInfoBlock.isEmpty()) {
+                println("VBE Control Info is not available or invalid.");
+                println("This usually means GRUB didn't switch to VBE graphics mode.");
+            } else {
+                println("VBE Control Info found:");
+                displayVbeControlInfo(vbeInfoBlock);
             }
 
-            if (p && m && i && d) {
-                println("signature detected at offset " + NumberUtils.hex(offset));
-                byte checksum = (byte) (((byte) 'P') + ((byte) 'M') + ((byte) 'I') + ((byte) 'D'));
-                // int size = 7 * 4 + 2 * 1;
-                int size = 7 * 2 + 2 * 1;
-                for (int offs = 0; offs < size; offs++) {
-                    checksum += (byte) biosMemory.get();
-                    println("at offset " + NumberUtils.hex(offs) + " checksum=" + checksum);
+            println("\n--- VBE Current Mode Information ---");
+            Address vbeModeInfo = UnsafeX86.getVbeModeInfos();
+            ModeInfoBlock modeInfoBlock = new ModeInfoBlock(vbeModeInfo);
+
+            if (modeInfoBlock.isEmpty()) {
+                println("VBE Mode Info is not available or invalid.");
+                println("No current graphics mode information available.");
+            } else {
+                println("Current VBE Mode Info:");
+                displayVbeModeInfo(modeInfoBlock);
+            }
+
+        } catch (Exception e) {
+            printError("Error accessing VBE information: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Display detailed VBE Control Information
+     */
+    private static void displayVbeControlInfo(VbeInfoBlock vbeInfo) {
+        try {
+            int signature = vbeInfo.getSignature();
+            println("  Signature: 0x" + Integer.toHexString(signature) + 
+                    " (" + signatureToString(signature) + ")");
+
+            short version = vbeInfo.getVersion();
+            println("  Version: " + Integer.toHexString(version) + 
+                    " (" + ((version >> 8) & 0xFF) + "." + (version & 0xFF) + ")");
+
+            int capabilities = vbeInfo.getCapabilities();
+            println("  Capabilities: 0x" + Integer.toHexString(capabilities));
+            displayCapabilities(capabilities);
+
+            String oem = vbeInfo.getOemString();
+            if (!oem.isEmpty()) {
+                println("  OEM String: " + oem);
+            }
+
+            println("  Available Video Modes:");
+            List<Short> modes = vbeInfo.getVideoModeList();
+            if (modes.isEmpty()) {
+                println("    No video modes found or mode list unavailable");
+            } else {
+                displayVideoModes(modes);
+            }
+
+        } catch (Exception e) {
+            printError("Error displaying VBE control info: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Display detailed VBE Mode Information
+     */
+    private static void displayVbeModeInfo(ModeInfoBlock modeInfo) {
+        try {
+            short attrs = modeInfo.getModeAttributes();
+            println("  Mode Attributes: 0x" + Integer.toHexString(attrs));
+            displayModeAttributes(attrs);
+
+            println("  Resolution: " + modeInfo.getXResolution() + "x" + modeInfo.getYResolution());
+            println("  Bits per Pixel: " + modeInfo.getBitsPerPixel());
+            println("  Bytes per Scan Line: " + modeInfo.getBytesPerScanLine());
+            println("  Memory Model: " + modeInfo.getMemoryModel());
+
+            if (modeInfo.isLinearFrameBufferAvailable()) {
+                int fbAddr = modeInfo.getLinearFrameBufferAddress();
+                println("  Linear Frame Buffer: 0x" + Integer.toHexString(fbAddr));
+            } else {
+                println("  Banking Mode: " + modeInfo.getNumberOfBanks() + " banks, " + 
+                        modeInfo.getBankSize() + "KB each");
+            }
+
+            // Color mask information for RGB modes
+            if (modeInfo.getBitsPerPixel() >= 15) {
+                println("  Color Masks:");
+                println("    Red:   " + modeInfo.getRedMaskSize() + " bits at position " + 
+                        modeInfo.getRedFieldPosition());
+                println("    Green: " + modeInfo.getGreenMaskSize() + " bits at position " + 
+                        modeInfo.getGreenFieldPosition());
+                println("    Blue:  " + modeInfo.getBlueMaskSize() + " bits at position " + 
+                        modeInfo.getBlueFieldPosition());
+                if (modeInfo.getReservedMaskSize() > 0) {
+                    println("    Alpha: " + modeInfo.getReservedMaskSize() + " bits at position " + 
+                            modeInfo.getReservedFieldPosition());
                 }
-
-                if (checksum == 0) {
-                    println("found correct checksum");
-                    biosMemory.position(pos + 3).limit();
-                    pmInfoBlock = new PMInfoBlock(biosMemory);
-                    break;
-                } else {
-                    printError("bad checksum");
-                }
             }
 
-            biosMemory.position(pos);
+        } catch (Exception e) {
+            printError("Error displaying VBE mode info: " + e.getMessage());
         }
-
-        PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
-        VmProcessor.current().dumpStatistics(out);
-        System.out.println("after dumpStatistics");
-        if (pmInfoBlock != null) {
-            System.out.println("step4");
-            // step 4
-            byte[] biosDataSel = new byte[0x600]; // should be filled with
-            // zeros by the VM
-            println("step4.1");
-            short selector = getSelector(biosDataSel);
-            println("step4.2");
-            pmInfoBlock.setBiosDataSel(selector);
-
-            println("step5");
-            // step 5
-            int size = 0x7FFF; // 32 Kb
-            int mode = ResourceManager.MEMMODE_NORMAL;
-            int address = 0xA0000;
-            @SuppressWarnings("unused")
-            MemoryResource resource =
-                    manager.claimMemoryResource(owner, Address.fromInt(address), size, mode);
-
-            println("....");
-            println("....");
-            println("before call to vbe function");
-            int codePtr = pmInfoBlock.getEntryPoint();
-            println("codePtr=" + NumberUtils.hex(codePtr));
-            // FIXME ... if the javadoc for 'Unsafe.callVbeFunction' is credible, this is a 
-            // bad thing to do.
-            int result =
-                    Unsafe.callVbeFunction(Address.fromInt(codePtr), 0, Address.fromInt(address));
-            println("codePtr=" + result);
-        }
-
-        return pmInfoBlock;
     }
 
-    public static short getSelector(Address address) {
-        println("getSelector point 1");
-        long addr = address.toLong();
-        println("getSelector point 2");
-        short result = (short) ((addr & 0xFFFFFFFF00000000L) >> 32);
-        println("getSelector point 3");
-        return result;
+    /**
+     * Display VBE capabilities in human-readable form
+     */
+    private static void displayCapabilities(int capabilities) {
+        println("    - DAC 8-bit capable: " + 
+                ((capabilities & VbeInfoBlock.CAP_DAC_8BIT) != 0 ? "Yes" : "No"));
+        println("    - VGA compatible: " + 
+                ((capabilities & VbeInfoBlock.CAP_NOT_VGA) != 0 ? "No" : "Yes"));
+        println("    - Use VBE palette functions: " + 
+                ((capabilities & VbeInfoBlock.CAP_USE_VBE_PALETTE_FUNCS) != 0 ? "Yes" : "No"));
     }
 
-    private static short getSelector(Object obj) {
-        println("getSelector point A");
-        if (obj == null)
-            return -1;
+    /**
+     * Display mode attributes in human-readable form
+     */
+    private static void displayModeAttributes(short attributes) {
+        println("    - Supported: " + ((attributes & ModeInfoBlock.MODE_SUPPORTED) != 0 ? "Yes" : "No"));
+        println("    - Graphics mode: " + ((attributes & ModeInfoBlock.MODE_GRAPHICS) != 0 ? "Yes" : "No"));
+        println("    - Color mode: " + ((attributes & ModeInfoBlock.MODE_COLOR) != 0 ? "Yes" : "No"));
+        println("    - Linear framebuffer: " + ((attributes & ModeInfoBlock.MODE_LINEAR_FRAMEBUFFER) != 0 ? "Yes" : "No"));
+        println("    - VGA compatible: " + ((attributes & ModeInfoBlock.MODE_NON_VGA) != 0 ? "No" : "Yes"));
+    }
 
-        println("getSelector point B");
-        ObjectReference objRef = ObjectReference.fromObject(obj);
+    /**
+     * Display list of available video modes
+     */
+    private static void displayVideoModes(List<Short> modes) {
+        final int MODES_PER_LINE = 8;
+        int count = 0;
+        print("    ");
 
-        println("getSelector point C");
-        return (objRef == null) ? null : getSelector(objRef.toAddress());
+        for (Short mode : modes) {
+            int modeUnsigned = mode & 0xFFFF;
+            print("0x" + Integer.toHexString(modeUnsigned).toUpperCase());
+
+            count++;
+            if (count % MODES_PER_LINE == 0) {
+                println("");
+                if (count < modes.size()) {
+                    print("    ");
+                }
+            } else {
+                print(" ");
+            }
+        }
+
+        if (count % MODES_PER_LINE != 0) {
+            println("");
+        }
+
+        println("    Total: " + modes.size() + " video modes available");
+    }
+
+    /**
+     * Convert signature integer to string representation
+     */
+    private static String signatureToString(int signature) {
+        StringBuilder sb = new StringBuilder();
+        sb.append((char) (signature & 0xFF));
+        sb.append((char) ((signature >> 8) & 0xFF));
+        sb.append((char) ((signature >> 16) & 0xFF));
+        sb.append((char) ((signature >> 24) & 0xFF));
+        return sb.toString();
     }
 }

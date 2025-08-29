@@ -23,74 +23,152 @@ package org.jnode.driver.video.vesa;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jnode.annotation.MagicPermission;
 import org.jnode.vm.Unsafe;
 import org.vmmagic.unboxed.Address;
 
+@MagicPermission
 public class VbeInfoBlock {
     private final Address address;
+
+    // VBE signatures according to specification
+    public static final int VBE_SIGNATURE = 0x41534556; // 'VESA' in little-endian
+    public static final int VBE2_SIGNATURE = 0x32454256; // 'VBE2' in little-endian
+
+    // Capability bit masks per VBE 2.0/3.0 spec
+    public static final int CAP_DAC_8BIT = 0x00000001;
+    public static final int CAP_NOT_VGA = 0x00000002;
+    public static final int CAP_USE_VBE_PALETTE_FUNCS = 0x00000004;
 
     VbeInfoBlock(Address address) {
         this.address = address;
     }
 
+    public int getSignature() {
+        return address.loadInt();
+    }
+
+    public short getVersion() {
+        return address.add(4).loadShort();
+    }
+
     public int getCapabilities() {
-        return address.add(7).loadShort();
+        // VBE Control Info: Capabilities is a DWORD at offset 0x0A
+        return address.add(0x0A).loadInt();
+    }
+
+    public Address getOemStringPtr() {
+        // OEM String Pointer at offset 0x06 (far pointer)
+        int farPtr = address.add(0x06).loadInt();
+        if (farPtr == 0) return Address.zero();
+        return convertFarPointer(farPtr);
+    }
+
+    public String getOemString() {
+        Address oem = getOemStringPtr();
+        if (oem.isZero()) return "";
+
+        StringBuilder sb = new StringBuilder();
+        try {
+            for (int i = 0; i < 256; i++) {
+                byte b = oem.add(i).loadByte();
+                if (b == 0) break;
+                sb.append((char) b);
+            }
+        } catch (Exception e) {
+            // Ignore memory access errors
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Convert a 16-bit far pointer to a linear address.
+     * Far pointer format: high 16 bits = segment, low 16 bits = offset
+     */
+    private Address convertFarPointer(int farPointer) {
+        if (farPointer == 0) return Address.zero();
+
+        int segment = (farPointer >>> 16) & 0xFFFF;
+        int offset = farPointer & 0xFFFF;
+        long linearAddr = (segment << 4) + offset;
+
+        // Ensure the address is accessible (within reasonable bounds)
+        if (linearAddr < 0x1000 || linearAddr > 0xFFFFF) {
+            return Address.zero();
+        }
+
+        return Address.fromLong(linearAddr);
     }
 
     public boolean isEmpty() {
-        return address.isZero() || VesaUtils.isEmpty(address, 8);
+        if (address.isZero()) return true;
+
+        // Check signature
+        int sig = getSignature();
+        if (sig != VBE_SIGNATURE && sig != VBE2_SIGNATURE) return true;
+
+        // Additional validation: check version
+        short version = getVersion();
+        return version < 0x0200; // Need at least VBE 2.0
     }
 
     public List<Short> getVideoModeList() {
         List<Short> modes = new ArrayList<Short>();
-        Address addr = address.add(14).loadAddress();
-        Unsafe.debug("\nvideo mode list at address " + Integer.toHexString(addr.toInt()) + "\n");
-        if (!addr.isZero()) {
+        if (address.isZero()) return modes;
+
+        // VideoModePtr at offset 0x0E is a far pointer
+        int farPtr = address.add(0x0E).loadInt();
+        if (farPtr == 0) return modes;
+
+        Address addr = convertFarPointer(farPtr);
+        if (addr.isZero()) {
+            Unsafe.debug("Invalid video mode list pointer: " + Integer.toHexString(farPtr) + "\n");
+            return modes;
+        }
+
+        Unsafe.debug("Video mode list at linear address " + Long.toHexString(addr.toLong()) + "\n");
+
+        try {
             short mode = addr.loadShort();
             int counter = 0;
-            while ((mode != 0xFFFF) && (counter++ < 100)) {
+            while ((mode != (short) 0xFFFF) && (counter++ < 256)) {
                 modes.add(mode);
-
                 addr = addr.add(2);
                 mode = addr.loadShort();
             }
+        } catch (Exception e) {
+            Unsafe.debug("Error reading video mode list: " + e.getMessage() + "\n");
         }
 
         return modes;
     }
 
     public String toString() {
+        if (address.isZero()) return "<VBE Control Info: null>";
+
         StringBuilder sb = new StringBuilder();
-        sb.append("VESA version ").append(address.add(4).loadShort()).append("\n");
+        int sig = getSignature();
+        short ver = getVersion();
 
-        sb.append("video modes : ");
-        for (short mode : getVideoModeList()) {
-            sb.append(Integer.toHexString(mode)).append(", ");
-        }
+        sb.append("VBE signature=0x").append(Integer.toHexString(sig))
+          .append(" version ").append(Integer.toHexString(ver)).append('\n');
+        sb.append("capabilities=0x").append(Integer.toHexString(getCapabilities())).append('\n');
+        sb.append("OEM string: ").append(getOemString()).append('\n');
 
-        Unsafe.debug("\nsearching video mode 0x140 (800x600x32)...");
-        Address addr = address.add(0); // clone
-        int offset = -1;
-        for (int i = 0; i < 4096; i++) {
-            byte b1 = addr.loadByte();
-            addr = addr.add(1);
-
-            byte b2 = addr.loadByte();
-            addr = addr.add(1);
-
-            if ((b1 == 0x01) && (b2 == 0x40)) {
-                offset = i * 2;
-                break;
+        sb.append("video modes: ");
+        List<Short> modes = getVideoModeList();
+        if (modes.isEmpty()) {
+            sb.append("none found");
+        } else {
+            for (int i = 0; i < Math.min(modes.size(), 10); i++) {
+                if (i > 0) sb.append(", ");
+                int modeUnsigned = modes.get(i) & 0xFFFF;
+                sb.append("0x").append(Integer.toHexString(modeUnsigned));
             }
-            if ((b2 == 0x01) && (b1 == 0x40)) {
-                offset = i * 2;
-                break;
+            if (modes.size() > 10) {
+                sb.append("... (").append(modes.size() - 10).append(" more)");
             }
         }
-        Unsafe.debug("\nend of search");
-
-        sb.append("\nfound 0x140 at offset " +
-                ((offset < 0) ? "NOT FOUND" : Integer.toHexString(offset)) + "\n");
 
         return sb.toString();
     }

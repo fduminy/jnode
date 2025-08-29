@@ -120,22 +120,68 @@ public class VESADriver extends AbstractFrameBufferDriver {
             VbeInfoBlock vbeInfoBlock = new VbeInfoBlock(vbeControlInfo);
             if (vbeInfoBlock.isEmpty()) {
                 throw new DriverException(
-                        "can't start device (vbeInfoBlock is empty): grub haven't switched to graphic mode");
+                        "VBE Control Info is invalid or empty. GRUB may not have enabled VBE mode properly.");
+            }
+
+            // Verify VBE signature and version
+            int signature = vbeInfoBlock.getSignature();
+            if (signature != VbeInfoBlock.VBE_SIGNATURE && signature != VbeInfoBlock.VBE2_SIGNATURE) {
+                throw new DriverException(
+                        "Invalid VBE signature: 0x" + Integer.toHexString(signature) + 
+                        " (expected VESA or VBE2)");
+            }
+
+            short version = vbeInfoBlock.getVersion();
+            if (version < 0x0200) {
+                throw new DriverException(
+                        "VBE version too old: " + Integer.toHexString(version) + 
+                        " (need 2.0 or higher)");
             }
 
             Address vbeModeInfo = UnsafeX86.getVbeModeInfos();
             modeInfoBlock = new ModeInfoBlock(vbeModeInfo);
             if (modeInfoBlock.isEmpty()) {
                 throw new DriverException(
-                        "can't start device (modeInfoBlock is empty): grub haven't switched to graphic mode");
+                        "VBE Mode Info is invalid or empty. Current video mode not properly initialized by GRUB.");
+            }
+
+            // Verify the current mode is usable
+            if (!modeInfoBlock.isSupported()) {
+                throw new DriverException("Current VBE mode is not supported by hardware");
+            }
+
+            if (!modeInfoBlock.isGraphicsMode()) {
+                throw new DriverException("Current VBE mode is not a graphics mode");
+            }
+
+            if (!modeInfoBlock.isLinearFrameBufferAvailable()) {
+                throw new DriverException("Linear framebuffer not available in current VBE mode");
+            }
+
+            // Check for reasonable mode parameters
+            if (modeInfoBlock.getXResolution() <= 0 || modeInfoBlock.getYResolution() <= 0) {
+                throw new DriverException("Invalid resolution: " + 
+                        modeInfoBlock.getXResolution() + "x" + modeInfoBlock.getYResolution());
+            }
+
+            if (modeInfoBlock.getBitsPerPixel() < 8) {
+                throw new DriverException("Unsupported color depth: " + modeInfoBlock.getBitsPerPixel() + "bpp");
             }
 
             kernel = new VESACore(this, vbeInfoBlock, modeInfoBlock, (PCIDevice) getDevice());            
             configs = kernel.getConfigs();
+
+            if (configs == null || configs.length == 0) {
+                throw new DriverException("No valid VESA configurations found");
+            }
+
         } catch (ResourceNotFreeException ex) {
-            throw new DriverException(ex);
+            throw new DriverException("Resource allocation failed: " + ex.getMessage(), ex);
+        } catch (DriverException ex) {
+            // Re-throw DriverExceptions as-is
+            throw ex;
         } catch (Throwable t) {
-            throw new DriverException(t);
+            throw new DriverException("VESA driver initialization failed: " + t.getMessage(), t);
         }
         final Device dev = getDevice();
         super.startDevice();
