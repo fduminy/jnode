@@ -194,6 +194,34 @@ public abstract class VmX86Processor extends VmProcessor {
     }
 
     /**
+     * Perform a VBE BIOS call in real mode
+     * This method temporarily switches to real mode to execute VBE functions
+     * 
+     * @param function VBE function code (AX register)
+     * @param parameter Parameter for the function (BX register) 
+     * @param buffer Buffer address for data exchange (ES:DI)
+     * @return VBE result code
+     */
+    public final int callVbeBiosFunction(int function, int parameter, Address buffer) {
+        // This would need to be implemented in native assembly code
+        // The implementation would:
+        // 1. Save current protected mode state
+        // 2. Switch to real mode (or use VM86 mode)
+        // 3. Set up registers for VBE call
+        // 4. Execute INT 10h with VBE function
+        // 5. Capture result
+        // 6. Switch back to protected mode
+        // 7. Restore state and return result
+
+        return nativeCallVbeBiosFunction(function, parameter, buffer);
+    }
+
+    /**
+     * Native implementation of VBE BIOS call
+     */
+    private native int nativeCallVbeBiosFunction(int function, int parameter, Address buffer);
+
+    /**
      * Load the APIC id of the currently executing processor and set it into the
      * Id field.
      */
