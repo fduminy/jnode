@@ -21,6 +21,7 @@
 package org.jnode.driver.video.vesa;
 
 import org.jnode.annotation.MagicPermission;
+import org.jnode.naming.InitialNaming;
 import org.jnode.system.resource.MemoryResource;
 import org.jnode.system.resource.ResourceManager;
 import org.jnode.system.resource.ResourceNotFreeException;
@@ -32,7 +33,6 @@ import org.jnode.vm.scheduler.VmProcessor;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Extent;
 
-import javax.naming.InitialNaming;
 import javax.naming.NameNotFoundException;
 
 /**
@@ -109,9 +109,10 @@ public class VbeModeSwitch {
             ResourceManager rm = InitialNaming.lookup(ResourceManager.NAME);
 
             // Allocate buffer for mode info (256 bytes should be enough)
+            Address startAddr = Address.fromIntZeroExtend(0x10000); // Use a safe memory area
             buffer = rm.claimMemoryResource(RESOURCE_OWNER, 
-                                          null, 
-                                          Extent.fromIntZeroExtend(256), 
+                                          startAddr, 
+                                          256, 
                                           ResourceManager.MEMMODE_NORMAL);
 
             Address bufferAddr = buffer.getAddress();
@@ -179,48 +180,23 @@ public class VbeModeSwitch {
     }
 
     /**
-     * Call a VBE function using real-mode transition
-     * This is the core method that handles the protected->real mode switch
+     * Call a VBE function using the processor's VBE call mechanism
+     * This is the core method that handles the VBE function call
      */
     private static int callVbeFunction(int function, int parameter, Address buffer) {
-        // This is a critical section - we need to disable interrupts
-        // and carefully manage the CPU state transition
-
         try {
-            // Disable interrupts during mode switch
+            // Use the VmX86Processor's VBE call method if available
             VmX86Processor processor = (VmX86Processor) VmProcessor.current();
-            boolean oldIrqState = processor.isInInterruptContext();
 
-            if (!oldIrqState) {
-                Unsafe.disableInterrupts();
-            }
-
-            try {
-                // Prepare registers for VBE call
-                // AX = VBE function
-                // BX = mode/parameter  
-                // ES:DI = buffer (if needed)
-
-                int result = performRealModeCall(function, parameter, buffer);
-                return result;
-
-            } finally {
-                if (!oldIrqState) {
-                    Unsafe.enableInterrupts();
-                }
-            }
+            // Call the VBE function through the processor
+            int result = processor.callVbeBiosFunction(function, parameter, buffer);
+            return result;
 
         } catch (Exception e) {
-            Unsafe.debug("Critical error in VBE function call: " + e.getMessage() + "\n");
+            Unsafe.debug("Error in VBE function call: " + e.getMessage() + "\n");
             return VBE_FAILED;
         }
     }
-
-    /**
-     * Perform the actual real-mode call
-     * This method would need to be implemented in native code or assembly
-     */
-    private static native int performRealModeCall(int function, int parameter, Address buffer);
 
     /**
      * Initialize the VBE mode switching system

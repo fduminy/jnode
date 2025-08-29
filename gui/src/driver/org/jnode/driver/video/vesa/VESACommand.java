@@ -372,7 +372,13 @@ public class VESACommand {
         println("Description: " + getModeDescription(modeValue));
 
         // Try to get detailed mode information
-        VbeModeInfo modeInfo = VbeModeSwitch.getModeInfo(modeValue);
+        VbeModeInfo modeInfo = null;
+        try {
+            modeInfo = VbeModeSwitch.getModeInfo(modeValue);
+        } catch (Exception e) {
+            println("Failed to get mode information: " + e.getMessage());
+        }
+
         if (modeInfo != null) {
             println("\nDetailed Mode Information:");
             println("- Resolution: " + modeInfo.getXResolution() + "x" + modeInfo.getYResolution());
@@ -400,6 +406,8 @@ public class VESACommand {
         }
 
         println("\n=== Runtime Mode Switching ===");
+        println("WARNING: VBE mode switching is currently in experimental state.");
+        println("The implementation requires native code support that may not be complete.");
 
         if (modeInfo != null && modeInfo.isSupported() && modeInfo.isGraphicsMode()) {
             println("This mode appears to be compatible with runtime switching.");
