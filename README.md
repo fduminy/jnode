@@ -59,6 +59,7 @@ The build will result in the following files:
 ## Plugin list documentation
 
 - For information about plugin list files, naming conventions (including disabled lists) and how plugin-lists map to GRUB menu entries, see [Plugin list documentation](docs/plugins/plugin-list.md).
+- For information about individual plugin descriptors and usage, see [Plugin documentation](docs/plugins/plugin.md).
 
 ## Questions
 
