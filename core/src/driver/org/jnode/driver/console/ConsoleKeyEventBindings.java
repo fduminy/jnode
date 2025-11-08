@@ -18,7 +18,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
  
-package org.jnode.driver.console.textscreen;
+package org.jnode.driver.console;
 
 import java.awt.event.KeyEvent;
 

@@ -23,8 +23,6 @@ package org.jnode.driver.console;
 import java.io.Reader;
 import java.io.Writer;
 
-import org.jnode.driver.console.textscreen.ConsoleKeyEventBindings;
-
 
 
 /**

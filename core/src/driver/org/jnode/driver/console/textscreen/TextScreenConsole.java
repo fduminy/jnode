@@ -25,6 +25,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import org.jnode.driver.console.ConsoleKeyEventBindings;
 import org.jnode.driver.console.ConsoleManager;
 import org.jnode.driver.console.InputCompleter;
 import org.jnode.driver.console.TextConsole;

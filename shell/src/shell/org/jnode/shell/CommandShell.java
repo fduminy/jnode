@@ -652,7 +652,7 @@ public class CommandShell implements Runnable, Shell, ConsoleListener {
     /**
      * This method is called by the console input driver to perform command line
      * completion in response to a 
-     * {@link org.jnode.driver.console.textscreen.KeyboardReaderAction#KR_COMPLETE} 
+     * {@link org.jnode.driver.console.KeyboardReaderAction#KR_COMPLETE} 
      * action; typically a TAB character.
      */
     public CompletionInfo complete(String partial) {
@@ -694,7 +694,7 @@ public class CommandShell implements Runnable, Shell, ConsoleListener {
     
     /**
      * This method is responsible for generating incremental help in response
-     * to a @link org.jnode.driver.console.textscreen.KeyboardReaderAction#KR_HELP}
+     * to a @link org.jnode.driver.console.KeyboardReaderAction#KR_HELP}
      * action.
      */
     public boolean help(String partial, PrintWriter pw) {

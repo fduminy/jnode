@@ -23,9 +23,9 @@ package org.jnode.shell.io;
 import java.io.IOException;
 import java.nio.CharBuffer;
 
+import org.jnode.driver.console.ConsoleKeyEventBindings;
 import org.jnode.driver.console.InputCompleter;
 import org.jnode.driver.console.TextConsole;
-import org.jnode.driver.console.textscreen.ConsoleKeyEventBindings;
 import org.jnode.driver.console.textscreen.KeyboardReader;
 import org.jnode.system.event.FocusEvent;
 
