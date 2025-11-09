@@ -17,3 +17,4 @@ classlib.pack.gz
 /mavenizer/target/**
 **/.shelf/
 **/.idea/
+logs.txt
