@@ -1,0 +1,64 @@
+Version 0.2.9-dev
+Multiboot flags 000007CF 
+CPU tested ok
+mem-start 60A13000 
+mem-size 3FFE0000 init page-dir table
+enable paging
+paging setup finished
+Version 0.2.9-dev
+Before start_vm
+VmArchitecture32#boot
+Memory map
+Available    00000000 00000000  - 00000000 0009FBFF 
+Reserved     00000000 0009FC00  - 00000000 0009FFFF 
+Reserved     00000000 000F0000  - 00000000 000FFFFF 
+Available    00000000 00100000  - 00000000 3FFDFFFF 
+Reserved     00000000 3FFE0000  - 00000000 3FFFFFFF 
+Reserved     00000000 FFFC0000  - 00000000 FFFFFFFF 
+Initialize MemoryBlockManager
+Start end: 07CA0000 3FFE0000 
+Size     : 38340000 
+end of initialize.
+[loadFromBootClassArray:]
+Starting JNode
+VmSystem.initialize
+Initialize BootLog
+Detected 1 processor
+Processor 0: GenuineIntel, 1.97 JNodeMIPS
+Found initial jarfile of 66730079b
+Loading initjar plugins
+Starting PluginManager
+Resolve org.classpath.ext.corba
+Resolve org.classpath.ext.core.vm
+Resolve org.classpath.ext.imageio
+Resolve org.classpath.ext.jdwp
+Resolve org.classpath.ext.sql
+Resolve org.classpath.ext.core
+Resolve org.classpath.ext
+Resolve org.classpath.ext.management
+Resolve org.classpath.ext.awt
+Resolve org.classpath.ext.xml
+Resolve org.classpath.tools
+Resolve org.classpath.ext.security
+Resolve org.jnode.awt.font.bdf
+Resolve org.jnode.awt.font.truetype
+Starting system plugins
+Starting plugin: org.jnode.work
+Starting plugin: org.jnode.driver
+Starting plugin: org.jnode.driver.input
+DEBUG [DefaultDeviceManager$1]: Start working on Start device manager
+Found 6 device finders
+Configuring finder: org.jnode.driver.system.firmware.bios.BiosFinder
+Starting plugin: org.jnode.driver.textscreen
+Configuring finder: org.jnode.driver.serial.SerialPortFinder
+Starting plugin: org.jnode.driver.console.textscreen
+Configuring finder: org.jnode.driver.sound.speaker.pc.PCSpeakerFinder
+Configuring finder: org.jnode.driver.ps2.PS2Finder
+Configuring finder: org.jnode.driver.bus.pci.PCIFinder
+Configuring finder: org.jnode.driver.net.loopback.LoopbackFinder
+Found 28 mapper extensions
+Configuring mapper: org.jnode.driver.bus.usb.hub.USBHubDeviceToDriverMapper
+Configuring mapper: org.jnode.driver.block.usb.storage.USBStorageDeviceToDriverMapper
+Configuring mapper: org.jnode.driver.input.usb.USBInputDeviceToDriverMapper
+Configuring mapper: org.jnode.driver.block.scsi.cdrom.CDROMDeviceToDriverMapper
+Starting plugin: org.jnode.partitions

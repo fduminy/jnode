@@ -28,10 +28,6 @@
         license-name="lgpl"
         class="org.jnode.security.SecurityPlugin">
         
-  <requires>
-    <import plugin="org.jnode.vm"/>
-  </requires>
-        
   <runtime>
     <library name="jnode-core.jar">
       <export name="org.jnode.security.*"/>
