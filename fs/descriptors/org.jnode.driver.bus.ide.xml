@@ -30,7 +30,6 @@
     <import plugin="org.jnode.driver.block"/>
     <import plugin="org.jnode.driver.bus.pci"/>
     <import plugin="org.jnode.partitions"/>
-    <import plugin="org.jnode.partitions.ibm"/>
   </requires>
         
   <runtime>

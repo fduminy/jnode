@@ -20,6 +20,8 @@
  
 package org.jnode.driver.bus.ide;
 
+import org.jnode.partitions.BlockDeviceConstants;
+
 /**
  * @author epr
  */
@@ -104,7 +106,13 @@ public interface IDEConstants {
     public static final int IDE_NR_TASKFILES = 2;
     public static final int IDE0_IRQ = 14;
     public static final int IDE1_IRQ = 15;
-    public static final int SECTOR_SIZE = 512;
+    
+    /**
+     * Standard sector size.
+     * @deprecated Use {@link BlockDeviceConstants#SECTOR_SIZE} instead.
+     */
+    @Deprecated
+    public static final int SECTOR_SIZE = BlockDeviceConstants.SECTOR_SIZE;
 
     // --------------------------------
     // Error bits

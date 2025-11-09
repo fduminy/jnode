@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 import org.jnode.driver.ApiNotFoundException;
 import org.jnode.driver.Device;
 import org.jnode.driver.block.BlockDeviceAPI;
-import org.jnode.driver.bus.ide.IDEConstants;
+import org.jnode.partitions.BlockDeviceConstants;
 import org.jnode.partitions.PartitionTable;
 import org.jnode.partitions.PartitionTableType;
 import org.jnode.util.BigEndian;
@@ -124,11 +124,11 @@ public class IBMPartitionTable implements PartitionTable<IBMPartitionTableEntry>
     private void handleExtended(IBMPartitionTableEntry current) {
 
         final long startLBA = current.getStartLba();
-        final ByteBuffer sector = ByteBuffer.allocate(IDEConstants.SECTOR_SIZE);
+        final ByteBuffer sector = ByteBuffer.allocate(BlockDeviceConstants.SECTOR_SIZE);
         try {
             log.debug("Try to read the Extended Partition Table");
             BlockDeviceAPI api = driveDevice.getAPI(BlockDeviceAPI.class);
-            api.read(startLBA * IDEConstants.SECTOR_SIZE, sector);
+            api.read(startLBA * BlockDeviceConstants.SECTOR_SIZE, sector);
         } catch (ApiNotFoundException e) {
             // I think we can't get it
             log.error("API Not Found Exception");

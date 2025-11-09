@@ -22,8 +22,6 @@ package org.jnode.driver.bus.ide;
 
 import org.jnode.driver.Device;
 import org.jnode.driver.DriverException;
-import org.jnode.partitions.ibm.IBMPartitionTable;
-import org.jnode.partitions.ibm.IBMPartitionTableType;
 import org.jnode.system.resource.ResourceNotFreeException;
 
 /**
@@ -64,14 +62,5 @@ public class DefaultIDEDeviceFactory implements IDEDeviceFactory {
     public IDEIO createIDEIO(Device parent, boolean primary)
         throws IllegalArgumentException, DriverException, ResourceNotFreeException {
         return new DefaultIDEIO(parent, primary);
-    }
-
-    /**
-     * (non-Javadoc)
-     *
-     * @see org.jnode.driver.bus.ide.IDEDeviceFactory#createIBMPartitionTable(byte[], org.jnode.driver.Device)
-     */
-    public IBMPartitionTable createIBMPartitionTable(byte[] bs, Device dev) {
-        return new IBMPartitionTable(new IBMPartitionTableType(), bs, dev);
     }
 }
