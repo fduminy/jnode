@@ -29,7 +29,6 @@
   <requires>
     <import plugin="org.jnode.driver.block"/>
     <import plugin="org.jnode.driver.system.cmos"/>
-    <import plugin="org.jnode.fs"/>
   </requires>
         
   <runtime>
