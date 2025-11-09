@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
+import org.jnode.driver.console.ConsoleKeyEventBindings;
 import org.jnode.driver.console.InputCompleter;
+import org.jnode.driver.console.KeyboardReaderAction;
 import org.jnode.driver.console.TextConsole;
 import org.jnode.driver.input.KeyboardEvent;
 import org.jnode.system.event.FocusEvent;
