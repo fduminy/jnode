@@ -111,14 +111,8 @@ public class IDEDiskDriver extends Driver
             final byte[] bs = new byte[SECTOR_SIZE];
             read(0, ByteBuffer.wrap(bs));
 
-            IDEDeviceFactory factory;
-            try {
-                factory = IDEDriverUtils.getIDEDeviceFactory();
-            } catch (NamingException ex) {
-                throw new DriverException(ex);
-            }
             log.debug("Creating partition table object on " + dev.getId());
-            this.pt = factory.createIBMPartitionTable(bs, dev);
+            this.pt = new IBMPartitionTable(new org.jnode.partitions.ibm.IBMPartitionTableType(), bs, dev);
             log.debug("Created partition table object");
 
             int partIndex = 0;

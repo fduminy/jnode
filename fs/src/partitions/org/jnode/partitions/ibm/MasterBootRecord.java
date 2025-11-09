@@ -23,7 +23,7 @@ package org.jnode.partitions.ibm;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import org.jnode.driver.block.BlockDeviceAPI;
-import org.jnode.driver.bus.ide.IDEConstants;
+import org.jnode.partitions.BlockDeviceConstants;
 
 public class MasterBootRecord {
     private static final int PARTITION_TABLE_OFFSET = 0x1be;
@@ -36,7 +36,7 @@ public class MasterBootRecord {
     private final IBMPartitionTableEntry[] partitions;
 
     public MasterBootRecord() {
-        mbr = ByteBuffer.allocate(IDEConstants.SECTOR_SIZE);
+        mbr = ByteBuffer.allocate(BlockDeviceConstants.SECTOR_SIZE);
         dirty = false;
         partitions = new IBMPartitionTableEntry[4];
     }

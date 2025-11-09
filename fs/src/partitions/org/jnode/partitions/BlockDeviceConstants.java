@@ -18,24 +18,19 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
  
-package org.jnode.driver.bus.ide;
+package org.jnode.partitions;
 
-import org.jnode.driver.Device;
-import org.jnode.driver.DriverException;
-import org.jnode.system.resource.ResourceNotFreeException;
+/**
+ * Common constants for block devices.
+ * 
+ * @author JNode.org
+ */
+public interface BlockDeviceConstants {
 
-public interface IDEDeviceFactory {
     /**
-     * The name used to lookup this service.
+     * Standard sector size for block devices (in bytes).
+     * This is the most common sector size used by IDE/SATA drives,
+     * SCSI drives, and other block devices.
      */
-    public static final Class<IDEDeviceFactory> NAME = IDEDeviceFactory.class;
-
-    IDEDevice createIDEDevice(IDEBus bus, boolean primary, boolean master, String name,
-                              IDEDriveDescriptor descriptor, DefaultIDEControllerDriver controller);
-
-    IDEBus createIDEBus(Device parent, boolean primary)
-        throws IllegalArgumentException, DriverException, ResourceNotFreeException;
-
-    IDEIO createIDEIO(Device parent, boolean primary)
-        throws IllegalArgumentException, DriverException, ResourceNotFreeException;
+    public static final int SECTOR_SIZE = 512;
 }
