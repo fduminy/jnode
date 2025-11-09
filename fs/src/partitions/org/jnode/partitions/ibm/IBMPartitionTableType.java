@@ -22,9 +22,9 @@ package org.jnode.partitions.ibm;
 
 import org.jnode.driver.Device;
 import org.jnode.driver.block.BlockDeviceAPI;
-import org.jnode.partitions.PartitionTable;
-import org.jnode.partitions.PartitionTableException;
-import org.jnode.partitions.PartitionTableType;
+import org.jnode.driver.block.PartitionTable;
+import org.jnode.driver.block.PartitionTableException;
+import org.jnode.driver.block.PartitionTableType;
 
 /**
  * IBM partition table table.

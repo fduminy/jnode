@@ -33,7 +33,7 @@ import org.jnode.driver.block.FSBlockDeviceAPI;
 import org.jnode.driver.block.Geometry;
 import org.jnode.driver.block.floppy.support.FloppyDeviceFactory;
 import org.jnode.driver.block.floppy.support.FloppyDriverUtils;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 import org.jnode.util.ByteBufferUtils;
 import org.jnode.util.TimeoutException;
 

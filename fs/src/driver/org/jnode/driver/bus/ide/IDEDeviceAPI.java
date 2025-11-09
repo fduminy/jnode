@@ -21,7 +21,7 @@
 package org.jnode.driver.bus.ide;
 
 import org.jnode.driver.block.PartitionableBlockDeviceAPI;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 
 /**
  * @author epr

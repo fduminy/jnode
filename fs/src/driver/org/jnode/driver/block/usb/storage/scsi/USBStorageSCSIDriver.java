@@ -41,7 +41,7 @@ import org.jnode.driver.bus.scsi.cdb.mmc.CapacityData;
 import org.jnode.driver.bus.scsi.cdb.mmc.MMCUtils;
 import org.jnode.driver.bus.usb.USBPipeListener;
 import org.jnode.driver.bus.usb.USBRequest;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 import org.jnode.util.TimeoutException;
 
 public class USBStorageSCSIDriver extends Driver

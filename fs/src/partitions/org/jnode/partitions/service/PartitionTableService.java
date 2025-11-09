@@ -22,7 +22,7 @@ package org.jnode.partitions.service;
 
 import java.util.Collection;
 
-import org.jnode.partitions.PartitionTableType;
+import org.jnode.driver.block.PartitionTableType;
 
 public interface PartitionTableService {
 

@@ -27,8 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.jnode.driver.Device;
-import org.jnode.partitions.PartitionTable;
-import org.jnode.partitions.PartitionTableType;
+import org.jnode.driver.block.PartitionTable;
+import org.jnode.driver.block.PartitionTableType;
 import org.jnode.util.BigEndian;
 
 /**
@@ -108,7 +108,7 @@ public class ApmPartitionTable implements PartitionTable<ApmPartitionTableEntry>
     }
 
     /**
-     * @see org.jnode.partitions.PartitionTable#getType()
+     * @see org.jnode.driver.block.PartitionTable#getType()
      */
     @Override
     public PartitionTableType getType() {

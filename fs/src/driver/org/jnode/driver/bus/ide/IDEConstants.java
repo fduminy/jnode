@@ -20,7 +20,7 @@
  
 package org.jnode.driver.bus.ide;
 
-import org.jnode.partitions.BlockDeviceConstants;
+import org.jnode.driver.block.BlockDeviceConstants;
 
 /**
  * @author epr

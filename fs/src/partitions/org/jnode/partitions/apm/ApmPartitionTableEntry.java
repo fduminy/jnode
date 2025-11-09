@@ -21,7 +21,7 @@
 package org.jnode.partitions.apm;
 
 import java.nio.charset.Charset;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 import org.jnode.partitions.ibm.IBMPartitionTable;
 import org.jnode.util.BigEndian;
 import org.jnode.util.NumberUtils;
@@ -61,7 +61,7 @@ public class ApmPartitionTableEntry implements PartitionTableEntry {
     }
 
     /**
-     * @see org.jnode.partitions.PartitionTableEntry#getChildPartitionTable()
+     * @see org.jnode.driver.block.PartitionTableEntry#getChildPartitionTable()
      */
     @Override
     public IBMPartitionTable getChildPartitionTable() {
@@ -69,7 +69,7 @@ public class ApmPartitionTableEntry implements PartitionTableEntry {
     }
 
     /**
-     * @see org.jnode.partitions.PartitionTableEntry#hasChildPartitionTable()
+     * @see org.jnode.driver.block.PartitionTableEntry#hasChildPartitionTable()
      */
     @Override
     public boolean hasChildPartitionTable() {

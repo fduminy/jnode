@@ -39,7 +39,7 @@ import org.jnode.fs.FileSystemType;
 import org.jnode.fs.BlockDeviceFileSystemType;
 import org.jnode.fs.service.FileSystemService;
 import org.jnode.naming.InitialNaming;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 import org.jnode.plugin.PluginException;
 import org.jnode.work.Work;
 import org.jnode.work.WorkUtils;

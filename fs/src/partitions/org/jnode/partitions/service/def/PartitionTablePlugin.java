@@ -25,7 +25,7 @@ import java.util.Collection;
 import javax.naming.NamingException;
 
 import org.jnode.naming.InitialNaming;
-import org.jnode.partitions.PartitionTableType;
+import org.jnode.driver.block.PartitionTableType;
 import org.jnode.partitions.service.PartitionTableService;
 import org.jnode.plugin.Plugin;
 import org.jnode.plugin.PluginDescriptor;

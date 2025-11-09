@@ -22,7 +22,7 @@ package org.jnode.partitions.ibm;
 
 import org.apache.log4j.Logger;
 import org.jnode.driver.block.CHS;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 import org.jnode.util.LittleEndian;
 import org.jnode.util.NumberUtils;
 
@@ -56,14 +56,14 @@ public class IBMPartitionTableEntry implements PartitionTableEntry {
     }
 
     /**
-     * @see org.jnode.partitions.PartitionTableEntry#getChildPartitionTable()
+     * @see org.jnode.driver.block.PartitionTableEntry#getChildPartitionTable()
      */
     public IBMPartitionTable getChildPartitionTable() {
         throw new Error("Not implemented yet");
     }
 
     /**
-     * @see org.jnode.partitions.PartitionTableEntry#hasChildPartitionTable()
+     * @see org.jnode.driver.block.PartitionTableEntry#hasChildPartitionTable()
      */
     public boolean hasChildPartitionTable() {
         return isExtended();

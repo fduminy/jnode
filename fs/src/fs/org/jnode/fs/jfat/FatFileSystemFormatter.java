@@ -31,7 +31,7 @@ import org.jnode.driver.bus.ide.IDEConstants;
 import org.jnode.fs.FileSystemException;
 import org.jnode.fs.Formatter;
 import org.jnode.fs.service.FileSystemService;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 import org.jnode.partitions.ibm.IBMPartitionTableEntry;
 import org.jnode.naming.InitialNaming;
 import javax.naming.NameNotFoundException;
