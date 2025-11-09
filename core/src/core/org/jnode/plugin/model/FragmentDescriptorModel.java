@@ -24,7 +24,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-import org.jnode.bootlog.BootLogInstance;
+
 import org.jnode.nanoxml.XMLElement;
 import org.jnode.plugin.FragmentDescriptor;
 import org.jnode.plugin.PluginException;
@@ -144,7 +144,7 @@ final class FragmentDescriptorModel extends PluginDescriptorModel implements
         if (plugin == null) {
             throw new PluginException("Plugin " + getPluginId() + " not found");
         }
-        BootLogInstance.get().info("Resolve " + getId());
+        System.out.println("Resolve " + getId());
         plugin.add(this);
     }
 
@@ -156,7 +156,7 @@ final class FragmentDescriptorModel extends PluginDescriptorModel implements
             plugin.remove(this);
             plugin = null;
         }
-        BootLogInstance.get().info("Unresolve " + getId());
+        System.out.println("Unresolve " + getId());
         super.unresolve(registry);
     }
 

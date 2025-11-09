@@ -24,8 +24,6 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.prefs.Preferences;
 
-import org.jnode.bootlog.BootLogInstance;
-
 
 /**
  * Abstract plugin class.
@@ -100,9 +98,7 @@ public abstract class Plugin {
             sm.checkPermission(PluginSecurityConstants.START_PERM);
         }
         if (!started) {
-            if (descriptor.hasCustomPluginClass()) {
-                BootLogInstance.get().debug("Starting plugin: " + descriptor.getId());
-            }
+            // Removed debug logging to break circular dependency
             started = true;
             try {
                 try {

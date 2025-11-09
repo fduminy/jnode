@@ -29,7 +29,7 @@ import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jnode.bootlog.BootLogInstance;
+
 import org.jnode.nanoxml.XMLElement;
 import org.jnode.plugin.Extension;
 import org.jnode.plugin.ExtensionPoint;
@@ -625,7 +625,7 @@ public class PluginDescriptorModel extends AbstractModelObject implements
             throw new SecurityException("Cannot overwrite the registry");
         }
         if (!resolved) {
-            // BootLogInstance.get().info("Resolve " + id);
+            // System.out.println("Resolve " + id);
             this.registry = registry;
             registry.registerPlugin(this);
             for (ExtensionPointModel extensionPoint : extensionPoints) {
@@ -660,7 +660,7 @@ public class PluginDescriptorModel extends AbstractModelObject implements
             }
             starting = true;
         }
-        // BootLogInstance.get().info("Resolve on plugin " + getId());
+        // System.out.println("Resolve on plugin " + getId());
         try {
             AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
                 public Object run() throws PluginException {
@@ -668,20 +668,20 @@ public class PluginDescriptorModel extends AbstractModelObject implements
                     final int reqMax = requires.length;
                     for (int i = 0; i < reqMax; i++) {
                         final String reqId = requires[i].getPluginReference().getId();
-                        // BootLogInstance.get().info("Start dependency " + reqId);
+                        // System.out.println("Start dependency " + reqId);
                         final PluginDescriptorModel reqDescr = (PluginDescriptorModel) registry
                             .getPluginDescriptor(reqId);
                         reqDescr.startPlugin(registry);
                         // Make sure that it is really started
                         reqDescr.waitUntilStarted();
                     }
-                    // BootLogInstance.get().info("Start myself " + getId());
+                    // System.out.println("Start myself " + getId());
                     getPlugin().start();
                     return null;
                 }
             });
         } catch (PrivilegedActionException ex) {
-            BootLogInstance.get().error("Error starting plugin", ex);
+            System.err.println("Error starting plugin"); ex.printStackTrace();
             /*try {
                 Thread.sleep(10000);
             } catch (InterruptedException ex1) {

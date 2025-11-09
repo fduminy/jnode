@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.naming.NamingException;
-import org.jnode.bootlog.BootLogInstance;
+
 import org.jnode.naming.InitialNaming;
 import org.jnode.permission.JNodePermission;
 import org.jnode.plugin.Plugin;
@@ -125,7 +125,7 @@ public final class DefaultPluginManager extends PluginManager {
         // 2 loops, first start all system plugins,
         // then start all auto-start plugins
         for (int type = 0; type < 2; type++) {
-            BootLogInstance.get().info("Starting " + ((type == 0) ? "system" : "auto-start") + " plugins");
+            System.out.println("Starting " + ((type == 0) ? "system" : "auto-start") + " plugins");
             for (PluginDescriptor descr : descrList) {
                 try {
                     final boolean start;
@@ -142,7 +142,7 @@ public final class DefaultPluginManager extends PluginManager {
                         startSinglePlugin(descr.getPlugin());
                     }
                 } catch (Throwable ex) {
-                    BootLogInstance.get().error("Cannot start " + descr.getId(), ex);
+                    System.err.println("Cannot start " + descr.getId()); ex.printStackTrace();
                     if (debug) {
                         try {
                             Thread.sleep(5000);
@@ -156,7 +156,7 @@ public final class DefaultPluginManager extends PluginManager {
 
         // Wait a while until all plugins have finished their startup process
         if (!isStartPluginsFinished()) {
-            BootLogInstance.get().info("Waiting for plugins to finished their startprocess");
+            System.out.println("Waiting for plugins to finished their startprocess");
             final long start = System.currentTimeMillis();
             long now = start;
             int loop = 0;
@@ -199,9 +199,9 @@ public final class DefaultPluginManager extends PluginManager {
                     //empty
                 }
             }
-            BootLogInstance.get().info("Stopped all plugins");
+            System.out.println("Stopped all plugins");
         } catch (PluginException ex) {
-            BootLogInstance.get().error("Cannot stop plugins", ex);
+            System.err.println("Cannot stop plugins"); ex.printStackTrace();
         }
     }
 
@@ -213,7 +213,7 @@ public final class DefaultPluginManager extends PluginManager {
      */
     public final void stopPlugin(PluginDescriptor d) throws PluginException {
         final String id = d.getId();
-        //BootLogInstance.get().info("__Stopping " + id);
+        //System.out.println("__Stopping " + id);
         for (PluginDescriptor descr : registry) {
             if (descr.depends(id)) {
                 stopPlugin(descr);
@@ -242,7 +242,7 @@ public final class DefaultPluginManager extends PluginManager {
         for (Iterator<PluginDescriptor> i = all.values().iterator(); i.hasNext();) {
             final PluginDescriptor descr = (PluginDescriptor) i.next();
             if (!prerequisitesExist(descr, all)) {
-                BootLogInstance.get().info("Skipping plugin " + descr.getId());
+                System.out.println("Skipping plugin " + descr.getId());
                 all.remove(descr.getId());
                 systemSet.remove(descr.getId());
                 i = all.values().iterator();
@@ -346,7 +346,7 @@ public final class DefaultPluginManager extends PluginManager {
                 final Plugin pi = descr.getPlugin();
                 if (pi.isActive()) {
                     if (!pi.isStartFinished()) {
-                        BootLogInstance.get().error("Plugin " + descr.getId()
+                        System.err.println("Plugin " + descr.getId()
                             + " has not yet finished");
                     }
                 }

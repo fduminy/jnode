@@ -35,7 +35,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import org.jnode.bootlog.BootLogInstance;
+
 import org.jnode.plugin.PluginClassLoader;
 import org.jnode.plugin.PluginDescriptor;
 import org.jnode.plugin.PluginException;
@@ -201,7 +201,7 @@ final class PluginClassLoaderImpl extends ClassLoader implements PluginClassLoad
                     fragment.startPlugin(registry);
                 }
             } catch (PluginException ex) {
-                BootLogInstance.get().error("Error starting plugin", ex);
+                System.err.println("Error starting plugin"); ex.printStackTrace();
             }
 
             // Define package (if needed)
@@ -300,7 +300,7 @@ final class PluginClassLoaderImpl extends ClassLoader implements PluginClassLoad
                     fragment.startPlugin(registry);
                 }
             } catch (PluginException ex) {
-                BootLogInstance.get().error("Cannot start plugin", ex);
+                System.err.println("Cannot start plugin"); ex.printStackTrace();
             }
         }
         return url;
@@ -334,7 +334,7 @@ final class PluginClassLoaderImpl extends ClassLoader implements PluginClassLoad
                     startPlugin();
                     fragment.startPlugin(registry);
                 } catch (PluginException ex) {
-                    BootLogInstance.get().error("Cannot start plugin", ex);
+                    System.err.println("Cannot start plugin"); ex.printStackTrace();
                 }
                 System.err.println("adding " + url);
                 if (!urls.contains(url))
@@ -350,7 +350,7 @@ final class PluginClassLoaderImpl extends ClassLoader implements PluginClassLoad
             try {
                 startPlugin();
             } catch (PluginException ex) {
-                BootLogInstance.get().error("Cannot start plugin", ex);
+                System.err.println("Cannot start plugin"); ex.printStackTrace();
             }
             System.err.println("adding " + url);
             if (!urls.contains(url))
