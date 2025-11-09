@@ -39,6 +39,7 @@
     <library name="jnode-core.jar">
       <export name="org.jnode.plugin.manager.*"/>
       <export name="org.jnode.plugin.model.*"/>
+      <export name="org.jnode.protocol.plugin.*"/>
     </library>
   </runtime>
         

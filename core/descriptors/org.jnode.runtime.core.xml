@@ -37,8 +37,6 @@
   <runtime>
     <library name="jnode-core.jar">
       <export name="org.jnode.boot.*"/>
-      <export name="org.jnode.naming.*"/>
-      <export name="org.jnode.protocol.plugin.*"/>
       <export name="org.jnode.protocol.system.*"/>
       <export name="org.jnode.system.event.*"/>
     </library>

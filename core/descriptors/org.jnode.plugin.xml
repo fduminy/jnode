@@ -34,6 +34,7 @@
   <runtime>
     <library name="jnode-core.jar">
       <export name="org.jnode.plugin.*"/>
+      <export name="org.jnode.naming.*"/>
     </library>
   </runtime>
         
