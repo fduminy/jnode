@@ -29,7 +29,6 @@
         class="org.jnode.security.SecurityPlugin">
         
   <requires>
-    <import plugin="org.jnode.vm"/>
   </requires>
         
   <runtime>
