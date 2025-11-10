@@ -27,10 +27,6 @@
         license-name="lgpl"
         provider-name="JNode.org">
         
-  <requires>
-    <import plugin="org.jnode.vm.core"/>
-  </requires>
-        
   <runtime>
     <library name="jnode-core.jar">
       <export name="org.jnode.plugin.*"/>
