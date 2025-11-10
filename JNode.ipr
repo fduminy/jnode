@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AgentMigrationStateService">
+    <option name="migrationStatus" value="COMPLETED" />
+  </component>
   <component name="AntConfiguration">
     <buildFile url="file://$PROJECT_DIR$/all/build.xml">
       <antReference name="Apache Ant version 1.7.1" />
       <customJdkName value="1.8" />
       <maximumStackSize value="32" />
     </buildFile>
+  </component>
+  <component name="Ask2AgentMigrationStateService">
+    <option name="migrationStatus" value="COMPLETED" />
+  </component>
+  <component name="AskMigrationStateService">
+    <option name="migrationStatus" value="COMPLETED" />
   </component>
   <component name="BuildJarProjectSettings">
     <option name="BUILD_JARS_ON_MAKE" value="false" />
@@ -220,11 +229,15 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="" />
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
+  <component name="EditMigrationStateService">
+    <option name="migrationStatus" value="COMPLETED" />
+  </component>
   <component name="ExportToHTMLSettings">
     <option name="PRINT_LINE_NUMBERS" value="false" />
     <option name="OPEN_IN_BROWSER" value="false" />
     <option name="OUTPUT_DIRECTORY" />
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="IdProvider" IDEtalkID="435AAC2234C36B0F2257FA7F02C447FB" />
   <component name="InspectionProjectProfileManager">
     <profile version="1.0">
@@ -703,18 +716,19 @@
       <inspection_tool class="scwtestingjunit5_JUnitMixeduseofJUnitversions" enabled="true" level="SENSEI WARNING" enabled_by_default="true" />
     </profile>
     <version value="1.0" />
-    <list size="11">
+    <list size="12">
       <item index="0" class="java.lang.String" itemvalue="INFORMATION" />
-      <item index="1" class="java.lang.String" itemvalue="SERVER PROBLEM" />
-      <item index="2" class="java.lang.String" itemvalue="WEAK WARNING" />
-      <item index="3" class="java.lang.String" itemvalue="INFO" />
-      <item index="4" class="java.lang.String" itemvalue="TYPO" />
-      <item index="5" class="java.lang.String" itemvalue="SENSEI INFO" />
-      <item index="6" class="java.lang.String" itemvalue="SENSEI COMPLIANT" />
-      <item index="7" class="java.lang.String" itemvalue="WARNING" />
-      <item index="8" class="java.lang.String" itemvalue="SENSEI MARKED INFO" />
-      <item index="9" class="java.lang.String" itemvalue="SENSEI WARNING" />
-      <item index="10" class="java.lang.String" itemvalue="ERROR" />
+      <item index="1" class="java.lang.String" itemvalue="TEXT ATTRIBUTES" />
+      <item index="2" class="java.lang.String" itemvalue="STYLE_SUGGESTION" />
+      <item index="3" class="java.lang.String" itemvalue="STYLE_WARNING" />
+      <item index="4" class="java.lang.String" itemvalue="STYLE_ERROR" />
+      <item index="5" class="java.lang.String" itemvalue="GRAMMAR_ERROR" />
+      <item index="6" class="java.lang.String" itemvalue="SERVER PROBLEM" />
+      <item index="7" class="java.lang.String" itemvalue="WEAK WARNING" />
+      <item index="8" class="java.lang.String" itemvalue="INFO" />
+      <item index="9" class="java.lang.String" itemvalue="TYPO" />
+      <item index="10" class="java.lang.String" itemvalue="WARNING" />
+      <item index="11" class="java.lang.String" itemvalue="ERROR" />
     </list>
   </component>
   <component name="IvyIDEA.ProjectSettings">
@@ -1214,7 +1228,8 @@
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
-    <library name="Maven: net.bytebuddy:byte-buddy-agent:1.11.0">
+    <library name="Maven: net.bytebuddy:byte-buddy-agent:1.11.0" type="java-imported" external-system-id="Maven">
+      <properties groupId="net.bytebuddy" artifactId="byte-buddy-agent" version="1.11.0" baseVersion="1.11.0" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy-agent/1.11.0/byte-buddy-agent-1.11.0.jar!/" />
       </CLASSES>
@@ -1225,7 +1240,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy-agent/1.11.0/byte-buddy-agent-1.11.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: net.bytebuddy:byte-buddy:1.11.0">
+    <library name="Maven: net.bytebuddy:byte-buddy:1.11.0" type="java-imported" external-system-id="Maven">
+      <properties groupId="net.bytebuddy" artifactId="byte-buddy" version="1.11.0" baseVersion="1.11.0" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy/1.11.0/byte-buddy-1.11.0.jar!/" />
       </CLASSES>
@@ -1236,7 +1252,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy/1.11.0/byte-buddy-1.11.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.apache.ant:ant-launcher:1.7.1">
+    <library name="Maven: org.apache.ant:ant-launcher:1.7.1" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.apache.ant" artifactId="ant-launcher" version="1.7.1" baseVersion="1.7.1" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant-launcher/1.7.1/ant-launcher-1.7.1.jar!/" />
       </CLASSES>
@@ -1247,7 +1264,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant-launcher/1.7.1/ant-launcher-1.7.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.apache.ant:ant:1.7.1">
+    <library name="Maven: org.apache.ant:ant:1.7.1" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.apache.ant" artifactId="ant" version="1.7.1" baseVersion="1.7.1" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant/1.7.1/ant-1.7.1.jar!/" />
       </CLASSES>
@@ -1258,7 +1276,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant/1.7.1/ant-1.7.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.apiguardian:apiguardian-api:1.1.2">
+    <library name="Maven: org.apiguardian:apiguardian-api:1.1.2" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.apiguardian" artifactId="apiguardian-api" version="1.1.2" baseVersion="1.1.2" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar!/" />
       </CLASSES>
@@ -1269,7 +1288,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.assertj:assertj-core:3.19.0">
+    <library name="Maven: org.assertj:assertj-core:3.19.0" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.assertj" artifactId="assertj-core" version="3.19.0" baseVersion="3.19.0" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/assertj/assertj-core/3.19.0/assertj-core-3.19.0.jar!/" />
       </CLASSES>
@@ -1280,7 +1300,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/assertj/assertj-core/3.19.0/assertj-core-3.19.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.junit.jupiter:junit-jupiter-api:5.8.1">
+    <library name="Maven: org.junit.jupiter:junit-jupiter-api:5.8.1" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.junit.jupiter" artifactId="junit-jupiter-api" version="5.8.1" baseVersion="5.8.1" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-api/5.8.1/junit-jupiter-api-5.8.1.jar!/" />
       </CLASSES>
@@ -1291,7 +1312,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-api/5.8.1/junit-jupiter-api-5.8.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.junit.jupiter:junit-jupiter-engine:5.8.1">
+    <library name="Maven: org.junit.jupiter:junit-jupiter-engine:5.8.1" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.junit.jupiter" artifactId="junit-jupiter-engine" version="5.8.1" baseVersion="5.8.1" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-engine/5.8.1/junit-jupiter-engine-5.8.1.jar!/" />
       </CLASSES>
@@ -1300,10 +1322,10 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-engine/5.8.1/junit-jupiter-engine-5.8.1-sources.jar!/" />
-        <root url="jar://$USER_HOME$/.ideaLibSources/junit-jupiter-engine-5.8.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.junit.jupiter:junit-jupiter-params:5.8.1">
+    <library name="Maven: org.junit.jupiter:junit-jupiter-params:5.8.1" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.junit.jupiter" artifactId="junit-jupiter-params" version="5.8.1" baseVersion="5.8.1" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-params/5.8.1/junit-jupiter-params-5.8.1.jar!/" />
       </CLASSES>
@@ -1314,7 +1336,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-params/5.8.1/junit-jupiter-params-5.8.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.junit.platform:junit-platform-commons:1.8.1">
+    <library name="Maven: org.junit.platform:junit-platform-commons:1.8.1" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.junit.platform" artifactId="junit-platform-commons" version="1.8.1" baseVersion="1.8.1" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-commons/1.8.1/junit-platform-commons-1.8.1.jar!/" />
       </CLASSES>
@@ -1325,7 +1348,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-commons/1.8.1/junit-platform-commons-1.8.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.junit.platform:junit-platform-engine:1.8.1">
+    <library name="Maven: org.junit.platform:junit-platform-engine:1.8.1" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.junit.platform" artifactId="junit-platform-engine" version="1.8.1" baseVersion="1.8.1" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-engine/1.8.1/junit-platform-engine-1.8.1.jar!/" />
       </CLASSES>
@@ -1336,7 +1360,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-engine/1.8.1/junit-platform-engine-1.8.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.mockito:mockito-core:3.10.0">
+    <library name="Maven: org.mockito:mockito-core:3.10.0" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.mockito" artifactId="mockito-core" version="3.10.0" baseVersion="3.10.0" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-core/3.10.0/mockito-core-3.10.0.jar!/" />
       </CLASSES>
@@ -1347,7 +1372,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-core/3.10.0/mockito-core-3.10.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.mockito:mockito-junit-jupiter:3.10.0">
+    <library name="Maven: org.mockito:mockito-junit-jupiter:3.10.0" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.mockito" artifactId="mockito-junit-jupiter" version="3.10.0" baseVersion="3.10.0" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-junit-jupiter/3.10.0/mockito-junit-jupiter-3.10.0.jar!/" />
       </CLASSES>
@@ -1358,7 +1384,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-junit-jupiter/3.10.0/mockito-junit-jupiter-3.10.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.objenesis:objenesis:3.2">
+    <library name="Maven: org.objenesis:objenesis:3.2" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.objenesis" artifactId="objenesis" version="3.2" baseVersion="3.2" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/objenesis/objenesis/3.2/objenesis-3.2.jar!/" />
       </CLASSES>
@@ -1369,7 +1396,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/objenesis/objenesis/3.2/objenesis-3.2-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.opentest4j:opentest4j:1.2.0">
+    <library name="Maven: org.opentest4j:opentest4j:1.2.0" type="java-imported" external-system-id="Maven">
+      <properties groupId="org.opentest4j" artifactId="opentest4j" version="1.2.0" baseVersion="1.2.0" />
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar!/" />
       </CLASSES>

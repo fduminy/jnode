@@ -95,6 +95,10 @@ public interface PluginDescriptor {
      */
     public abstract PluginPrerequisite[] getPrerequisites();
 
+    public void addPrerequisite(String missingDependency);
+
+    void setPrerequisites(PluginPrerequisite[] prerequisites);
+
     /**
      * Does the plugin described by this descriptor directly depends on the
      * given plugin id.

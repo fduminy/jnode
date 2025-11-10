@@ -112,7 +112,7 @@ class PluginPOMWriterTest extends AbstractPOMWriterTest {
 
     private String write(PluginInfo pluginInfo, boolean thirdParty) throws IOException {
         Path pomFile =
-            new PluginPOMWriter(ANT_PROJECT, destinationRoot, missingDependencyFinder).write(pluginInfos, pluginInfo);
+            new PluginPOMWriter(ANT_PROJECT, destinationRoot).write(pluginInfos, pluginInfo);
         String pom =
             assertCommon(getPluginRoot(pluginInfo.getProject(), pluginInfo.getId()), pluginInfo.getId(), thirdParty,
                 pomFile, "jar",

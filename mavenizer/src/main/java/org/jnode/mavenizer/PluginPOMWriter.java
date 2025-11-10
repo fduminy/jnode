@@ -25,10 +25,8 @@ public class PluginPOMWriter extends AbstractPOMWriter {
 
     private final Properties thirdPartyArtifacts = new Properties();
     private final IAntProject jnodeAntProject;
-    private final MissingDependencyFinder missingDependencyFinder;
 
-    public PluginPOMWriter(IAntProject jnodeAntProject, DestinationRoot destinationRoot,
-                           MissingDependencyFinder missingDependencyFinder) {
+    public PluginPOMWriter(IAntProject jnodeAntProject, DestinationRoot destinationRoot) {
         super(destinationRoot);
         this.jnodeAntProject = jnodeAntProject;
         try {
@@ -36,7 +34,6 @@ public class PluginPOMWriter extends AbstractPOMWriter {
         } catch (IOException e) {
             throw new BuildException(e);
         }
-        this.missingDependencyFinder = missingDependencyFinder;
     }
 
     public final Path write(PluginInfos pluginInfos, PluginInfo pluginInfo) {
@@ -51,12 +48,6 @@ public class PluginPOMWriter extends AbstractPOMWriter {
         } else {
             stream(pluginInfo.getPluginDescriptor().getPrerequisites())
                 .forEach(dependency -> addDependency(pluginInfos, xml, dependency.getPluginReference().getId()));
-
-            SortedSet<String> missingDependencies = missingDependencyFinder.findMissingDependencies(pluginInfo);
-            missingDependencies.forEach(missingDependency -> {
-                Log.debug("Adding missing dependency " + missingDependency);
-                addDependency(pluginInfos, xml, missingDependency);
-            });
         }
 
         xml.append(INDENT).append(DEPENDENCIES_END).append(lineSeparator());

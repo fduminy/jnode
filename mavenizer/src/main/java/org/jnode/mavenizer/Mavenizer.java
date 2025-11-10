@@ -1,13 +1,20 @@
 package org.jnode.mavenizer;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.SortedSet;
 import java.util.function.Predicate;
 import org.jnode.mavenizer.Directory.DestinationRoot;
 import org.jnode.mavenizer.Directory.SourceRoot;
 
+import static java.nio.file.Files.readAllLines;
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
 import static org.jnode.mavenizer.Constants.ANT_PROJECT;
 import static org.jnode.mavenizer.Directory.DestinationRoot.destinationRoot;
 import static org.jnode.mavenizer.Directory.SourceRoot.sourceRoot;
@@ -18,20 +25,37 @@ import static org.jnode.mavenizer.Project.allProjects;
  * @author Fabien DUMINY (fduminy@jnode.org)
  */
 public class Mavenizer {
-    public static final String JNODE_HOME = "/home/fabien/projets/jnode/jnode2021";
+    public static final String JNODE_HOME = ".";
     static final SourceRoot SRC_ROOT = sourceRoot(get(JNODE_HOME));
     protected static final String MAVEN_PLUGINS_DIR = "maven_plugins";
     protected static final String MAVEN_MIGRATION_DIR = "maven";
 
     // for faster process, use memory filesystem
-    static final DestinationRoot DEST_ROOT = destinationRoot(get("/dev", "shm", "jnode_maven"));
+//    static final DestinationRoot DEST_ROOT = destinationRoot(get("/dev", "shm", "jnode_maven"));
+    static final DestinationRoot DEST_ROOT = destinationRoot(get("..", "jnode_mavenized"));
     //    private static final DestinationRoot DEST_ROOT = destinationRoot(get(JNODE_HOME, "/jnode_maven"));
-    static final Predicate<Project> PROJECT_FILTER = Project.FS::equals;
+    static final Predicate<Project> PROJECT_FILTER = other -> true; //Project.FS.equals(other) || Project.Core.equals(other);
+    static final List<String> NON_CYCLIC_DEPENDENCIES;
+    static {
+        try {
+            NON_CYCLIC_DEPENDENCIES = readAllLines(
+                Paths.get(Mavenizer.class.getResource("non_cyclic_artifacts.properties").getFile()));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     static final Predicate<PluginInfo> PLUGIN_FILTER = pluginInfo -> {
-        List<String> plugins = asList(
-            "org.jnode.driver.block", "org.jnode.fs", "org.jnode.partitions", "org.jnode.fs.service",
-            "org.jnode.fs.jarfs");
-        return true; //plugins.contains(pluginInfo.getId());
+//        List<String> plugins = asList(
+//            "org.jnode.driver.block", "org.jnode.fs", "org.jnode.partitions", "org.jnode.fs.service",
+//            "org.jnode.fs.jarfs");
+        //plugins.contains(pluginInfo.getId());
+
+//        List<String> corePlugins = asList("org.jnode.driver", "org.jnode.util", "rt.vm");
+//        return Project.FS.equals(pluginInfo.getProject()) || (Project.Core.equals(pluginInfo.getProject()) && corePlugins.contains(pluginInfo.getId()));
+
+//        return NON_CYCLIC_DEPENDENCIES.contains(pluginInfo.getId());
+        return true;
     };
 
     public static void main(String[] args) throws IOException {
@@ -40,6 +64,10 @@ public class Mavenizer {
 
         new RootPOMWriter(DEST_ROOT).write();
         PluginInfos pluginInfos = findPlugins();
+
+        // Créer le module jnode-api pour briser les dépendances circulaires
+        new JNodeApiPOMWriter(DEST_ROOT).write();
+
         writeProjectPOMs(pluginInfos);
         buildPluginProjects(pluginInfos);
     }
@@ -48,14 +76,26 @@ public class Mavenizer {
         DependencyFinder dependencyFinder = new DependencyFinder();
         MissingDependencyFinder missingDependencyFinder =
             new MissingDependencyFinder(ANT_PROJECT, pluginInfos, dependencyFinder, SRC_ROOT);
-        PluginPOMWriter pluginPOMWriter = new PluginPOMWriter(ANT_PROJECT, DEST_ROOT, missingDependencyFinder);
+        PluginPOMWriter pluginPOMWriter = new PluginPOMWriter(ANT_PROJECT, DEST_ROOT);
         PluginDescriptorCopier pluginDescriptorCopier = new PluginDescriptorCopier(SRC_ROOT, DEST_ROOT);
         SourceCopier sourceCopier = new SourceCopier(ANT_PROJECT, SRC_ROOT, DEST_ROOT);
+        CircularDependencyFilter circularDependencyFilter = new CircularDependencyFilter(pluginInfos);
         pluginInfos.plugins().stream().filter(PLUGIN_FILTER).forEach(pluginInfo -> {
+            addMissingDependencies(pluginInfo, missingDependencyFinder.findMissingDependencies(pluginInfo));
+            circularDependencyFilter.filterCircularDependencies(pluginInfo);
             pluginPOMWriter.write(pluginInfos, pluginInfo);
             pluginDescriptorCopier.copy(pluginInfo);
             sourceCopier.copy(pluginInfo);
         });
+    }
+
+    private static void addMissingDependencies(PluginInfo pluginInfo, SortedSet<String> missingDependencies) {
+        if (!pluginInfo.isThirdParty()) {
+            missingDependencies.forEach(missingDependency -> {
+                Log.debug("Adding missing dependency " + pluginInfo.getId() + "->" + missingDependency );
+                pluginInfo.getPluginDescriptor().addPrerequisite(missingDependency);
+            });
+        }
     }
 
     private static void writeProjectPOMs(PluginInfos pluginInfos) {

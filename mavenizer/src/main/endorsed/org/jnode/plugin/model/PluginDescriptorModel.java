@@ -79,7 +79,7 @@ public class PluginDescriptorModel extends AbstractModelObject implements
 
     private PluginRegistryModel registry;
 
-    private final PluginPrerequisiteModel[] requires;
+    private PluginPrerequisiteModel[] requires;
 
     private boolean resolved;
 
@@ -436,6 +436,20 @@ public class PluginDescriptorModel extends AbstractModelObject implements
      */
     public PluginPrerequisite[] getPrerequisites() {
         return requires;
+    }
+
+    @Override
+    public void addPrerequisite(String missingDependency) {
+        PluginPrerequisiteModel[] requires = new PluginPrerequisiteModel[this.requires.length + 1];
+        System.arraycopy(this.requires, 0, requires, 0, this.requires.length);
+        requires[requires.length - 1] = new PluginPrerequisiteModel(this, missingDependency, getVersion());
+        this.requires = requires;
+    }
+
+    public void setPrerequisites(PluginPrerequisite[] requires) {
+        PluginPrerequisiteModel[] newRequires = new PluginPrerequisiteModel[requires.length];
+        System.arraycopy(this.requires, 0, newRequires, 0, requires.length);
+        this.requires = newRequires;
     }
 
     /**

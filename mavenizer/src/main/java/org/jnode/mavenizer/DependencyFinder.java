@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -34,7 +35,7 @@ public class DependencyFinder {
                 .filter(this::javaFile)
                 .filter(path -> isExported(exportedPackages, start.relativize(path).getParent().toString()))
                 .map(javaFile -> findInJavaFile(exportedPackages, javaFile))
-                .reduce(new TreeSet<>(), (a, b) -> {
+                .reduce(Collections.synchronizedSortedSet(new TreeSet<>()), (a, b) -> {
                     a.addAll(b);
                     return a;
                 });
