@@ -8,7 +8,7 @@ Classification des 12 cycles par difficulté (du plus facile au plus difficile):
 **MOYENS (nécessitent extraction d'interfaces):**
 3. **org.jnode.fs ↔ org.jnode.fs.service** - org.jnode.fs importe fs.service (ligne 32 du descriptor). Solution: extraire les interfaces de service vers un module séparé. (DONE)
 
-4. **org.jnode.driver.block ↔ org.jnode.fs** - Similar au cycle driver.block/partitions déjà résolu. Solution: identifier et déplacer les interfaces communes.
+4. **org.jnode.driver.block ↔ org.jnode.fs** - Similar au cycle driver.block/partitions déjà résolu. Solution: identifier et déplacer les interfaces communes. (DONE)
 
 5. **org.jnode.plugin.impl ↔ org.jnode.runtime.core** - Implémentation vs runtime. Solution: séparer les interfaces d'implémentation.
 
