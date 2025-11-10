@@ -25,7 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.jar.JarFile;
-import org.jnode.fs.ReadOnlyFileSystemException;
 
 /**
  * This class is a device that wraps a JarFile
@@ -65,7 +64,7 @@ public class JarFileDevice extends FileDevice implements FSBlockDeviceAPI {
      * @see org.jnode.driver.block.FileDevice#write(long, java.nio.ByteBuffer)
      */
     public void write(long devOffset, ByteBuffer srcBuf) throws IOException {
-        throw new ReadOnlyFileSystemException("jar file systems are not writeable");
+        throw new IOException("jar file systems are not writeable");
     }
 
     /**
@@ -74,6 +73,6 @@ public class JarFileDevice extends FileDevice implements FSBlockDeviceAPI {
      * @see org.jnode.driver.block.FileDevice#setLength(long)
      */
     public void setLength(long length) throws IOException {
-        throw new ReadOnlyFileSystemException("jar file systems are not writeable");
+        throw new IOException("jar file systems are not writeable");
     }
 }
