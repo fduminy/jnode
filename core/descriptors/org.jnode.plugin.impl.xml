@@ -32,7 +32,7 @@
     <import plugin="org.jnode.plugin"/>
     <import plugin="org.jnode.security"/>
     <import plugin="org.jnode.util"/>
-    <import plugin="org.jnode.vm.core"/>
+    <import plugin="org.jnode.vm"/>
   </requires>
         
   <runtime>
