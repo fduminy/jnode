@@ -24,7 +24,6 @@ import java.io.PrintStream;
 import java.io.InputStream;
 import java.util.Properties;
 import org.jnode.vm.VmSystem;
-import org.jnode.util.SystemInputStream;
 import gnu.classpath.SystemProperties;
 
 

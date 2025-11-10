@@ -33,7 +33,6 @@ import javax.naming.NameNotFoundException;
 import org.jnode.driver.Device;
 import org.jnode.driver.DriverException;
 import org.jnode.naming.InitialNaming;
-import org.jnode.util.SystemInputStream;
 
 /**
  * @author epr

@@ -15,7 +15,7 @@ Classification des 12 cycles par difficulté (du plus facile au plus difficile):
 **DIFFICILES (cycles au cœur du VM, interdépendances complexes):**
 6. **org.jnode.runtime.core.resource ↔ org.jnode.vm.core** - Resources système vs VM core. (DONE)
 
-7. **rt.vm ↔ org.jnode.util** - Runtime VM de base utilise des utilitaires. Solution: extraire interfaces utilitaires minimales.
+7. **rt.vm ↔ org.jnode.util** - Runtime VM de base utilise des utilitaires. Solution: extraire interfaces utilitaires minimales. (DONE)
 
 8. **org.jnode.vm.core ↔ org.jnode.vm** - Séparation VM/VM.core peu claire.
 
