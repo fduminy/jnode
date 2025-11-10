@@ -22,7 +22,7 @@ Classification des 12 cycles par difficulté (du plus facile au plus difficile):
 9. **org.jnode.vm ↔ org.jnode.runtime.core** - runtime.core importe vm (ligne 34), interdépendance bidirectionnelle profonde. (DONE)
 
 **TRÈS DIFFICILES (cycles architecturaux fondamentaux):**
-10. **org.jnode.plugin ↔ org.jnode.vm.core** - org.jnode.plugin importe vm.core (ligne 31), cycle au cœur du bootstrap. Refonte architecturale majeure requise.
+10. **org.jnode.plugin ↔ org.jnode.vm.core** - org.jnode.plugin importe vm.core (ligne 31), cycle au cœur du bootstrap. Refonte architecturale majeure requise. (DONE)
 
 11. **rt.vm ↔ org.classpath.ext.core.vm** - Cycle entre runtime et classpath VM, touches aux fondations du système.
 
