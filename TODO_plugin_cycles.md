@@ -6,7 +6,7 @@ Classification des 12 cycles par difficulté (du plus facile au plus difficile):
 2. **org.jnode.runtime.core ↔ org.jnode.runtime.core.bootlog** - Bootlog est une interface simple. Solution: déplacer l'interface bootlog vers runtime.core ou créer un module api. (DONE)
 
 **MOYENS (nécessitent extraction d'interfaces):**
-3. **org.jnode.fs ↔ org.jnode.fs.service** - org.jnode.fs importe fs.service (ligne 32 du descriptor). Solution: extraire les interfaces de service vers un module séparé.
+3. **org.jnode.fs ↔ org.jnode.fs.service** - org.jnode.fs importe fs.service (ligne 32 du descriptor). Solution: extraire les interfaces de service vers un module séparé. (DONE)
 
 4. **org.jnode.driver.block ↔ org.jnode.fs** - Similar au cycle driver.block/partitions déjà résolu. Solution: identifier et déplacer les interfaces communes.
 

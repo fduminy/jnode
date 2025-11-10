@@ -1,4 +1,8 @@
-Cherche à supprimer la dépendance circulaire entre les plugins
+First, read documentation in docs/plugins directory of JNode project to understand how JNode plugins work.
+jnode-<sub project>.jar are not a real jar at runtime, they are only there to represent at build time all classes of the sub projects of jnode (fs, core, gui ...).
+Example : jnode-fs.jar represents all classes of the fs sub project of jnode.
+
+Second, cherche à supprimer la dépendance circulaire entre les plugins
 
 ************* PUT PLUGIN LIST HERE *************
 
