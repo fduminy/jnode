@@ -30,7 +30,7 @@
   <requires>
     <import plugin="org.jnode.plugin"/>
     <import plugin="org.jnode.security"/>
-    <import plugin="org.jnode.vm"/>
+    <import plugin="org.jnode.vm.core"/>
   </requires>
         
   <runtime>
