@@ -21,7 +21,7 @@
 package org.jnode.fs;
 
 import org.jnode.driver.block.FSBlockDeviceAPI;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 
 /**
  * Specific kind of FileSystemType for block devices

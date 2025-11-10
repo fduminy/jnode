@@ -24,7 +24,7 @@ import org.jnode.driver.Device;
 import org.jnode.driver.block.FSBlockDeviceAPI;
 import org.jnode.fs.BlockDeviceFileSystemType;
 import org.jnode.fs.FileSystemException;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 
 /**
  * @author Chira
@@ -39,7 +39,7 @@ public class NTFSFileSystemType implements BlockDeviceFileSystemType<NTFSFileSys
     }
 
     /**
-     * @see org.jnode.fs.BlockDeviceFileSystemType#supports(org.jnode.partitions.PartitionTableEntry,
+     * @see org.jnode.fs.BlockDeviceFileSystemType#supports(org.jnode.driver.block.PartitionTableEntry,
      * byte[], org.jnode.driver.block.FSBlockDeviceAPI) 
      */
     public boolean supports(PartitionTableEntry pte, byte[] firstSectors, FSBlockDeviceAPI devApi) {

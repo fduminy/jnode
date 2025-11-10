@@ -21,8 +21,8 @@
 package org.jnode.partitions.gpt;
 
 import java.nio.charset.Charset;
-import org.jnode.partitions.PartitionTable;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTable;
+import org.jnode.driver.block.PartitionTableEntry;
 import org.jnode.util.LittleEndian;
 import org.jnode.util.NumberUtils;
 
@@ -62,7 +62,7 @@ public class GptPartitionTableEntry implements PartitionTableEntry {
     }
 
     /**
-     * @see org.jnode.partitions.PartitionTableEntry#getChildPartitionTable()
+     * @see org.jnode.driver.block.PartitionTableEntry#getChildPartitionTable()
      */
     @Override
     public PartitionTable<?> getChildPartitionTable() {
@@ -70,7 +70,7 @@ public class GptPartitionTableEntry implements PartitionTableEntry {
     }
 
     /**
-     * @see org.jnode.partitions.PartitionTableEntry#hasChildPartitionTable()
+     * @see org.jnode.driver.block.PartitionTableEntry#hasChildPartitionTable()
      */
     @Override
     public boolean hasChildPartitionTable() {

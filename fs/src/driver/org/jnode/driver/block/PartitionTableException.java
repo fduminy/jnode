@@ -18,15 +18,29 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
  
-package org.jnode.partitions;
+package org.jnode.driver.block;
 
 /**
- * @author epr
+ * @author Ewout Prangsma (epr@users.sourceforge.net)
  */
-public interface PartitionTable<PTE extends PartitionTableEntry> extends Iterable<PTE> {
+public class PartitionTableException extends Exception {
 
-    /**
-     * Gets the type of this partition table
-     */
-    public PartitionTableType getType();
+    private static final long serialVersionUID = 1L;
+
+    public PartitionTableException() {
+        super();
+    }
+
+    public PartitionTableException(String s, Throwable cause) {
+        super(s, cause);
+    }
+
+    public PartitionTableException(String s) {
+        super(s);
+    }
+
+    public PartitionTableException(Throwable cause) {
+        super(cause);
+    }
+
 }

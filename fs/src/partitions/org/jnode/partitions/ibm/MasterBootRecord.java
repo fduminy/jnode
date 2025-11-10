@@ -23,7 +23,7 @@ package org.jnode.partitions.ibm;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import org.jnode.driver.block.BlockDeviceAPI;
-import org.jnode.partitions.BlockDeviceConstants;
+import org.jnode.driver.block.BlockDeviceConstants;
 
 public class MasterBootRecord {
     private static final int PARTITION_TABLE_OFFSET = 0x1be;

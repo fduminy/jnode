@@ -30,7 +30,7 @@ import org.jnode.driver.block.MappedBlockDeviceSupport;
 import org.jnode.fs.BlockDeviceFileSystemType;
 import org.jnode.fs.FileSystemException;
 import org.jnode.fs.hfsplus.HfsPlusFileSystem;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 
 /**
  * A HFS wrapper around HFS+.

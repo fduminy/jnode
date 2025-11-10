@@ -37,7 +37,7 @@ import org.jnode.driver.block.PartitionableBlockDeviceAPI;
 import org.jnode.driver.bus.ide.IDEConstants;
 import org.jnode.driver.bus.ide.IDEDevice;
 import org.jnode.fs.FileSystem;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 import org.jnode.partitions.ibm.IBMPartitionTableEntry;
 
 public class OSFacade {

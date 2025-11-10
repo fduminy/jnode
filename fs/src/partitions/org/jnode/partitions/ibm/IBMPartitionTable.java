@@ -32,9 +32,9 @@ import org.apache.log4j.Logger;
 import org.jnode.driver.ApiNotFoundException;
 import org.jnode.driver.Device;
 import org.jnode.driver.block.BlockDeviceAPI;
-import org.jnode.partitions.BlockDeviceConstants;
-import org.jnode.partitions.PartitionTable;
-import org.jnode.partitions.PartitionTableType;
+import org.jnode.driver.block.BlockDeviceConstants;
+import org.jnode.driver.block.PartitionTable;
+import org.jnode.driver.block.PartitionTableType;
 import org.jnode.util.BigEndian;
 import org.jnode.util.LittleEndian;
 
@@ -375,7 +375,7 @@ public class IBMPartitionTable implements PartitionTable<IBMPartitionTableEntry>
     }
 
     /**
-     * @see org.jnode.partitions.PartitionTable#getType()
+     * @see org.jnode.driver.block.PartitionTable#getType()
      */
     public PartitionTableType getType() {
         return tableType;

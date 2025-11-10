@@ -18,29 +18,35 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
  
-package org.jnode.partitions;
+package org.jnode.driver.block;
+
+import org.jnode.driver.Device;
 
 /**
  * @author Ewout Prangsma (epr@users.sourceforge.net)
  */
-public class PartitionTableException extends Exception {
+public interface PartitionTableType {
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * Gets the unique name of this partition table type.
+     */
+    public String getName();
 
-    public PartitionTableException() {
-        super();
-    }
+    /**
+     * Can this partition table type be used on the given first sector of a
+     * blockdevice?
+     * 
+     * @param devApi
+     * @param firstSectors
+     */
+    public boolean supports(byte[] firstSectors, BlockDeviceAPI devApi);
 
-    public PartitionTableException(String s, Throwable cause) {
-        super(s, cause);
-    }
-
-    public PartitionTableException(String s) {
-        super(s);
-    }
-
-    public PartitionTableException(Throwable cause) {
-        super(cause);
-    }
+    /**
+     * Create a partition table for a given device.
+     * 
+     * @param device
+     * @param firstSectors
+     */
+    public PartitionTable<?> create(byte[] firstSectors, Device device) throws PartitionTableException;
 
 }

@@ -23,7 +23,7 @@ package org.jnode.driver.block.ide.disk;
 import org.jnode.driver.Bus;
 import org.jnode.driver.Device;
 import org.jnode.driver.bus.ide.IDEDevice;
-import org.jnode.partitions.PartitionTableEntry;
+import org.jnode.driver.block.PartitionTableEntry;
 
 /**
  * @author epr

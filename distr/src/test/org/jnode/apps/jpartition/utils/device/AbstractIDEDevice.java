@@ -30,7 +30,7 @@ import org.jnode.driver.block.PartitionableBlockDeviceAPI;
 import org.jnode.driver.bus.ide.IDEConstants;
 import org.jnode.driver.bus.ide.IDEDevice;
 import org.jnode.driver.bus.ide.IDEDeviceAPI;
-import org.jnode.partitions.PartitionTable;
+import org.jnode.driver.block.PartitionTable;
 import org.jnode.partitions.ibm.IBMPartitionTable;
 import org.jnode.partitions.ibm.IBMPartitionTableEntry;
 import org.jnode.partitions.ibm.IBMPartitionTableType;
