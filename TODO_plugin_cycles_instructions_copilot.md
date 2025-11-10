@@ -13,7 +13,8 @@ Vérifie chaque solution que tu proposes en suivant les étapes ci-dessous :
 8 - si le fichier logs.txt contient une erreur ou exception après 60 secondes, annule tes modifications , trouve une autre solution et recommence à l'étape 1
 9 - fait une dernière vérification avec le projet mavenizer dont voici la description :
 
-Le répertoire mavenizer contient un projet maven qui convertit les plugins jnode en modules maven. 
+Le répertoire mavenizer contient un projet maven qui convertit les plugins jnode en modules maven.
+Le projet mavenizer nécessite d'installer java 17.
 Pour cela, il copie les fichiers source java de JNode vers le répertoire ../jnode_mavenized et crée 
 les fichiers pom.xml en gardant la même arborescence de fichier source que JNode.
 Compile le projet mavenizer et lance la classe principale org.jnode.mavenizer.Mavenizer.
