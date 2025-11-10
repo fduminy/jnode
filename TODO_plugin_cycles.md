@@ -1,7 +1,7 @@
 Classification des 12 cycles par difficulté (du plus facile au plus difficile):
 
 **FACILES (interfaces isolées, peu de dépendances):**
-1. **org.jnode.permission ↔ rt.vm** - Permission utilise probablement des types VM basiques. Solution: créer un module d'interfaces de sécurité.
+1. **org.jnode.permission ↔ rt.vm** - Permission utilise probablement des types VM basiques. Solution: créer un module d'interfaces de sécurité. (DONE)
 
 2. **org.jnode.runtime.core ↔ org.jnode.runtime.core.bootlog** - Bootlog est une interface simple. Solution: déplacer l'interface bootlog vers runtime.core ou créer un module api.
 

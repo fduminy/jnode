@@ -30,7 +30,6 @@ These (system) plugins are always included in the init-jar.
     <plugin id="rt"/>
     <plugin id="rt.vm"/>
 
-	<plugin id="org.jnode.permission"/>
 	<plugin id="org.jnode.plugin"/>
 	<plugin id="org.jnode.plugin.impl"/>
     <plugin id="org.jnode.runtime"/>
