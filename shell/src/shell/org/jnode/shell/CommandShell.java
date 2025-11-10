@@ -76,7 +76,6 @@ import org.jnode.shell.syntax.SyntaxBundle;
 import org.jnode.shell.syntax.SyntaxManager;
 import org.jnode.shell.syntax.CommandSyntaxException.Context;
 import org.jnode.util.ReaderInputStream;
-import org.jnode.util.SystemInputStream;
 import org.jnode.vm.VmExit;
 import org.jnode.vm.VmSystem;
 

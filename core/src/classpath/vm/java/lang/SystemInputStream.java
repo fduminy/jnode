@@ -18,7 +18,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
  
-package org.jnode.util;
+package java.lang;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +33,16 @@ import java.io.InputStream;
 public final class SystemInputStream extends InputStream {
     // FIXME ... remove the thread localization support.  It is now just a misleading
     // historical relic.
+    
+    /**
+     * An empty input stream that always returns -1 (EOF).
+     */
+    private static final class EmptyInputStream extends InputStream {
+        @Override
+        public int read() throws IOException {
+            return -1;
+        }
+    }
     
     private static final InputStream EMPTY = new EmptyInputStream();
 

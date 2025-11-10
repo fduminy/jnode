@@ -28,7 +28,6 @@ import org.jnode.shell.SimpleCommandInvoker;
 import org.jnode.shell.CommandShell;
 import org.jnode.shell.Shell;
 import org.jnode.shell.ShellManager;
-import org.jnode.util.SystemInputStream;
 
 /**
  * This is the default implementation of the ShellManager API.
