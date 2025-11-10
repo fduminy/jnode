@@ -14,3 +14,18 @@ classlib-src.jar.bz2
 classlib.pack.gz
 
 /.metadata
+
+# Mavenizer build artifacts
+mavenizer/target/
+
+# Mavenized output
+../jnode_mavenized/
+
+# Downloaded classlib files
+all/lib/classlib.jar
+all/lib/classlib.pack.gz
+all/lib/classlib-src.jar
+all/lib/classlib-src.jar.bz2
+
+# QEMU logs
+logs.txt
