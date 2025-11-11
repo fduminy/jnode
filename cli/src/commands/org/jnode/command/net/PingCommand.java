@@ -30,7 +30,7 @@ import java.util.TimerTask;
 
 import org.jnode.net.SocketBuffer;
 import org.jnode.net.ethernet.EthernetConstants;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 import org.jnode.net.ipv4.IPv4Constants;
 import org.jnode.net.ipv4.IPv4Header;
 import org.jnode.net.ipv4.icmp.ICMPEchoHeader;

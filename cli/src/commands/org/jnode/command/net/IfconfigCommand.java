@@ -31,7 +31,7 @@ import org.jnode.driver.net.NetDeviceAPI;
 import org.jnode.driver.net.NetworkException;
 import org.jnode.naming.InitialNaming;
 import org.jnode.net.ethernet.EthernetConstants;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 import org.jnode.net.ipv4.config.IPv4ConfigurationService;
 import org.jnode.net.syntax.IPv4AddressArgument;
 import org.jnode.shell.AbstractCommand;

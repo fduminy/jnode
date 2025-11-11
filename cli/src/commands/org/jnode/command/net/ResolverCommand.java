@@ -24,7 +24,7 @@ import java.io.PrintWriter;
 import java.util.Collection;
 
 import org.jnode.driver.net.NetworkException;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 import org.jnode.net.ipv4.util.ResolverImpl;
 import org.jnode.net.syntax.IPv4AddressArgument;
 import org.jnode.shell.AbstractCommand;

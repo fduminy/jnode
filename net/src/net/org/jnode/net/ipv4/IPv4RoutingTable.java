@@ -19,6 +19,7 @@
  */
  
 package org.jnode.net.ipv4;
+import org.jnode.net.IPv4Address;
 
 import java.net.NoRouteToHostException;
 import java.util.ArrayList;

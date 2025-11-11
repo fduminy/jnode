@@ -41,9 +41,10 @@ public interface ARPService {
      * @param timeout Timeout in milliseconds
      * @return The hardware address
      * @throws TimeoutException If the address could not be resolved within the timeout
+     * @throws org.jnode.driver.net.NetworkException If a network error occurs
      */
     HardwareAddress getHardwareAddress(ProtocolAddress address, ProtocolAddress myAddress,
-                                       Device device, long timeout) throws TimeoutException;
+                                       Device device, long timeout) throws TimeoutException, org.jnode.driver.net.NetworkException;
 
     /**
      * Sets an entry in the ARP cache.
