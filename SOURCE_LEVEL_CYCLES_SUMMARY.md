@@ -119,6 +119,14 @@ Les plugins utilisent des **exports** pour partager du code sans déclarer expli
 
 ## Recommandations
 
+### Progrès Réalisé
+
+**Dépendance éliminée: org.vmmagic → org.jnode.util** (2 imports)
+- Fichiers modifiés:
+  - `MagicUtils.java`: Méthodes de conversion hexadécimale inline (de NumberUtils)
+  - `Address.java`: Import VmType inutilisé supprimé (seulement dans Javadoc)
+- Impact: Réduit les dépendances circulaires de 26 à 24
+
 ### Cycle #1 (VERY_HARD - Bootstrap)
 **Priorité:** Haute (mais complexe)  
 **Effort estimé:** 3-6 mois  
@@ -128,6 +136,21 @@ Les plugins utilisent des **exports** pour partager du code sans déclarer expli
 3. Créer des tests exhaustifs avant toute modification
 4. Procéder par étapes incrémentales
 5. Documenter le processus pour référence future
+
+**Dépendances restantes difficiles à casser:**
+Les 24 dépendances circulaires restantes sont fondamentales à l'architecture:
+- VmThread utilise VmIsolate pour la gestion des isolats
+- Classes VM utilisent VmType pour la gestion des types
+- Système de plugins utilise Version pour la gestion des versions
+- Classes rt utilisent VmIsolate, VmType pour l'intégration VM
+- org.vmmagic utilise VmAddress, VmImpl, VmUtils (essentiels à la magie VM)
+
+**Approche recommandée pour éliminer complètement le cycle:**
+Refactorisation architecturale majeure nécessitant:
+1. Créer des interfaces API séparées sans dépendances circulaires
+2. Réorganiser l'initialisation du bootstrap en phases séquentielles
+3. Utiliser l'injection de dépendances pour briser les cycles au runtime
+4. Mettre à jour tous les descripteurs de plugins pour refléter la nouvelle architecture
 
 ## Utilisation des Outils
 
@@ -151,9 +174,17 @@ Exécuter les deux analyses régulièrement:
 
 ## Conclusion
 
-L'analyse révèle que bien que les descripteurs de plugins soient propres (0 cycles), le code source contient 1 cycle VERY_HARD dans le système de bootstrap - nécessitant une refonte architecturale majeure.
+L'analyse révèle que bien que les descripteurs de plugins soient propres (0 cycles), le code source contient 1 cycle VERY_HARD dans le système de bootstrap.
 
-**Prochaine étape recommandée:** Analyser en détail les dépendances au sein du cycle pour identifier les points de rupture potentiels les moins risqués, puis procéder à une refactorisation incrémentale et bien testée.
+**Progrès réalisé:**
+- Dépendance org.vmmagic → org.jnode.util éliminée (2 imports)
+- Dépendances circulaires réduites de 26 à 24
+- Changements minimaux et chirurgicaux pour éviter de casser le système
+
+**État actuel:**
+Les 24 dépendances circulaires restantes sont fondamentales à l'architecture du bootstrap de JNode et nécessitent une refonte architecturale majeure pour être éliminées complètement.
+
+**Prochaine étape recommandée:** Analyser en détail les dépendances restantes pour identifier d'autres points de rupture potentiels les moins risqués, ou planifier une refactorisation architecturale majeure avec l'équipe de développement.
 
 ---
 
