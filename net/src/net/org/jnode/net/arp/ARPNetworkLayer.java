@@ -29,6 +29,7 @@ import org.jnode.driver.ApiNotFoundException;
 import org.jnode.driver.Device;
 import org.jnode.driver.net.NetDeviceAPI;
 import org.jnode.driver.net.NetworkException;
+import org.jnode.net.ARPService;
 import org.jnode.net.HardwareAddress;
 import org.jnode.net.InvalidLayerException;
 import org.jnode.net.LayerAlreadyRegisteredException;
@@ -46,7 +47,7 @@ import org.jnode.vm.objects.Statistics;
  * @author epr
  */
 @SharedStatics
-public class ARPNetworkLayer implements NetworkLayer {
+public class ARPNetworkLayer implements NetworkLayer, ARPService {
 
     private static final int IPv4_PROTOCOL_SIZE = 4;
 
@@ -212,6 +213,13 @@ public class ARPNetworkLayer implements NetworkLayer {
      */
     public ARPCache getCache() {
         return cache;
+    }
+
+    /**
+     * @see org.jnode.net.ARPService#setCacheEntry(HardwareAddress, ProtocolAddress, boolean)
+     */
+    public void setCacheEntry(HardwareAddress hardwareAddress, ProtocolAddress protocolAddress, boolean permanent) {
+        cache.set(hardwareAddress, protocolAddress, permanent);
     }
 
     /**

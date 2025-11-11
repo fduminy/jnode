@@ -32,7 +32,7 @@ import java.util.Collection;
 import org.jnode.driver.net.NetworkException;
 import org.jnode.net.ProtocolAddress;
 import org.jnode.net.Resolver;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 import org.jnode.annotation.SharedStatics;
 import org.xbill.DNS.ExtendedResolver;
 import org.xbill.DNS.Lookup;

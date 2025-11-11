@@ -22,7 +22,7 @@ package org.jnode.net.ipv4.config.impl;
 
 import org.jnode.driver.Device;
 import org.jnode.driver.net.NetworkException;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 import org.jnode.net.ipv4.config.IPv4ConfigurationService;
 
 /**

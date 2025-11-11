@@ -26,12 +26,13 @@ import org.jnode.driver.ApiNotFoundException;
 import org.jnode.driver.Device;
 import org.jnode.driver.net.NetDeviceAPI;
 import org.jnode.driver.net.NetworkException;
+import org.jnode.net.ARPService;
 import org.jnode.net.HardwareAddress;
+import org.jnode.net.NetworkLayer;
 import org.jnode.net.NoSuchProtocolException;
 import org.jnode.net.SocketBuffer;
-import org.jnode.net.arp.ARPNetworkLayer;
 import org.jnode.net.ethernet.EthernetConstants;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 import org.jnode.net.ipv4.IPv4Constants;
 import org.jnode.net.ipv4.IPv4Header;
 import org.jnode.net.ipv4.IPv4ProtocolAddressInfo;
@@ -48,7 +49,7 @@ public class IPv4Sender implements IPv4Constants, EthernetConstants {
     /** The routing table */
     private final IPv4RoutingTable rt;
     /** The ARP service */
-    private ARPNetworkLayer arp;
+    private ARPService arp;
     /** Timeout for arp requests */
     private long arpTimeout = 5000;
     /** Last identification number */
@@ -207,7 +208,7 @@ public class IPv4Sender implements IPv4Constants, EthernetConstants {
      */
     private HardwareAddress findDstHWAddress(IPv4Route route, IPv4Header hdr, SocketBuffer skbuf)
         throws NetworkException {
-        final ARPNetworkLayer arp = getARP();
+        final ARPService arp = getARP();
         final IPv4Address dstAddr;
         if (hdr.getDestination().isBroadcast()) {
             return null;
@@ -234,7 +235,7 @@ public class IPv4Sender implements IPv4Constants, EthernetConstants {
      */
     private HardwareAddress findDstHWAddress(IPv4Address destination, Device device,
             IPv4Header hdr, SocketBuffer skbuf) throws NetworkException {
-        final ARPNetworkLayer arp = getARP();
+        final ARPService arp = getARP();
         if (destination.isBroadcast()) {
             return null;
         } else {
@@ -299,11 +300,16 @@ public class IPv4Sender implements IPv4Constants, EthernetConstants {
      * Gets the ARP service
      * @return
      */
-    private ARPNetworkLayer getARP() throws NetworkException {
+    private ARPService getARP() throws NetworkException {
         if (arp == null) {
             try {
-                arp = (ARPNetworkLayer) NetUtils.getNLM().getNetworkLayer(
+                NetworkLayer arpLayer = NetUtils.getNLM().getNetworkLayer(
                                 EthernetConstants.ETH_P_ARP);
+                if (arpLayer instanceof ARPService) {
+                    arp = (ARPService) arpLayer;
+                } else {
+                    throw new NetworkException("ARP layer does not implement ARPService");
+                }
             } catch (NoSuchProtocolException ex) {
                 throw new NetworkException("Cannot find ARP layer", ex);
             }

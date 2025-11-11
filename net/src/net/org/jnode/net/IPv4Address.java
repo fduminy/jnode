@@ -18,15 +18,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
  
-package org.jnode.net.ipv4;
+package org.jnode.net;
 
 import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.StringTokenizer;
-import org.jnode.net.ProtocolAddress;
-import org.jnode.net.SocketBuffer;
 import org.jnode.net.ethernet.EthernetConstants;
 
 /**

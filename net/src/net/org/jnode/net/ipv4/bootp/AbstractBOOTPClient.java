@@ -28,7 +28,7 @@ import java.net.NetworkInterface;
 
 import org.apache.log4j.Logger;
 import org.jnode.net.HardwareAddress;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 
 /**
  * System independent base class.

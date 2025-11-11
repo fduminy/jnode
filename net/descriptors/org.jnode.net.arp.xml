@@ -28,7 +28,6 @@
         
   <requires>
     <import plugin="org.jnode.net"/>
-    <import plugin="org.jnode.net.ipv4.core"/>
   </requires>
         
   <runtime>

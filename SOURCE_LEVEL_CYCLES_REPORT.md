@@ -8,33 +8,27 @@ Nombre total de cycles détectés: 2
 
 
 ================================================================================
-DIFFICULTÉ: MEDIUM
+DIFFICULTÉ: EASY
 ================================================================================
 
-Cycle #33: org.jnode.net ↔ org.jnode.net.arp ↔ org.jnode.net.ipv4.core
+Cycle #20: org.jnode.net ↔ org.jnode.net.arp
 --------------------------------------------------------------------------------
-Difficulté: MEDIUM
-Raisonnement: Cycle involves 3 plugins across multiple subsystems - requires extracting common interfaces.
+Difficulté: EASY
+Raisonnement: Simple cycle between two plugins - can be resolved by extracting interfaces to a separate module.
 
 Plugins impliqués:
   - org.jnode.net
     Fichier: net/descriptors/org.jnode.net.xml
     Sous-projet: net
-    Fichiers Java: 42
+    Fichiers Java: 44
   - org.jnode.net.arp
     Fichier: net/descriptors/org.jnode.net.arp.xml
     Sous-projet: net
     Fichiers Java: 8
-  - org.jnode.net.ipv4.core
-    Fichier: net/descriptors/org.jnode.net.ipv4.core.xml
-    Sous-projet: net
-    Fichiers Java: 14
 
 Dépendances circulaires (au niveau du code source):
   org.jnode.net → org.jnode.net.arp
   org.jnode.net.arp → org.jnode.net
-  org.jnode.net.arp → org.jnode.net.ipv4.core
-  org.jnode.net.ipv4.core → org.jnode.net
 
 
 ================================================================================
@@ -139,5 +133,5 @@ STATISTIQUES
 ================================================================================
 
 Total de cycles: 2
-  MEDIUM: 1 cycle(s)
+  EASY: 1 cycle(s)
   VERY_HARD: 1 cycle(s)

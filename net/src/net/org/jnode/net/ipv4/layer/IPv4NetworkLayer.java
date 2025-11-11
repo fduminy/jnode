@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.jnode.driver.Device;
 import org.jnode.driver.net.NetDeviceAPI;
 import org.jnode.driver.net.NetworkException;
+import org.jnode.net.ARPService;
 import org.jnode.net.HardwareAddress;
 import org.jnode.net.InvalidLayerException;
 import org.jnode.net.LayerAlreadyRegisteredException;
@@ -38,9 +39,8 @@ import org.jnode.net.NoSuchProtocolException;
 import org.jnode.net.ProtocolAddress;
 import org.jnode.net.SocketBuffer;
 import org.jnode.net.TransportLayer;
-import org.jnode.net.arp.ARPNetworkLayer;
 import org.jnode.net.ethernet.EthernetConstants;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 import org.jnode.net.ipv4.IPv4Constants;
 import org.jnode.net.ipv4.IPv4FragmentList;
 import org.jnode.net.ipv4.IPv4Header;
@@ -98,7 +98,7 @@ public class IPv4NetworkLayer implements NetworkLayer, IPv4Constants, IPv4Servic
     /**
      * The ARP network layer
      */
-    private ARPNetworkLayer arp;
+    private ARPService arp;
 
     /**
      * Initialize a new instance
@@ -397,7 +397,10 @@ public class IPv4NetworkLayer implements NetworkLayer, IPv4Constants, IPv4Servic
     private void updateARPCache(HardwareAddress hwAddr, ProtocolAddress pAddr) {
         if (arp == null) {
             try {
-                arp = (ARPNetworkLayer) NetUtils.getNLM().getNetworkLayer(EthernetConstants.ETH_P_ARP);
+                NetworkLayer arpLayer = NetUtils.getNLM().getNetworkLayer(EthernetConstants.ETH_P_ARP);
+                if (arpLayer instanceof ARPService) {
+                    arp = (ARPService) arpLayer;
+                }
             } catch (NoSuchProtocolException ex) {
                 log.error("Cannot find ARP layer", ex);
             } catch (NetworkException ex) {
@@ -405,7 +408,7 @@ public class IPv4NetworkLayer implements NetworkLayer, IPv4Constants, IPv4Servic
             }
         }
         if (arp != null) {
-            arp.getCache().set(hwAddr, pAddr, true);
+            arp.setCacheEntry(hwAddr, pAddr, true);
         }
     }
 }

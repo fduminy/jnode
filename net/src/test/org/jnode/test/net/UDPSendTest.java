@@ -23,7 +23,7 @@ package org.jnode.test.net;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 
 /**
  * @author epr
