@@ -28,7 +28,6 @@
         provider-name="JNode.org">
         
   <requires>
-    <import plugin="org.jnode.vm.core"/>
   </requires>
         
   <runtime>
