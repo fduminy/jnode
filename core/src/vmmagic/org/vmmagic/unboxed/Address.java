@@ -14,7 +14,6 @@
 package org.vmmagic.unboxed;
 
 import org.jnode.vm.VmAddress;
-import org.jnode.vm.classmgr.VmType;
 import org.jnode.annotation.KernelSpace;
 import org.jnode.annotation.Uninterruptible;
 
@@ -24,7 +23,7 @@ import org.jnode.annotation.Uninterruptible;
  * <u>JNode specific notes</u> : This class contains some "magic"
  * methods that are interpreted by the VM itself, instead of being executed
  * as normal java methods.  <b>The actual method bodies are never used</b>.
- * See {@link org.jnode.vm.classmgr.VmType VmType} to get the list of "magic" classes
+ * See org.jnode.vm.classmgr.VmType to get the list of "magic" classes
  * and see {@link org.jnode.vm.compiler.BaseMagicHelper.MagicMethod MagicMethod}
  * to get the list of "magic" methods
  * @author Daniel Frampton
