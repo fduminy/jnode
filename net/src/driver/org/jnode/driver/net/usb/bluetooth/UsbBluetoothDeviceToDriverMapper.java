@@ -18,7 +18,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
  
-package org.jnode.driver.net.usb;
+package org.jnode.driver.net.usb.bluetooth;
 
 import org.apache.log4j.Logger;
 import org.jnode.driver.Device;
@@ -28,16 +28,16 @@ import org.jnode.driver.bus.usb.InterfaceDescriptor;
 import org.jnode.driver.bus.usb.USBConfiguration;
 import org.jnode.driver.bus.usb.USBDevice;
 import org.jnode.driver.bus.usb.USBInterface;
-import org.jnode.driver.net.usb.bluetooth.UsbBluetoothDriver;
+import org.jnode.driver.net.usb.UsbNetConstant;
 
 /**
  * This class define driver finder for USB Wireless device.
  * 
  * @author fabien L.
  */
-public class UsbNetDeviceToDriverMapper implements DeviceToDriverMapper, UsbNetConstant {
+public class UsbBluetoothDeviceToDriverMapper implements DeviceToDriverMapper, UsbNetConstant {
 
-    private static final Logger log = Logger.getLogger(UsbNetDeviceToDriverMapper.class);
+    private static final Logger log = Logger.getLogger(UsbBluetoothDeviceToDriverMapper.class);
 
     public Driver findDriver(Device device) {
 

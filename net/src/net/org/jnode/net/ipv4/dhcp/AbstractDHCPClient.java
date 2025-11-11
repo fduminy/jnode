@@ -21,7 +21,7 @@
 package org.jnode.net.ipv4.dhcp;
 
 import org.apache.log4j.Logger;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 import org.jnode.net.ipv4.bootp.AbstractBOOTPClient;
 import org.jnode.net.ipv4.bootp.BOOTPHeader;
 

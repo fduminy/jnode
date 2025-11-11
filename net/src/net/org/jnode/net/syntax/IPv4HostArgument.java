@@ -20,7 +20,7 @@
  
 package org.jnode.net.syntax;
 
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 import org.jnode.shell.CommandLine.Token;
 import org.jnode.shell.syntax.Argument;
 import org.jnode.shell.syntax.CommandSyntaxException;

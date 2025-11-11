@@ -21,7 +21,7 @@
 package org.jnode.net.ipv4.icmp;
 
 import org.jnode.net.SocketBuffer;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 
 /**
  * @author epr

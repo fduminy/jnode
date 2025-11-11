@@ -29,7 +29,7 @@ import org.jnode.driver.net.NetworkException;
 import org.jnode.naming.InitialNaming;
 import org.jnode.net.NoSuchProtocolException;
 import org.jnode.net.ethernet.EthernetConstants;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 import org.jnode.net.ipv4.IPv4ProtocolAddressInfo;
 import org.jnode.net.ipv4.IPv4Route;
 import org.jnode.net.ipv4.IPv4RoutingTable;

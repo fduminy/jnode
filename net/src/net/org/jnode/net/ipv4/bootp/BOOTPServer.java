@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.jnode.nanoxml.XMLElement;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 
 /**
  * @author markhale

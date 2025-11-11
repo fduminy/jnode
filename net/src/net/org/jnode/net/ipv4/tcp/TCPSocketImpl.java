@@ -32,7 +32,7 @@ import java.net.SocketOptions;
 import java.nio.channels.UnresolvedAddressException;
 
 import org.apache.log4j.Logger;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 
 /**
  * @author epr

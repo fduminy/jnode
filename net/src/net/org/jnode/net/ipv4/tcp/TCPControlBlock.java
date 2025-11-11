@@ -25,7 +25,7 @@ import java.net.SocketException;
 import java.util.LinkedList;
 import org.apache.log4j.Logger;
 import org.jnode.net.SocketBuffer;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 import org.jnode.net.ipv4.IPv4Constants;
 import org.jnode.net.ipv4.IPv4ControlBlock;
 import org.jnode.net.ipv4.IPv4Header;

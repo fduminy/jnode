@@ -23,7 +23,7 @@ package org.jnode.net.ipv4.bootp;
 import org.jnode.net.HardwareAddress;
 import org.jnode.net.SocketBuffer;
 import org.jnode.net.ethernet.EthernetAddress;
-import org.jnode.net.ipv4.IPv4Address;
+import org.jnode.net.IPv4Address;
 
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;

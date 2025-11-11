@@ -4,43 +4,7 @@ ANALYSE DES DÉPENDANCES CIRCULAIRES AU NIVEAU DU CODE SOURCE
 
 Nombre total de plugins analysés: 229
 Nombre de plugins avec des fichiers Java: 185
-Nombre total de cycles détectés: 2
-
-
-================================================================================
-DIFFICULTÉ: MEDIUM
-================================================================================
-
-Cycle #34: org.jnode.driver.net.usb.bluetooth ↔ org.jnode.net ↔ org.jnode.net.arp ↔ org.jnode.net.ipv4.core
---------------------------------------------------------------------------------
-Difficulté: MEDIUM
-Raisonnement: Cycle involves 4 plugins across multiple subsystems - requires extracting common interfaces.
-
-Plugins impliqués:
-  - org.jnode.driver.net.usb.bluetooth
-    Fichier: net/descriptors/org.jnode.driver.net.usb.bluetooth.xml
-    Sous-projet: net
-    Fichiers Java: 2
-  - org.jnode.net
-    Fichier: net/descriptors/org.jnode.net.xml
-    Sous-projet: net
-    Fichiers Java: 43
-  - org.jnode.net.arp
-    Fichier: net/descriptors/org.jnode.net.arp.xml
-    Sous-projet: net
-    Fichiers Java: 8
-  - org.jnode.net.ipv4.core
-    Fichier: net/descriptors/org.jnode.net.ipv4.core.xml
-    Sous-projet: net
-    Fichiers Java: 14
-
-Dépendances circulaires (au niveau du code source):
-  org.jnode.driver.net.usb.bluetooth → org.jnode.net
-  org.jnode.net → org.jnode.driver.net.usb.bluetooth
-  org.jnode.net → org.jnode.net.arp
-  org.jnode.net.arp → org.jnode.net
-  org.jnode.net.arp → org.jnode.net.ipv4.core
-  org.jnode.net.ipv4.core → org.jnode.net
+Nombre total de cycles détectés: 1
 
 
 ================================================================================
@@ -144,6 +108,5 @@ Dépendances circulaires (au niveau du code source):
 STATISTIQUES
 ================================================================================
 
-Total de cycles: 2
-  MEDIUM: 1 cycle(s)
+Total de cycles: 1
   VERY_HARD: 1 cycle(s)
