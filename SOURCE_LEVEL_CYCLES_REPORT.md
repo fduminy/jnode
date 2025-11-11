@@ -55,7 +55,6 @@ Plugins impliqués:
     Fichiers Java: 12
 
 Dépendances circulaires (au niveau du code source):
-  org.jnode.plugin → org.jnode.runtime.core
   org.jnode.plugin → org.jnode.util
   org.jnode.plugin → rt.vm
   org.jnode.runtime.core → org.jnode.plugin

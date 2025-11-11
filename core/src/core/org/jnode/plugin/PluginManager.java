@@ -22,8 +22,6 @@ package org.jnode.plugin;
 
 import java.util.List;
 
-import org.jnode.bootlog.BootLogInstance;
-
 /**
  * Interface of manager of all plugins in the system.
  *
@@ -75,10 +73,10 @@ public abstract class PluginManager {
         try {
             plugin.start();
         } catch (PluginException ex) {
-            BootLogInstance.get().error("Error starting " + plugin.getDescriptor().getId());
+            System.err.println("Error starting " + plugin.getDescriptor().getId());
             throw ex;
         } catch (Throwable ex) {
-            BootLogInstance.get().error("Error starting " + plugin.getDescriptor().getId());
+            System.err.println("Error starting " + plugin.getDescriptor().getId());
             throw new PluginException(ex);
         }
     }
@@ -93,14 +91,14 @@ public abstract class PluginManager {
     protected final void stopSinglePlugin(Plugin plugin) throws PluginException {
         try {
             if (plugin.isActive()) {
-                BootLogInstance.get().info("Stopping " + plugin.getDescriptor().getId());
+                System.out.println("[INFO] Stopping " + plugin.getDescriptor().getId());
                 plugin.stop();
             }
         } catch (PluginException ex) {
-            BootLogInstance.get().error("Error stopping " + plugin.getDescriptor().getId());
+            System.err.println("Error stopping " + plugin.getDescriptor().getId());
             throw ex;
         } catch (Throwable ex) {
-            BootLogInstance.get().error("Error stopping " + plugin.getDescriptor().getId());
+            System.err.println("Error stopping " + plugin.getDescriptor().getId());
             throw new PluginException(ex);
         }
     }
