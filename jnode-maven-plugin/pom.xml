@@ -40,31 +40,33 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- JNode plugin model classes - we'll need to copy these from builder -->
-        <dependency>
-            <groupId>org.jnode</groupId>
-            <artifactId>jnode-builder</artifactId>
-            <version>0.2.9-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- Apache Ant - needed for some Ant utilities -->
-        <dependency>
-            <groupId>org.apache.ant</groupId>
-            <artifactId>ant</artifactId>
-            <version>1.10.12</version>
-        </dependency>
-
-        <!-- NanoXML for parsing plugin descriptors -->
-        <dependency>
-            <groupId>nanoxml</groupId>
-            <artifactId>nanoxml</artifactId>
-            <version>2.2.3</version>
-        </dependency>
+        <!-- JNode plugin model classes are sourced from mavenizer (build-time only versions) -->
+        <!-- NanoXML classes are sourced from mavenizer -->
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Add source directories from mavenizer project (simplified build-time only versions) -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${basedir}/../mavenizer/src/main/endorsed</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>

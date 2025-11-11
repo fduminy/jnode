@@ -265,7 +265,7 @@ public class PluginBuildMojo extends AbstractMojo {
     /**
      * Check if the plugin JAR is up to date.
      */
-    private boolean isUpToDate(File descriptorFile, PluginDescriptor descr, File destFile) {
+    private boolean isUpToDate(File descriptorFile, PluginDescriptor descr, File destFile) throws MojoExecutionException {
         if (!destFile.exists()) {
             return false;
         }
