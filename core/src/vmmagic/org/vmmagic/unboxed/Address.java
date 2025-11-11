@@ -14,7 +14,6 @@
 package org.vmmagic.unboxed;
 
 import org.jnode.vm.VmAddress;
-import org.jnode.vm.classmgr.VmType;
 import org.jnode.annotation.KernelSpace;
 import org.jnode.annotation.Uninterruptible;
 
