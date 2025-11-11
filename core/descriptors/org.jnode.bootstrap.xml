@@ -20,25 +20,21 @@
 -->
 <!DOCTYPE plugin SYSTEM "jnode.dtd">
 
-<plugin id="org.jnode.runtime.core" 
-        name="JNode core runtime classes"
+<plugin id="org.jnode.bootstrap" 
+        name="JNode bootstrap utilities (bootlog and naming)"
         version="@VERSION@"
         system="true"
         license-name="lgpl"
         provider-name="JNode.org">
         
   <requires>
-    <import plugin="org.jnode.bootstrap"/>
-    <import plugin="org.jnode.plugin"/>
-    <import plugin="org.jnode.security"/>
+    <!-- No dependencies - this is the foundation layer -->
   </requires>
         
   <runtime>
     <library name="jnode-core.jar">
-      <export name="org.jnode.boot.*"/>
-      <export name="org.jnode.protocol.plugin.*"/>
-      <export name="org.jnode.protocol.system.*"/>
-      <export name="org.jnode.system.event.*"/>
+      <export name="org.jnode.bootlog.*"/>
+      <export name="org.jnode.naming.*"/>
     </library>
   </runtime>
         

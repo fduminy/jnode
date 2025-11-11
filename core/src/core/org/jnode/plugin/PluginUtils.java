@@ -23,6 +23,7 @@ package org.jnode.plugin;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import org.jnode.bootlog.BootLogInstance;
 
 /**
  * Plugin utility methods.
@@ -70,24 +71,22 @@ public class PluginUtils {
         String message = null;
 
         try {
-            // Debug: messageKey with default locale
+            BootLogInstance.get().debug("messageKey=" + messageKey + ", trying with " + Locale.getDefault());
             bundle = ResourceBundle.getBundle(fullName, Locale.getDefault(), loader);
         } catch (MissingResourceException e) {
             try {
-                // Debug: trying with English
+                BootLogInstance.get().debug("trying with " + Locale.ENGLISH);
                 bundle = ResourceBundle.getBundle(fullName, Locale.ENGLISH, loader);
             } catch (MissingResourceException mre) {
-                if (!cleanFallback) {
-                    System.err.println("can't get message");
-                    mre.printStackTrace(System.err);
-                }
+                if (!cleanFallback)
+                    BootLogInstance.get().error("can't get message", mre);
             }
         }
 
-        // Debug: bundle found
+        BootLogInstance.get().debug("bundle=" + bundle);
         if (bundle != null) {
             try {
-                // Debug: got bundle
+                BootLogInstance.get().debug("got bundle " + bundleName);
                 message = bundle.getString(messageKey);
             } catch (MissingResourceException mre) {
                 if (!cleanFallback)
@@ -96,7 +95,7 @@ public class PluginUtils {
         }
 
         if (message == null && !cleanFallback) {
-            System.err.println("can't get message from bundle " + bundleName + " with key " + messageKey);
+            BootLogInstance.get().error("can't get message from bundle " + bundleName + " with key " + messageKey);
         }
 
         return (message == null) ? (cleanFallback ? messageKey : ('?' + messageKey + '?')) : message;

@@ -2,8 +2,8 @@
 ANALYSE DES DÉPENDANCES CIRCULAIRES AU NIVEAU DU CODE SOURCE
 ================================================================================
 
-Nombre total de plugins analysés: 229
-Nombre de plugins avec des fichiers Java: 185
+Nombre total de plugins analysés: 230
+Nombre de plugins avec des fichiers Java: 186
 Nombre total de cycles détectés: 1
 
 
@@ -11,20 +11,16 @@ Nombre total de cycles détectés: 1
 DIFFICULTÉ: VERY_HARD
 ================================================================================
 
-Cycle #109: org.jnode.plugin ↔ org.jnode.runtime.core ↔ org.jnode.runtime.core.resource ↔ org.jnode.util ↔ org.jnode.vm ↔ org.jnode.vm.core ↔ org.vmmagic ↔ rt ↔ rt.vm
+Cycle #108: org.jnode.plugin ↔ org.jnode.runtime.core.resource ↔ org.jnode.util ↔ org.jnode.vm ↔ org.jnode.vm.core ↔ org.vmmagic ↔ rt ↔ rt.vm
 --------------------------------------------------------------------------------
 Difficulté: VERY_HARD
-Raisonnement: Cycle involves 4 VM components and 1 runtime components - requires architectural refactoring of bootstrap system.
+Raisonnement: Cycle involves 4 VM components and 0 runtime components - requires architectural refactoring of bootstrap system.
 
 Plugins impliqués:
   - org.jnode.plugin
     Fichier: core/descriptors/org.jnode.plugin.xml
     Sous-projet: core
     Fichiers Java: 37
-  - org.jnode.runtime.core
-    Fichier: core/descriptors/org.jnode.runtime.core.xml
-    Sous-projet: core
-    Fichiers Java: 17
   - org.jnode.runtime.core.resource
     Fichier: core/descriptors/org.jnode.runtime.core.resource.xml
     Sous-projet: core
@@ -57,22 +53,15 @@ Plugins impliqués:
 Dépendances circulaires (au niveau du code source):
   org.jnode.plugin → org.jnode.util
   org.jnode.plugin → rt.vm
-  org.jnode.runtime.core → org.jnode.plugin
-  org.jnode.runtime.core → org.jnode.runtime.core.resource
-  org.jnode.runtime.core → org.jnode.util
-  org.jnode.runtime.core → org.jnode.vm.core
-  org.jnode.runtime.core → rt
   org.jnode.runtime.core.resource → org.vmmagic
   org.jnode.runtime.core.resource → rt
   org.jnode.util → rt
-  org.jnode.vm → org.jnode.runtime.core
   org.jnode.vm → org.jnode.runtime.core.resource
   org.jnode.vm → org.jnode.util
   org.jnode.vm → org.jnode.vm.core
   org.jnode.vm → org.vmmagic
   org.jnode.vm → rt
   org.jnode.vm.core → org.jnode.plugin
-  org.jnode.vm.core → org.jnode.runtime.core
   org.jnode.vm.core → org.jnode.runtime.core.resource
   org.jnode.vm.core → org.jnode.util
   org.jnode.vm.core → org.jnode.vm
@@ -82,7 +71,6 @@ Dépendances circulaires (au niveau du code source):
   org.vmmagic → org.jnode.util
   org.vmmagic → org.jnode.vm.core
   org.vmmagic → rt
-  rt → org.jnode.runtime.core
   rt → org.jnode.runtime.core.resource
   rt → org.jnode.vm.core
   rt → org.vmmagic

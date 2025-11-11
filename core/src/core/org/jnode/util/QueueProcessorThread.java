@@ -20,6 +20,8 @@
  
 package org.jnode.util;
 
+import org.jnode.bootlog.BootLogInstance;
+
 /**
  * @author epr
  */
@@ -78,8 +80,7 @@ public class QueueProcessorThread<T> extends Thread {
      * @param ex
      */
     protected void handleException(Exception ex) {
-        System.err.println("Exception in QueueProcessor: " + getName());
-        ex.printStackTrace(System.err);
+        BootLogInstance.get().error("Exception in QueueProcessor: " + getName(), ex);
     }
 
     /**
@@ -88,8 +89,7 @@ public class QueueProcessorThread<T> extends Thread {
      * @param ex
      */
     protected void handleError(Error ex) {
-        System.err.println("Error in QueueProcessor: " + getName());
-        ex.printStackTrace(System.err);
+        BootLogInstance.get().error("Error in QueueProcessor: " + getName(), ex);
     }
 
     /**
