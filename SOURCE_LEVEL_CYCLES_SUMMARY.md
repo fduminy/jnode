@@ -9,8 +9,7 @@ Cette analyse examine les dépendances circulaires au **niveau du code source Ja
 
 ### Résultat Principal
 
-**2 cycles détectés au niveau du code source**, classés par difficulté:
-- **1 cycle MEDIUM** (facile à moyen)
+**1 cycle détecté au niveau du code source**, classé par difficulté:
 - **1 cycle VERY_HARD** (très difficile)
 
 ## Méthodologie
@@ -22,49 +21,15 @@ Cette analyse examine les dépendances circulaires au **niveau du code source Ja
 
 ## Cycles Détectés
 
-### 1. MEDIUM - Cycle réseau (4 plugins)
+### 1. VERY_HARD - Cycle du bootstrap système (8 plugins)
 
 ```
-org.jnode.driver.net.usb.bluetooth ↔ org.jnode.net ↔ org.jnode.net.arp ↔ org.jnode.net.ipv4.core
-```
-
-**Plugins impliqués:**
-- `org.jnode.driver.net.usb.bluetooth` (2 fichiers Java)
-- `org.jnode.net` (43 fichiers Java)
-- `org.jnode.net.arp` (8 fichiers Java)
-- `org.jnode.net.ipv4.core` (14 fichiers Java)
-
-**Tous dans le sous-projet:** `net`
-
-**Dépendances circulaires:**
-- org.jnode.driver.net.usb.bluetooth ↔ org.jnode.net (cycle bidirectionnel)
-- org.jnode.net ↔ org.jnode.net.arp (cycle bidirectionnel)
-- org.jnode.net.arp → org.jnode.net.ipv4.core → org.jnode.net (cycle à 3)
-
-**Difficulté:** MEDIUM
-
-**Solution recommandée:**
-1. Extraire les interfaces communes dans un plugin `org.jnode.net.api` ou `org.jnode.net.core.api`
-2. Faire dépendre tous les plugins réseau de ce plugin d'API
-3. Déplacer les implémentations concrètes dans les plugins spécialisés
-4. Cette approche est similaire à ce qui a été fait pour `org.jnode.fs` / `org.jnode.fs.service`
-
-**Impact estimé:** Moyen - nécessite une refactorisation du sous-système réseau mais limité à un seul sous-projet
-
----
-
-### 2. VERY_HARD - Cycle du bootstrap système (10 plugins)
-
-```
-org.jnode.plugin ↔ org.jnode.plugin.impl ↔ org.jnode.runtime.core ↔ 
-org.jnode.runtime.core.resource ↔ org.jnode.util ↔ org.jnode.vm ↔ 
-org.jnode.vm.core ↔ org.vmmagic ↔ rt ↔ rt.vm
+org.jnode.plugin ↔ org.jnode.runtime.core.resource ↔ org.jnode.util ↔ 
+org.jnode.vm ↔ org.jnode.vm.core ↔ org.vmmagic ↔ rt ↔ rt.vm
 ```
 
 **Plugins impliqués (tous dans le sous-projet `core`):**
 - `org.jnode.plugin` (37 fichiers Java)
-- `org.jnode.plugin.impl` (38 fichiers Java)
-- `org.jnode.runtime.core` (17 fichiers Java)
 - `org.jnode.runtime.core.resource` (15 fichiers Java)
 - `org.jnode.util` (43 fichiers Java)
 - `org.jnode.vm` (121 fichiers Java)
@@ -73,7 +38,7 @@ org.jnode.vm.core ↔ org.vmmagic ↔ rt ↔ rt.vm
 - `rt` (111 fichiers Java)
 - `rt.vm` (12 fichiers Java)
 
-**Total: 703 fichiers Java impliqués**
+**Total: 648 fichiers Java impliqués**
 
 **Caractéristiques:**
 - Implique 4 composants VM (vm, vm.core, rt, rt.vm)
@@ -82,25 +47,25 @@ org.jnode.vm.core ↔ org.vmmagic ↔ rt ↔ rt.vm
 - Cycle au cœur du système de bootstrap de JNode
 
 **Dépendances circulaires principales:**
-- **Cycle plugin ↔ runtime**: 
-  - org.jnode.plugin ↔ org.jnode.runtime.core
-  - org.jnode.plugin.impl ↔ org.jnode.runtime.core
+- **Cycle plugin → VM**:
+  - org.jnode.plugin → org.jnode.util
+  - org.jnode.plugin → rt.vm
 - **Cycle runtime ↔ VM**:
-  - org.jnode.runtime.core ↔ org.jnode.vm.core
-  - org.jnode.vm ↔ org.jnode.runtime.core
+  - org.jnode.runtime.core.resource ↔ org.vmmagic
+  - org.jnode.runtime.core.resource ↔ rt
 - **Cycle VM interne**:
   - org.jnode.vm ↔ org.jnode.vm.core
   - rt ↔ rt.vm
 - **Cycle transversal**:
-  - Tous les composants dépendent de org.jnode.util qui dépend de runtime.core
+  - Tous les composants dépendent de org.jnode.util qui dépend de rt
 
 **Difficulté:** VERY_HARD
 
 **Pourquoi c'est difficile:**
 1. **Bootstrap circulaire**: Le système de plugins a besoin du runtime, qui a besoin de la VM, qui a besoin du système de plugins
-2. **Interdépendances profondes**: 43 dépendances circulaires identifiées entre les 10 plugins
+2. **Interdépendances profondes**: 26 dépendances circulaires identifiées entre les 8 plugins
 3. **Code critique**: Ces composants sont au cœur du démarrage et de l'exécution de JNode
-4. **Grande quantité de code**: 703 fichiers Java à analyser et potentiellement refactoriser
+4. **Grande quantité de code**: 648 fichiers Java à analyser et potentiellement refactoriser
 
 **Solution recommandée (refactoring architectural majeur):**
 
@@ -142,9 +107,9 @@ org.jnode.vm.core ↔ org.vmmagic ↔ rt ↔ rt.vm
 - **Conclusion:** La structure des plugins est propre au niveau des descripteurs
 
 ### Analyse du code source (analyze_source_cycles.py)
-- **Résultat:** 2 cycles détectés
+- **Résultat:** 1 cycle détecté
 - **Signification:** Les imports Java créent des dépendances circulaires au niveau du code
-- **Conclusion:** Les cycles existent au niveau de l'implémentation, pas au niveau de l'architecture déclarée
+- **Conclusion:** Le cycle existe au niveau de l'implémentation, pas au niveau de l'architecture déclarée
 
 ### Pourquoi cette différence?
 
@@ -154,25 +119,38 @@ Les plugins utilisent des **exports** pour partager du code sans déclarer expli
 
 ## Recommandations
 
-### Cycle #1 (MEDIUM - Réseau)
-**Priorité:** Moyenne  
-**Effort estimé:** 2-3 semaines  
-**Approche:**
-1. Créer plugin `org.jnode.net.api` avec interfaces communes
-2. Refactoriser les 4 plugins pour utiliser les interfaces
-3. Tester l'ensemble du sous-système réseau
-4. Mettre à jour les descripteurs pour refléter les nouvelles dépendances
+### Progrès Réalisé
 
-### Cycle #2 (VERY_HARD - Bootstrap)
+**Dépendance éliminée: org.vmmagic → org.jnode.util** (2 imports)
+- Fichiers modifiés:
+  - `MagicUtils.java`: Méthodes de conversion hexadécimale inline (de NumberUtils)
+  - `Address.java`: Import VmType inutilisé supprimé (seulement dans Javadoc)
+- Impact: Réduit les dépendances circulaires de 26 à 24
+
+### Cycle #1 (VERY_HARD - Bootstrap)
 **Priorité:** Haute (mais complexe)  
 **Effort estimé:** 3-6 mois  
 **Approche:**
 1. **Ne pas commencer immédiatement** - ce cycle est au cœur du système
-2. D'abord, résoudre le cycle réseau pour gagner de l'expérience
-3. Planifier soigneusement la refactorisation avec l'équipe
-4. Créer des tests exhaustifs avant toute modification
-5. Procéder par étapes incrémentales
-6. Documenter le processus pour référence future
+2. Planifier soigneusement la refactorisation avec l'équipe
+3. Créer des tests exhaustifs avant toute modification
+4. Procéder par étapes incrémentales
+5. Documenter le processus pour référence future
+
+**Dépendances restantes difficiles à casser:**
+Les 24 dépendances circulaires restantes sont fondamentales à l'architecture:
+- VmThread utilise VmIsolate pour la gestion des isolats
+- Classes VM utilisent VmType pour la gestion des types
+- Système de plugins utilise Version pour la gestion des versions
+- Classes rt utilisent VmIsolate, VmType pour l'intégration VM
+- org.vmmagic utilise VmAddress, VmImpl, VmUtils (essentiels à la magie VM)
+
+**Approche recommandée pour éliminer complètement le cycle:**
+Refactorisation architecturale majeure nécessitant:
+1. Créer des interfaces API séparées sans dépendances circulaires
+2. Réorganiser l'initialisation du bootstrap en phases séquentielles
+3. Utiliser l'injection de dépendances pour briser les cycles au runtime
+4. Mettre à jour tous les descripteurs de plugins pour refléter la nouvelle architecture
 
 ## Utilisation des Outils
 
@@ -196,14 +174,17 @@ Exécuter les deux analyses régulièrement:
 
 ## Conclusion
 
-L'analyse révèle que bien que les descripteurs de plugins soient propres (0 cycles), le code source contient 2 cycles:
-1. **1 cycle MEDIUM** dans le sous-système réseau - gérable avec une refactorisation ciblée
-2. **1 cycle VERY_HARD** dans le système de bootstrap - nécessite une refonte architecturale majeure
+L'analyse révèle que bien que les descripteurs de plugins soient propres (0 cycles), le code source contient 1 cycle VERY_HARD dans le système de bootstrap.
 
-**Prochaine étape recommandée:** Résoudre le cycle réseau (MEDIUM) en priorité pour:
-- Valider l'approche de refactorisation
-- Créer un modèle réutilisable pour résoudre les cycles
-- Réduire le nombre total de cycles avant d'attaquer le cycle du bootstrap
+**Progrès réalisé:**
+- Dépendance org.vmmagic → org.jnode.util éliminée (2 imports)
+- Dépendances circulaires réduites de 26 à 24
+- Changements minimaux et chirurgicaux pour éviter de casser le système
+
+**État actuel:**
+Les 24 dépendances circulaires restantes sont fondamentales à l'architecture du bootstrap de JNode et nécessitent une refonte architecturale majeure pour être éliminées complètement.
+
+**Prochaine étape recommandée:** Analyser en détail les dépendances restantes pour identifier d'autres points de rupture potentiels les moins risqués, ou planifier une refactorisation architecturale majeure avec l'équipe de développement.
 
 ---
 

@@ -21,7 +21,6 @@
  
 package org.vmmagic.unboxed;
 
-import org.jnode.util.NumberUtils;
 import org.jnode.vm.VmImpl;
 import org.jnode.vm.facade.VmUtils;
 
@@ -41,9 +40,9 @@ public final class MagicUtils {
      */
     public static String toString(Address v) {
         if (getRefSize() == 4) {
-            return NumberUtils.hex(v.toInt());
+            return hex(v.toInt());
         } else {
-            return NumberUtils.hex(v.toLong());            
+            return hex(v.toLong());            
         }
     }
     
@@ -54,9 +53,9 @@ public final class MagicUtils {
      */
     public static String toString(Extent v) {
         if (getRefSize() == 4) {
-            return NumberUtils.hex(v.toInt());
+            return hex(v.toInt());
         } else {
-            return NumberUtils.hex(v.toLong());            
+            return hex(v.toLong());            
         }
     }
     
@@ -67,9 +66,9 @@ public final class MagicUtils {
      */
     public static String toString(Offset v) {
         if (getRefSize() == 4) {
-            return NumberUtils.hex(v.toInt());
+            return hex(v.toInt());
         } else {
-            return NumberUtils.hex(v.toLong());            
+            return hex(v.toLong());            
         }
     }
     
@@ -80,9 +79,9 @@ public final class MagicUtils {
      */
     public static String toString(Word v) {
         if (getRefSize() == 4) {
-            return NumberUtils.hex(v.toInt());
+            return hex(v.toInt());
         } else {
-            return NumberUtils.hex(v.toLong());            
+            return hex(v.toLong());            
         }
     }
     
@@ -91,6 +90,116 @@ public final class MagicUtils {
             refSize = VmUtils.getVm().getArch().getReferenceSize();
         }
         return refSize;
+    }
+    
+    /**
+     * Gets the hexadecimal representation of the given number that is
+     * 8 digits long.
+     *
+     * @param number
+     * @return String
+     */
+    private static String hex(int number) {
+        return hex(number, 8);
+    }
+
+    /**
+     * Gets the hexadecimal representation of the given number that is
+     * 16 digits long.
+     *
+     * @param number
+     * @return String
+     */
+    private static String hex(long number) {
+        return hex(number, 16);
+    }
+
+    /**
+     * Gets the hexadecimal representation of the given number. The result is
+     * prefixed with '0' until the given length is reached.
+     *
+     * @param number
+     * @param length
+     * @return String
+     */
+    private static String hex(int number, int length) {
+        StringBuilder buf = new StringBuilder(length);
+        int2HexString(buf, number);
+        return prefixZero(buf, length);
+    }
+
+    /**
+     * Gets the hexadecimal representation of the given number. The result is
+     * prefixed with '0' until the given length is reached.
+     *
+     * @param number
+     * @param length
+     * @return String
+     */
+    private static String hex(long number, int length) {
+        StringBuilder buf = new StringBuilder(length);
+        long2HexString(buf, number);
+        return prefixZero(buf, length);
+    }
+
+    /**
+     * Convert the given integer to its hexadecimal representation.
+     * 
+     * @param buf the buffer to append to
+     * @param value the value to convert
+     */
+    private static void int2HexString(StringBuilder buf, int value) {
+        int rem = value & 0x0F;
+        int q = value >>> 4;
+        if (q != 0) {
+            int2HexString(buf, q);
+        }
+
+        if (rem < 10) {
+            buf.append((char) ('0' + rem));
+        } else {
+            buf.append((char) ('A' + rem - 10));
+        }
+    }
+
+    /**
+     * Convert the given long to its hexadecimal representation.
+     * 
+     * @param buf the buffer to append to
+     * @param value the value to convert
+     */
+    private static void long2HexString(StringBuilder buf, long value) {
+        int rem = (int) (value & 0x0FL);
+        long q = value >>> 4;
+        if (q != 0) {
+            long2HexString(buf, q);
+        }
+
+        if (rem < 10) {
+            buf.append((char) ('0' + rem));
+        } else {
+            buf.append((char) ('A' + rem - 10));
+        }
+    }
+
+    /**
+     * Prefix with zeros or truncate to achieve the desired length.
+     * 
+     * @param v the buffer
+     * @param length the desired length
+     * @return the resulting string
+     */
+    private static String prefixZero(StringBuilder v, int length) {
+        if (v.length() > length) {
+            // truncate leading chars
+            return v.substring(v.length() - length);
+        } else {
+            // insert leading '0's
+            while (v.length() < length) {
+                v.insert(0, '0');
+            }
+            return v.toString();
+        }
     }
     
 }
