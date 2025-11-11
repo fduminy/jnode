@@ -11,7 +11,7 @@ Nombre total de cycles détectés: 1
 DIFFICULTÉ: VERY_HARD
 ================================================================================
 
-Cycle #110: org.jnode.plugin ↔ org.jnode.plugin.impl ↔ org.jnode.runtime.core ↔ org.jnode.runtime.core.resource ↔ org.jnode.util ↔ org.jnode.vm ↔ org.jnode.vm.core ↔ org.vmmagic ↔ rt ↔ rt.vm
+Cycle #109: org.jnode.plugin ↔ org.jnode.runtime.core ↔ org.jnode.runtime.core.resource ↔ org.jnode.util ↔ org.jnode.vm ↔ org.jnode.vm.core ↔ org.vmmagic ↔ rt ↔ rt.vm
 --------------------------------------------------------------------------------
 Difficulté: VERY_HARD
 Raisonnement: Cycle involves 4 VM components and 1 runtime components - requires architectural refactoring of bootstrap system.
@@ -21,10 +21,6 @@ Plugins impliqués:
     Fichier: core/descriptors/org.jnode.plugin.xml
     Sous-projet: core
     Fichiers Java: 37
-  - org.jnode.plugin.impl
-    Fichier: core/descriptors/org.jnode.plugin.impl.xml
-    Sous-projet: core
-    Fichiers Java: 38
   - org.jnode.runtime.core
     Fichier: core/descriptors/org.jnode.runtime.core.xml
     Sous-projet: core
@@ -62,21 +58,13 @@ Dépendances circulaires (au niveau du code source):
   org.jnode.plugin → org.jnode.runtime.core
   org.jnode.plugin → org.jnode.util
   org.jnode.plugin → rt.vm
-  org.jnode.plugin.impl → org.jnode.plugin
-  org.jnode.plugin.impl → org.jnode.runtime.core
-  org.jnode.plugin.impl → org.jnode.util
-  org.jnode.plugin.impl → org.jnode.vm.core
-  org.jnode.plugin.impl → rt
-  org.jnode.plugin.impl → rt.vm
   org.jnode.runtime.core → org.jnode.plugin
-  org.jnode.runtime.core → org.jnode.plugin.impl
   org.jnode.runtime.core → org.jnode.runtime.core.resource
   org.jnode.runtime.core → org.jnode.util
   org.jnode.runtime.core → org.jnode.vm.core
   org.jnode.runtime.core → rt
   org.jnode.runtime.core.resource → org.vmmagic
   org.jnode.runtime.core.resource → rt
-  org.jnode.util → org.jnode.runtime.core
   org.jnode.util → rt
   org.jnode.vm → org.jnode.runtime.core
   org.jnode.vm → org.jnode.runtime.core.resource

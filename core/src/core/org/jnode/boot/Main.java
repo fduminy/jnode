@@ -20,6 +20,7 @@
  
 package org.jnode.boot;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -30,7 +31,6 @@ import org.jnode.bootlog.BootLogInstance;
 import org.jnode.plugin.PluginDescriptor;
 import org.jnode.plugin.PluginManager;
 import org.jnode.plugin.PluginRegistry;
-import org.jnode.plugin.manager.DefaultPluginManager;
 import org.jnode.vm.Unsafe;
 import org.jnode.vm.VmSystem;
 
@@ -73,7 +73,7 @@ public final class Main {
             List<PluginDescriptor> descriptors = proc.loadPlugins(pluginRegistry);
 
             BootLogInstance.get().info("Starting PluginManager");
-            final PluginManager piMgr = new DefaultPluginManager(pluginRegistry);
+            final PluginManager piMgr = createPluginManager(pluginRegistry);
             piMgr.startSystemPlugins(descriptors);
 
             final ClassLoader loader = pluginRegistry.getPluginsClassLoader();
@@ -120,5 +120,21 @@ public final class Main {
                 // Ignore
             }
         }
+    }
+
+    /**
+     * Create a PluginManager instance using reflection to avoid direct dependency
+     * on org.jnode.plugin.impl package.
+     *
+     * @param registry The plugin registry
+     * @return A new PluginManager instance
+     * @throws Exception if the PluginManager cannot be created
+     */
+    private static PluginManager createPluginManager(PluginRegistry registry) throws Exception {
+        // Use reflection to instantiate DefaultPluginManager without importing it
+        final ClassLoader loader = registry.getPluginsClassLoader();
+        final Class<?> managerClass = loader.loadClass("org.jnode.plugin.manager.DefaultPluginManager");
+        final Constructor<?> constructor = managerClass.getConstructor(PluginRegistry.class);
+        return (PluginManager) constructor.newInstance(registry);
     }
 }
