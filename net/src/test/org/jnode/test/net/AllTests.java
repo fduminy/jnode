@@ -18,7 +18,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
  
-package org.jnode.net;
+package org.jnode.test.net;
 
 import org.jnode.net.arp.ARPHeaderTest;
 import org.jnode.net.ethernet.EthernetAddressTest;

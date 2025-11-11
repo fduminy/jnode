@@ -4,31 +4,7 @@ ANALYSE DES DÉPENDANCES CIRCULAIRES AU NIVEAU DU CODE SOURCE
 
 Nombre total de plugins analysés: 229
 Nombre de plugins avec des fichiers Java: 185
-Nombre total de cycles détectés: 2
-
-
-================================================================================
-DIFFICULTÉ: EASY
-================================================================================
-
-Cycle #20: org.jnode.net ↔ org.jnode.net.arp
---------------------------------------------------------------------------------
-Difficulté: EASY
-Raisonnement: Simple cycle between two plugins - can be resolved by extracting interfaces to a separate module.
-
-Plugins impliqués:
-  - org.jnode.net
-    Fichier: net/descriptors/org.jnode.net.xml
-    Sous-projet: net
-    Fichiers Java: 44
-  - org.jnode.net.arp
-    Fichier: net/descriptors/org.jnode.net.arp.xml
-    Sous-projet: net
-    Fichiers Java: 8
-
-Dépendances circulaires (au niveau du code source):
-  org.jnode.net → org.jnode.net.arp
-  org.jnode.net.arp → org.jnode.net
+Nombre total de cycles détectés: 1
 
 
 ================================================================================
@@ -132,6 +108,5 @@ Dépendances circulaires (au niveau du code source):
 STATISTIQUES
 ================================================================================
 
-Total de cycles: 2
-  EASY: 1 cycle(s)
+Total de cycles: 1
   VERY_HARD: 1 cycle(s)
