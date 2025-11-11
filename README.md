@@ -63,13 +63,21 @@ The build will result in the following files:
 
 ## Plugin Dependency Analysis
 
-To analyze circular dependencies between plugins, use the included analysis script:
+To analyze circular dependencies between plugins, use the included analysis scripts:
 
+### Plugin Descriptor Analysis
 ```bash
 python3 analyze_plugin_cycles.py
 ```
+Analyzes explicit `<import plugin="..."/>` declarations in plugin descriptors. Generates `CIRCULAR_DEPENDENCIES_REPORT.md`.
 
-This will generate a report showing any circular dependencies in the plugin system. For detailed analysis of historical cycles and their resolutions, see [CIRCULAR_DEPENDENCIES_ANALYSIS.md](CIRCULAR_DEPENDENCIES_ANALYSIS.md).
+### Source Code Analysis
+```bash
+python3 analyze_source_cycles.py
+```
+Analyzes Java import statements in source files to detect cycles at the code level. Generates `SOURCE_LEVEL_CYCLES_REPORT.md` and `SOURCE_LEVEL_CYCLES_SUMMARY.md`.
+
+For detailed analysis of historical cycles and their resolutions, see [CIRCULAR_DEPENDENCIES_ANALYSIS.md](CIRCULAR_DEPENDENCIES_ANALYSIS.md).
 
 ## Questions
 
