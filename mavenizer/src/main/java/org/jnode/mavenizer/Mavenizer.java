@@ -30,33 +30,9 @@ public class Mavenizer {
     protected static final String MAVEN_PLUGINS_DIR = "maven_plugins";
     protected static final String MAVEN_MIGRATION_DIR = "maven";
 
-    // for faster process, use memory filesystem
-//    static final DestinationRoot DEST_ROOT = destinationRoot(get("/dev", "shm", "jnode_maven"));
     static final DestinationRoot DEST_ROOT = destinationRoot(get("..", "jnode_mavenized"));
-    //    private static final DestinationRoot DEST_ROOT = destinationRoot(get(JNODE_HOME, "/jnode_maven"));
-    static final Predicate<Project> PROJECT_FILTER = other -> true; //Project.FS.equals(other) || Project.Core.equals(other);
-    static final List<String> NON_CYCLIC_DEPENDENCIES;
-    static {
-        try {
-            NON_CYCLIC_DEPENDENCIES = readAllLines(
-                Paths.get(Mavenizer.class.getResource("non_cyclic_artifacts.properties").getFile()));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    static final Predicate<PluginInfo> PLUGIN_FILTER = pluginInfo -> {
-//        List<String> plugins = asList(
-//            "org.jnode.driver.block", "org.jnode.fs", "org.jnode.partitions", "org.jnode.fs.service",
-//            "org.jnode.fs.jarfs");
-        //plugins.contains(pluginInfo.getId());
-
-//        List<String> corePlugins = asList("org.jnode.driver", "org.jnode.util", "rt.vm");
-//        return Project.FS.equals(pluginInfo.getProject()) || (Project.Core.equals(pluginInfo.getProject()) && corePlugins.contains(pluginInfo.getId()));
-
-//        return NON_CYCLIC_DEPENDENCIES.contains(pluginInfo.getId());
-        return true;
-    };
+    static final Predicate<Project> PROJECT_FILTER = other -> true;
+    static final Predicate<PluginInfo> PLUGIN_FILTER = pluginInfo -> true;
 
     public static void main(String[] args) throws IOException {
         Log.debug("Migration from " + SRC_ROOT + " to " + DEST_ROOT);
@@ -64,9 +40,6 @@ public class Mavenizer {
 
         new RootPOMWriter(DEST_ROOT).write();
         PluginInfos pluginInfos = findPlugins();
-
-        // Créer le module jnode-api pour briser les dépendances circulaires
-        new JNodeApiPOMWriter(DEST_ROOT).write();
 
         writeProjectPOMs(pluginInfos);
         buildPluginProjects(pluginInfos);
@@ -79,10 +52,8 @@ public class Mavenizer {
         PluginPOMWriter pluginPOMWriter = new PluginPOMWriter(ANT_PROJECT, DEST_ROOT);
         PluginDescriptorCopier pluginDescriptorCopier = new PluginDescriptorCopier(SRC_ROOT, DEST_ROOT);
         SourceCopier sourceCopier = new SourceCopier(ANT_PROJECT, SRC_ROOT, DEST_ROOT);
-        CircularDependencyFilter circularDependencyFilter = new CircularDependencyFilter(pluginInfos);
         pluginInfos.plugins().stream().filter(PLUGIN_FILTER).forEach(pluginInfo -> {
             addMissingDependencies(pluginInfo, missingDependencyFinder.findMissingDependencies(pluginInfo));
-            circularDependencyFilter.filterCircularDependencies(pluginInfo);
             pluginPOMWriter.write(pluginInfos, pluginInfo);
             pluginDescriptorCopier.copy(pluginInfo);
             sourceCopier.copy(pluginInfo);
@@ -91,10 +62,24 @@ public class Mavenizer {
 
     private static void addMissingDependencies(PluginInfo pluginInfo, SortedSet<String> missingDependencies) {
         if (!pluginInfo.isThirdParty()) {
-            missingDependencies.forEach(missingDependency -> {
-                Log.debug("Adding missing dependency " + pluginInfo.getId() + "->" + missingDependency );
-                pluginInfo.getPluginDescriptor().addPrerequisite(missingDependency);
-            });
+            Properties thirdPartyArtifacts = new Properties();
+            try {
+                thirdPartyArtifacts.load(PluginPOMWriter.class.getResourceAsStream("third_party_artifacts.properties"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            missingDependencies.clear();
+
+            String property = thirdPartyArtifacts.getProperty("missing.dependencies." + pluginInfo.getId(), "");
+            if (property != null && !property.trim().isEmpty()) {
+                String[] deps = property.split(",");
+                missingDependencies.addAll(asList(deps));
+                missingDependencies
+                    .forEach(missingDependency -> {
+                        Log.debug("Adding missing dependency " + pluginInfo.getId() + "->" + missingDependency );
+                        pluginInfo.getPluginDescriptor().addPrerequisite(missingDependency);
+                    });
+            }
         }
     }
 

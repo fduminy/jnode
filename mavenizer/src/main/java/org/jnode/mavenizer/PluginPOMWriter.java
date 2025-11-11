@@ -95,7 +95,7 @@ public class PluginPOMWriter extends AbstractPOMWriter {
         }
 
         Path libDirectory = get("${project.basedir}", "lib");
-        return new String[]{"org.jnode.provided.library", pluginInfo.getId(), "1.0.0",
+        return new String[]{"org.jnode.provided.library", pluginInfo.getId(), "0.2.9-dev",
             "system", libDirectory.resolve(libraryFile.getFileName().toString()).toString()};
     }
 
