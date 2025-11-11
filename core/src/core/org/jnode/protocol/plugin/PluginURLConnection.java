@@ -22,17 +22,17 @@ package org.jnode.protocol.plugin;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.ByteBuffer;
 
 import javax.naming.NameNotFoundException;
 
 import org.jnode.naming.InitialNaming;
 import org.jnode.plugin.PluginDescriptor;
 import org.jnode.plugin.PluginManager;
-import org.jnode.plugin.model.PluginDescriptorModel;
-import org.jnode.plugin.model.PluginJar;
 import org.jnode.util.ByteBufferInputStream;
 
 /**
@@ -42,7 +42,7 @@ public class PluginURLConnection extends URLConnection {
 
     private final String pluginId;
     private final String path;
-    private transient PluginJar jarFile;
+    private transient Object jarFile;
 
     /**
      * @param url
@@ -74,9 +74,17 @@ public class PluginURLConnection extends URLConnection {
             if (descr == null) {
                 throw new IOException("Plugin " + pluginId + " not found");
             }
-            this.jarFile = ((PluginDescriptorModel) descr).getJarFile();
-            if (this.jarFile == null) {
-                throw new IOException("Plugin jarfile not found");
+            // Use reflection to get the jar file without direct dependency on plugin.model package
+            try {
+                Method getJarFileMethod = descr.getClass().getMethod("getJarFile");
+                this.jarFile = getJarFileMethod.invoke(descr);
+                if (this.jarFile == null) {
+                    throw new IOException("Plugin jarfile not found");
+                }
+            } catch (Exception ex) {
+                IOException ioe = new IOException("Cannot access plugin jar file");
+                ioe.initCause(ex);
+                throw ioe;
             }
         } catch (NameNotFoundException ex) {
             final IOException ioe = new IOException("Cannot find plugin manager");
@@ -92,6 +100,15 @@ public class PluginURLConnection extends URLConnection {
         if (jarFile == null) {
             connect();
         }
-        return new ByteBufferInputStream(jarFile.getResourceAsBuffer(path));
+        // Use reflection to call getResourceAsBuffer without direct dependency
+        try {
+            Method getResourceMethod = jarFile.getClass().getMethod("getResourceAsBuffer", String.class);
+            ByteBuffer buffer = (ByteBuffer) getResourceMethod.invoke(jarFile, path);
+            return new ByteBufferInputStream(buffer);
+        } catch (Exception ex) {
+            IOException ioe = new IOException("Cannot read resource from plugin jar");
+            ioe.initCause(ex);
+            throw ioe;
+        }
     }
 }

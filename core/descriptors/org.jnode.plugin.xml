@@ -28,6 +28,7 @@
         provider-name="JNode.org">
         
   <requires>
+    <import plugin="org.jnode.bootstrap"/>
   </requires>
         
   <runtime>

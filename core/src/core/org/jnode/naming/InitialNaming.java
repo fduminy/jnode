@@ -26,8 +26,6 @@ import javax.naming.NameAlreadyBoundException;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
-import org.jnode.annotation.SharedStatics;
-
 /**
  * This class provides a namespace that is used by the JNode system. Various
  * services are bound into this namespace. <p/>A service bound into this
@@ -39,7 +37,6 @@ import org.jnode.annotation.SharedStatics;
  *
  * @author epr
  */
-@SharedStatics
 public final class InitialNaming {
 
     /**
