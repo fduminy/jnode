@@ -8,6 +8,17 @@ This script:
 3. Builds a dependency graph
 4. Detects all circular dependencies using Tarjan's algorithm
 5. Sorts cycles by difficulty to fix
+
+Usage:
+    python3 analyze_plugin_cycles.py
+
+The script will:
+- Scan all plugin descriptors in */descriptors/*.xml (excluding all/build)
+- Analyze <requires><import plugin="..."/> dependencies
+- Detect any circular dependencies
+- Generate CIRCULAR_DEPENDENCIES_REPORT.md with findings
+
+For more information, see CIRCULAR_DEPENDENCIES_ANALYSIS.md
 """
 
 import os
