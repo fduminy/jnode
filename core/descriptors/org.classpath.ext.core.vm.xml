@@ -23,7 +23,7 @@
 <fragment id="org.classpath.ext.core.vm"
   name="Classpath AWT classes"
   version="@VERSION@"
-  plugin-id="rt"
+  plugin-id="rt.vm"
   plugin-version="@VERSION@"
   provider-name="Classpath"
   provider-url="http://classpath.org"
