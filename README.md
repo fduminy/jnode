@@ -61,6 +61,24 @@ The build will result in the following files:
 - For information about plugin list files, naming conventions (including disabled lists) and how plugin-lists map to GRUB menu entries, see [Plugin list documentation](docs/plugins/plugin-list.md).
 - For information about individual plugin descriptors and usage, see [Plugin documentation](docs/plugins/plugin.md).
 
+## Plugin Dependency Analysis
+
+To analyze circular dependencies between plugins, use the included analysis scripts:
+
+### Plugin Descriptor Analysis
+```bash
+python3 analyze_plugin_cycles.py
+```
+Analyzes explicit `<import plugin="..."/>` declarations in plugin descriptors. Generates `CIRCULAR_DEPENDENCIES_REPORT.md`.
+
+### Source Code Analysis
+```bash
+python3 analyze_source_cycles.py
+```
+Analyzes Java import statements in source files to detect cycles at the code level. Generates `SOURCE_LEVEL_CYCLES_REPORT.md` and `SOURCE_LEVEL_CYCLES_SUMMARY.md`.
+
+For detailed analysis of historical cycles and their resolutions, see [CIRCULAR_DEPENDENCIES_ANALYSIS.md](CIRCULAR_DEPENDENCIES_ANALYSIS.md).
+
 ## Questions
 
 If you have any questions, please post them to the forums at www.jnode.org
