@@ -11,20 +11,16 @@ Nombre total de cycles détectés: 2
 DIFFICULTÉ: MEDIUM
 ================================================================================
 
-Cycle #34: org.jnode.driver.net.usb.bluetooth ↔ org.jnode.net ↔ org.jnode.net.arp ↔ org.jnode.net.ipv4.core
+Cycle #33: org.jnode.net ↔ org.jnode.net.arp ↔ org.jnode.net.ipv4.core
 --------------------------------------------------------------------------------
 Difficulté: MEDIUM
-Raisonnement: Cycle involves 4 plugins across multiple subsystems - requires extracting common interfaces.
+Raisonnement: Cycle involves 3 plugins across multiple subsystems - requires extracting common interfaces.
 
 Plugins impliqués:
-  - org.jnode.driver.net.usb.bluetooth
-    Fichier: net/descriptors/org.jnode.driver.net.usb.bluetooth.xml
-    Sous-projet: net
-    Fichiers Java: 2
   - org.jnode.net
     Fichier: net/descriptors/org.jnode.net.xml
     Sous-projet: net
-    Fichiers Java: 43
+    Fichiers Java: 42
   - org.jnode.net.arp
     Fichier: net/descriptors/org.jnode.net.arp.xml
     Sous-projet: net
@@ -35,8 +31,6 @@ Plugins impliqués:
     Fichiers Java: 14
 
 Dépendances circulaires (au niveau du code source):
-  org.jnode.driver.net.usb.bluetooth → org.jnode.net
-  org.jnode.net → org.jnode.driver.net.usb.bluetooth
   org.jnode.net → org.jnode.net.arp
   org.jnode.net.arp → org.jnode.net
   org.jnode.net.arp → org.jnode.net.ipv4.core
