@@ -2,7 +2,7 @@
 ANALYSE DES DÉPENDANCES CIRCULAIRES ENTRE LES PLUGINS JNODE
 ================================================================================
 
-Nombre total de plugins analysés: 210
+Nombre total de plugins analysés: 212
 Nombre total de cycles détectés: 0
 
 ✅ RÉSULTAT: Aucun cycle de dépendance détecté dans les imports de plugins!
