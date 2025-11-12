@@ -28,6 +28,10 @@
   provider-url="http://classpath.org"
   license-name="classpath">
 
+  <requires>
+    <import plugin="org.jnode.annotation"/>
+  </requires>
+
   <runtime>
     <library name="classlib.jar">
 	  <export name="com.sun.beans.*"/>
@@ -185,7 +189,6 @@
       <export name="org.xml.sax.*"/>
       
       <export name="org.jnode.java.io.*"/>
-      <export name="org.jnode.annotation.*"/>
 
       <export name="org.w3c.dom.*"/>
       <export name="org.w3c.dom.bootstrap.*"/>
