@@ -68,6 +68,7 @@ Dépendances circulaires (au niveau du code source):
   org.jnode.vm.core → org.vmmagic
   org.jnode.vm.core → rt
   org.jnode.vm.core → rt.vm
+  org.vmmagic → org.jnode.vm.core
   org.vmmagic → rt
   rt → org.jnode.runtime.core.resource
   rt → org.jnode.vm.core

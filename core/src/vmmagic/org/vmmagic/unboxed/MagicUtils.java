@@ -21,9 +21,6 @@
  
 package org.vmmagic.unboxed;
 
-import org.jnode.vm.VmImpl;
-import org.jnode.vm.facade.VmUtils;
-
 /**
  * Utility class for magic classes.
  * 
@@ -85,9 +82,18 @@ public final class MagicUtils {
         }
     }
     
+    /**
+     * Gets the reference size for this architecture.
+     * The reference size is provided via the system property "jnode.arch.refsize"
+     * which is set during VM initialization. If the property is not set, 
+     * defaults to 8 bytes (64-bit).
+     * 
+     * @return the reference size in bytes (4 or 8)
+     */
     private static final int getRefSize() {
         if (refSize == 0) {
-            refSize = VmUtils.getVm().getArch().getReferenceSize();
+            String prop = System.getProperty("jnode.arch.refsize");
+            refSize = (prop != null) ? Integer.parseInt(prop) : 8; // default to 64-bit
         }
         return refSize;
     }

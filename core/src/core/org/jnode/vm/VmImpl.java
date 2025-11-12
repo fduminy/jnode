@@ -125,6 +125,9 @@ final class VmImpl extends VmSystemObject implements Statistics, org.jnode.vm.fa
         this.debugMode = debugMode;
         this.bootstrap = true;
         this.arch = arch;
+        // Set architecture reference size as system property for use by MagicUtils
+        // This breaks the circular dependency: org.vmmagic → org.jnode.vm.core
+        System.setProperty("jnode.arch.refsize", String.valueOf(arch.getReferenceSize()));
         final HeapHelper helper = new HeapHelperImpl(arch);
         VmUtils.setVm(this);
         this.heapManager = createHeapManager(helper, arch, loader, pluginReg);
