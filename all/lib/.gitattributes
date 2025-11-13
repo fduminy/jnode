@@ -1,0 +1,2 @@
+classlib.jar filter=lfs diff=lfs merge=lfs -text
+classlib-src.jar filter=lfs diff=lfs merge=lfs -text

@@ -53,6 +53,7 @@
 	<pathelement location="${my-src.dir}/openjdk/svm"/>
     <pathelement location="${my-src.dir}/icedtea"/>
     <pathelement location="${my-src.dir}/classlib"/>
+    <pathelement location="${my-src.dir}/annotation"/>
   </path>
   <path id="classpath-sources-vm">
     <pathelement location="${my-src.dir}/classpath/ext"/>  
