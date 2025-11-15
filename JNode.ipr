@@ -16,6 +16,9 @@
   <component name="AskMigrationStateService">
     <option name="migrationStatus" value="COMPLETED" />
   </component>
+  <component name="Black">
+    <option name="sdkName" value="Python 3.13 (jnode)" />
+  </component>
   <component name="BuildJarProjectSettings">
     <option name="BUILD_JARS_ON_MAKE" value="false" />
   </component>
