@@ -30,6 +30,7 @@ import org.jnode.annotation.Uninterruptible;
 import org.jnode.vm.classmgr.VmType;
 import org.jnode.vm.objects.Counter;
 import org.jnode.vm.objects.Statistic;
+import org.vmmagic.unboxed.MagicUtils;
 
 /**
  * Utility class to share some Vm features.
@@ -90,6 +91,7 @@ public class VmUtils {
             throw new SecurityException("Vm instance already set");
         }
         VM_INSTANCE = vm;
+        MagicUtils.setRefSize(vm.getArch().getReferenceSize());
     }
 
     /**

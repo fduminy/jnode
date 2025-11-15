@@ -656,7 +656,7 @@ public abstract class VmMethod extends VmMember implements VmSharedStaticsEntry 
         if (nativeCode == null) {
             System.err.println("nativeCode == null in " + this);
         } else {
-            final int ptr = Address.fromAddress(nativeCode).toInt();
+            final int ptr = VmAddress.fromAddress(nativeCode).toInt();
             if ((ptr < 0) || (Math.abs(ptr) < 4096)) {
                 System.err.println("nativeCode has low address " + ptr + " in "
                     + this);

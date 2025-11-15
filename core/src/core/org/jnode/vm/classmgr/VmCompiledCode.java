@@ -171,7 +171,7 @@ public final class VmCompiledCode extends AbstractCode {
      * @return The index, or -1 is not found.
      */
     public final int getAddressMapIndex(Address instrPtr) {
-        final Address codeAddr = Address.fromAddress(nativeCode);
+        final Address codeAddr = VmAddress.fromAddress(nativeCode);
         final int offset = instrPtr.toWord().sub(codeAddr.toWord()).toInt();
         return addressTable.getIndexForOffset(offset);
     }
@@ -196,7 +196,7 @@ public final class VmCompiledCode extends AbstractCode {
      * @return boolean
      */
     public boolean contains(Address codePtr) {
-        final Address start = Address.fromAddress(nativeCode);
+        final Address start = VmAddress.fromAddress(nativeCode);
         final Address end = start.add(nativeCodeSize1);
 
         return codePtr.GE(start) && codePtr.LT(end);

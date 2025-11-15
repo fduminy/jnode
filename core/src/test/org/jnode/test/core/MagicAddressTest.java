@@ -34,8 +34,8 @@ public class MagicAddressTest {
 
     protected final void setAllocationBit(Object object, boolean on) {
         Address addr = ObjectReference.fromObject(object).toAddress();
-        final Address start = Address.fromAddress(this.start);
-        final Address end = Address.fromAddress(this.end);
+        final Address start = VmAddress.fromAddress(this.start);
+        final Address end = VmAddress.fromAddress(this.end);
         final boolean q1 = (addr.LT(start) || addr.GE(end));
 
     }

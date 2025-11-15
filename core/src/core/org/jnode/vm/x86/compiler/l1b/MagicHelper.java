@@ -198,6 +198,13 @@ final class MagicHelper extends BaseX86MagicHelper {
                 vstack.push(result);
                 break;
             }
+            case TOVMADDRESS: {
+                if (VmUtils.verifyAssertions()) VmUtils._assert(isstatic);
+                final RefItem obj = vstack.popRef();
+                // Do nothing
+                vstack.push(obj);
+                break;
+            }
             case TOWORD:
             case TOADDRESS:
             case TOOFFSET:

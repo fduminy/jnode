@@ -21,6 +21,8 @@
 package org.jnode.vm.compiler;
 
 import org.jnode.annotation.SharedStatics;
+//import org.jnode.bootlog.BootLogInstance;
+//import org.jnode.vm.Unsafe;
 import org.jnode.vm.classmgr.VmMethod;
 import org.jnode.vm.objects.BootableHashMap;
 
@@ -49,6 +51,7 @@ public class BaseMagicHelper {
         TOLONG("toLong", false),
         TOWORD("toWord", false),
         TOADDRESS("toAddress", true),
+        TOVMADDRESS("toVmAddress", true),
         TOEXTENT("toExtent", false),
         TOOFFSET("toOffset", false),
         TOOBJECTREFERENCE("toObjectReference", true),

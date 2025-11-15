@@ -193,16 +193,15 @@ public abstract class NativeCodeCompiler extends VmSystemObject {
                         - startOffset);
 
                     eTable[i] = new VmCompiledExceptionHandler(catchType,
-                        startPtr.toAddress(), endPtr.toAddress(), handler
-                        .toAddress());
+                        VmAddress.toVmAddress(startPtr), VmAddress.toVmAddress(endPtr), VmAddress.toVmAddress(handler));
                 }
             } else {
                 eTable = null;
             }
 
             method.addCompiledCode(VmUtils.getVm().getCompiledMethods().createCompiledCode(
-                cm, method, this, bc, codePtr.toAddress(), code, size,
-                eTable, defExHandler.toAddress(), aTable), level);
+                cm, method, this, bc, VmAddress.toVmAddress(codePtr), code, size,
+                eTable, VmAddress.toVmAddress(defExHandler), aTable), level);
 
             // For debugging only
             // System.out.println("Code: " + NumberUtils.hex(code));

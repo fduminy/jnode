@@ -303,7 +303,7 @@ public abstract class VmType<T> extends VmAnnotatedElement implements
         final String pkg = VMClassHelper.getPackagePortion(name);
         if (pkg.equals("org.vmmagic.unboxed") || pkg.equals("org.jnode.vm")) {
             final String cname = VMClassHelper.getClassNamePortion(name);
-            if (cname.equals("Address") || cname.equals("AddressArray")
+            if (cname.equals("Address") || cname.equals("VmAddress") || cname.equals("AddressArray")
                 || cname.equals("Extent") || cname.equals("ExtentArray")
                 || cname.equals("ObjectReference")
                 || cname.equals("ObjectReferenceArray")

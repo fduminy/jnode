@@ -83,8 +83,8 @@ public final class VmCompiledExceptionHandler extends AbstractExceptionHandler {
      * @return True if address is between start and end, false otherwise
      */
     public boolean isInScope(Address address) {
-        final Address start = Address.fromAddress(startPtr);
-        final Address end = Address.fromAddress(endPtr);
+        final Address start = VmAddress.fromAddress(startPtr);
+        final Address end = VmAddress.fromAddress(endPtr);
 
         return address.GE(start) && address.LT(end);
     }

@@ -32,6 +32,7 @@ import org.jnode.assembler.x86.X86TextAssembler;
 import org.jnode.vm.Unsafe;
 import org.jnode.annotation.MagicPermission;
 import org.jnode.annotation.PrivilegedActionPragma;
+import org.jnode.vm.VmAddress;
 import org.jnode.vm.classmgr.VmClassLoader;
 import org.jnode.vm.classmgr.VmCompiledCode;
 import org.jnode.vm.classmgr.VmMethod;
@@ -116,7 +117,7 @@ public abstract class AbstractX86Compiler extends NativeCodeCompiler {
                 .getJumpTableEntry(X86JumpTable.VM_INVOKE_ABSTRACT_IDX);
             final VmCompiledCode code = VmUtils.getVm().getCompiledMethods()
                 .createCompiledCode(null, method, this, null,
-                    errorAddr.toAddress(), null, 0, null, null, null);
+                    VmAddress.toVmAddress(errorAddr), null, 0, null, null, null);
             method.addCompiledCode(code, level);
             return null;
         }

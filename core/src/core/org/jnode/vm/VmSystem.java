@@ -613,7 +613,7 @@ public final class VmSystem {
 
                     if (catchType == null) {
                         /* Catch all exceptions */
-                        return Address.fromAddress(ceh.getHandler());
+                        return VmAddress.fromAddress(ceh.getHandler());
                     } else {
                         if (!catchType.isResolved()) {
                             SoftByteCodes.resolveClass(catchType);
@@ -622,7 +622,7 @@ public final class VmSystem {
                             .getResolvedVmClass();
                         if (handlerClass != null) {
                             if (handlerClass.isAssignableFrom(exClass)) {
-                                return Address.fromAddress(ceh.getHandler());
+                                return VmAddress.fromAddress(ceh.getHandler());
                             }
                         } else {
                             System.err
@@ -634,7 +634,7 @@ public final class VmSystem {
             }
 
             if (cc.contains(address)) {
-                return Address.fromAddress(cc.getDefaultExceptionHandler());
+                return VmAddress.fromAddress(cc.getDefaultExceptionHandler());
             } else {
                 return null;
             }

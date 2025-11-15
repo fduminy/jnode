@@ -13,7 +13,6 @@
  
 package org.vmmagic.unboxed;
 
-import org.jnode.vm.VmAddress;
 import org.jnode.annotation.KernelSpace;
 import org.jnode.annotation.Uninterruptible;
 
@@ -55,15 +54,6 @@ public final class Address implements UnboxedObject {
     public static Address fromIntZeroExtend(int address) {
         return new Address(0xFFFFFFFFL & address);
     }
-    
-    /**
-     * Temporary method to easy the transition from VmAddress to Address.
-     * @param address
-     * @return The address
-     */
-    public static Address fromAddress(VmAddress address) {
-        return null;
-    }
 
     public static Address zero() {
         return new Address(0);
@@ -82,10 +72,6 @@ public final class Address implements UnboxedObject {
     }
 
     public ObjectReference toObjectReference() {
-        return null;
-    }
-
-    public VmAddress toAddress() {
         return null;
     }
 

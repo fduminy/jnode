@@ -21,8 +21,6 @@
  
 package org.vmmagic.unboxed;
 
-import org.jnode.vm.VmImpl;
-import org.jnode.vm.facade.VmUtils;
 
 /**
  * Utility class for magic classes.
@@ -85,13 +83,17 @@ public final class MagicUtils {
         }
     }
     
-    private static final int getRefSize() {
+    public static void setRefSize(int refSize) {
+        MagicUtils.refSize = refSize;
+    }
+
+    private static int getRefSize() {
         if (refSize == 0) {
-            refSize = VmUtils.getVm().getArch().getReferenceSize();
+            return 8;
         }
         return refSize;
     }
-    
+
     /**
      * Gets the hexadecimal representation of the given number that is
      * 8 digits long.

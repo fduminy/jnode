@@ -47,9 +47,20 @@ public abstract class VmAddress extends VmSystemObject {
     public static String toString(VmAddress addr) {
         final int refsize = VmProcessor.current().getArchitecture().getReferenceSize();
         if (refsize == 4) {
-            return NumberUtils.hex(Address.fromAddress(addr).toInt());
+            return NumberUtils.hex(VmAddress.fromAddress(addr).toInt());
         } else {
-            return NumberUtils.hex(Address.fromAddress(addr).toLong());
+            return NumberUtils.hex(VmAddress.fromAddress(addr).toLong());
         }
+    }
+
+    /**
+     * Temporary method to ease the transition from VmAddress to Address.
+     */
+    public static Address fromAddress(VmAddress address) {
+        return null;
+    }
+
+    public static VmAddress toVmAddress(Address address) {
+        return null;
     }
 }
