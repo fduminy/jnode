@@ -11,10 +11,10 @@ Nombre total de cycles détectés: 1
 DIFFICULTÉ: VERY_HARD
 ================================================================================
 
-Cycle #106: org.jnode.plugin ↔ org.jnode.runtime.core.resource ↔ org.jnode.vm ↔ org.jnode.vm.core ↔ rt ↔ rt.vm
+Cycle #105: org.jnode.plugin ↔ org.jnode.runtime.core.resource ↔ org.jnode.vm ↔ org.jnode.vm.core ↔ rt
 --------------------------------------------------------------------------------
 Difficulté: VERY_HARD
-Raisonnement: Cycle involves 4 VM components and 0 runtime components - requires architectural refactoring of bootstrap system.
+Raisonnement: Cycle involves 3 VM components and 0 runtime components - requires architectural refactoring of bootstrap system.
 
 Plugins impliqués:
   - org.jnode.plugin
@@ -32,18 +32,14 @@ Plugins impliqués:
   - org.jnode.vm.core
     Fichier: core/descriptors/org.jnode.vm.core.xml
     Sous-projet: core
-    Fichiers Java: 288
+    Fichiers Java: 289
   - rt
     Fichier: core/descriptors/org.classpath.core.xml
     Sous-projet: core
     Fichiers Java: 96
-  - rt.vm
-    Fichier: core/descriptors/org.classpath.core.vm.xml
-    Sous-projet: core
-    Fichiers Java: 12
 
 Dépendances circulaires (au niveau du code source):
-  org.jnode.plugin → rt.vm
+  org.jnode.plugin → org.jnode.vm.core
   org.jnode.runtime.core.resource → rt
   org.jnode.vm → org.jnode.runtime.core.resource
   org.jnode.vm → org.jnode.vm.core
@@ -51,12 +47,8 @@ Dépendances circulaires (au niveau du code source):
   org.jnode.vm.core → org.jnode.runtime.core.resource
   org.jnode.vm.core → org.jnode.vm
   org.jnode.vm.core → rt
-  org.jnode.vm.core → rt.vm
   rt → org.jnode.runtime.core.resource
   rt → org.jnode.vm.core
-  rt → rt.vm
-  rt.vm → org.jnode.vm.core
-  rt.vm → rt
 
 
 ================================================================================
