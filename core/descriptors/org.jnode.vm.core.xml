@@ -37,7 +37,6 @@
   <runtime>
     <library name="jnode-core.jar">
       <export name="org.jnode.assembler.*"/>
-      <export name="org.jnode.permission.*"/>
       <export name="org.jnode.vm.*"/>
       <export name="org.jnode.vm.bytecode.*"/>
       <export name="org.jnode.vm.classmgr.*"/>

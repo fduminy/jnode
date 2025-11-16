@@ -4,9 +4,9 @@
 
 ## Summary
 
-- **Classes in org.jnode.vm.core that import from rt:** 113
+- **Classes in org.jnode.vm.core that import from rt:** 112
 - **Classes in rt that import from org.jnode.vm.core:** 41
-- **Total classes involved in circular dependency:** 154
+- **Total classes involved in circular dependency:** 153
 
 ## Dependency Details
 
@@ -20,454 +20,442 @@
 **Imports from rt:**
 - `java.util.Properties`
 
-#### 2. org.jnode.permission.JNodePermission (1 import)
-**File:** `core/src/core/org/jnode/permission/JNodePermission.java`
-
-**Imports from rt:**
-- `java.security.BasicPermission`
-
-#### 3. org.jnode.vm.BaseVmArchitecture (1 import)
-**File:** `core/src/core/org/jnode/vm/BaseVmArchitecture.java`
-
-**Imports from rt:**
-- `java.nio.ByteOrder`
-
-#### 4. org.jnode.vm.VmReflection (1 import)
+#### 2. org.jnode.vm.VmReflection (1 import)
 **File:** `core/src/core/org/jnode/vm/VmReflection.java`
 
 **Imports from rt:**
 - `java.lang.reflect.InvocationTargetException`
 
-#### 5. org.jnode.vm.ResourceManagerImpl (1 import)
+#### 3. org.jnode.vm.ResourceManagerImpl (1 import)
 **File:** `core/src/core/org/jnode/vm/ResourceManagerImpl.java`
 
 **Imports from rt:**
 - `javax.naming.NamingException`
 
-#### 6. org.jnode.vm.VmProcessClassLoader (1 import)
+#### 4. org.jnode.vm.VmProcessClassLoader (1 import)
 **File:** `core/src/core/org/jnode/vm/VmProcessClassLoader.java`
 
 **Imports from rt:**
 - `java.util.HashSet`
 
-#### 7. org.jnode.vm.performance.PerformanceCounters (1 import)
+#### 5. org.jnode.vm.performance.PerformanceCounters (1 import)
 **File:** `core/src/core/org/jnode/vm/performance/PerformanceCounters.java`
 
 **Imports from rt:**
 - `java.util.Set`
 
-#### 8. org.jnode.vm.bytecode.BytecodeViewer (1 import)
+#### 6. org.jnode.vm.bytecode.BytecodeViewer (1 import)
 **File:** `core/src/core/org/jnode/vm/bytecode/BytecodeViewer.java`
 
 **Imports from rt:**
 - `java.io.PrintStream`
 
-#### 9. org.jnode.vm.bytecode.DeadBlockFinder (1 import)
+#### 7. org.jnode.vm.bytecode.DeadBlockFinder (1 import)
 **File:** `core/src/core/org/jnode/vm/bytecode/DeadBlockFinder.java`
 
 **Imports from rt:**
 - `java.util.TreeMap`
 
-#### 10. org.jnode.vm.bytecode.BytecodeParser (1 import)
+#### 8. org.jnode.vm.bytecode.BytecodeParser (1 import)
 **File:** `core/src/core/org/jnode/vm/bytecode/BytecodeParser.java`
 
 **Imports from rt:**
 - `java.nio.ByteBuffer`
 
-#### 11. org.jnode.vm.bytecode.ControlFlowGraph (1 import)
+#### 9. org.jnode.vm.bytecode.ControlFlowGraph (1 import)
 **File:** `core/src/core/org/jnode/vm/bytecode/ControlFlowGraph.java`
 
 **Imports from rt:**
 - `java.util.Iterator`
 
-#### 12. org.jnode.vm.scheduler.VmProcessor (1 import)
+#### 10. org.jnode.vm.scheduler.VmProcessor (1 import)
 **File:** `core/src/core/org/jnode/vm/scheduler/VmProcessor.java`
 
 **Imports from rt:**
 - `java.io.PrintWriter`
 
-#### 13. org.jnode.vm.facade.Vm (1 import)
+#### 11. org.jnode.vm.facade.Vm (1 import)
 **File:** `core/src/core/org/jnode/vm/facade/Vm.java`
 
 **Imports from rt:**
 - `java.util.List`
 
-#### 14. org.jnode.vm.facade.VmProcessor (1 import)
+#### 12. org.jnode.vm.facade.VmProcessor (1 import)
 **File:** `core/src/core/org/jnode/vm/facade/VmProcessor.java`
 
 **Imports from rt:**
 - `java.io.PrintWriter`
 
-#### 15. org.jnode.vm.facade.HeapStatistics (1 import)
+#### 13. org.jnode.vm.facade.HeapStatistics (1 import)
 **File:** `core/src/core/org/jnode/vm/facade/HeapStatistics.java`
 
 **Imports from rt:**
 - `java.io.IOException`
 
-#### 16. org.jnode.vm.facade.VmHeapManager (1 import)
+#### 14. org.jnode.vm.facade.VmHeapManager (1 import)
 **File:** `core/src/core/org/jnode/vm/facade/VmHeapManager.java`
 
 **Imports from rt:**
 - `java.io.PrintWriter`
 
-#### 17. org.jnode.vm.facade.VmArchitecture (1 import)
+#### 15. org.jnode.vm.facade.VmArchitecture (1 import)
 **File:** `core/src/core/org/jnode/vm/facade/VmArchitecture.java`
 
 **Imports from rt:**
 - `java.nio.ByteOrder`
 
-#### 18. org.jnode.vm.classmgr.VmStaticsAllocator (1 import)
+#### 16. org.jnode.vm.classmgr.VmStaticsAllocator (1 import)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmStaticsAllocator.java`
 
 **Imports from rt:**
 - `java.io.PrintWriter`
 
-#### 19. org.jnode.vm.classmgr.Mangler (1 import)
+#### 17. org.jnode.vm.classmgr.Mangler (1 import)
 **File:** `core/src/core/org/jnode/vm/classmgr/Mangler.java`
 
 **Imports from rt:**
 - `java.util.StringTokenizer`
 
-#### 20. org.jnode.vm.classmgr.VmPrimitiveClass (1 import)
+#### 18. org.jnode.vm.classmgr.VmPrimitiveClass (1 import)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmPrimitiveClass.java`
 
 **Imports from rt:**
 - `java.security.ProtectionDomain`
 
-#### 21. org.jnode.vm.classmgr.Signature (1 import)
+#### 19. org.jnode.vm.classmgr.Signature (1 import)
 **File:** `core/src/core/org/jnode/vm/classmgr/Signature.java`
 
 **Imports from rt:**
 - `java.util.ArrayList`
 
-#### 22. org.jnode.vm.classmgr.VmNormalClass (1 import)
+#### 20. org.jnode.vm.classmgr.VmNormalClass (1 import)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmNormalClass.java`
 
 **Imports from rt:**
 - `java.security.ProtectionDomain`
 
-#### 23. org.jnode.vm.classmgr.VmStaticsIterator (1 import)
+#### 21. org.jnode.vm.classmgr.VmStaticsIterator (1 import)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmStaticsIterator.java`
 
 **Imports from rt:**
 - `java.util.Iterator`
 
-#### 24. org.jnode.vm.memmgr.VmHeapManager (1 import)
+#### 22. org.jnode.vm.memmgr.VmHeapManager (1 import)
 **File:** `core/src/core/org/jnode/vm/memmgr/VmHeapManager.java`
 
 **Imports from rt:**
 - `java.io.PrintWriter`
 
-#### 25. org.jnode.vm.isolate.LinkLinkMessage (1 import)
+#### 23. org.jnode.vm.isolate.LinkLinkMessage (1 import)
 **File:** `core/src/core/org/jnode/vm/isolate/LinkLinkMessage.java`
 
 **Imports from rt:**
 - `javax.isolate.Link`
 
-#### 26. org.jnode.vm.isolate.IsolateStatusImpl (1 import)
+#### 24. org.jnode.vm.isolate.IsolateStatusImpl (1 import)
 **File:** `core/src/core/org/jnode/vm/isolate/IsolateStatusImpl.java`
 
 **Imports from rt:**
 - `javax.isolate.IsolateStatus`
 
-#### 27. org.jnode.vm.isolate.LinkMessageImpl (1 import)
+#### 25. org.jnode.vm.isolate.LinkMessageImpl (1 import)
 **File:** `core/src/core/org/jnode/vm/isolate/LinkMessageImpl.java`
 
 **Imports from rt:**
 - `javax.isolate.LinkMessage`
 
-#### 28. org.jnode.vm.isolate.StatusLinkMessage (1 import)
+#### 26. org.jnode.vm.isolate.StatusLinkMessage (1 import)
 **File:** `core/src/core/org/jnode/vm/isolate/StatusLinkMessage.java`
 
 **Imports from rt:**
 - `javax.isolate.IsolateStatus`
 
-#### 29. org.jnode.vm.isolate.IsolateLinkMessage (1 import)
+#### 27. org.jnode.vm.isolate.IsolateLinkMessage (1 import)
 **File:** `core/src/core/org/jnode/vm/isolate/IsolateLinkMessage.java`
 
 **Imports from rt:**
 - `javax.isolate.Isolate`
 
-#### 30. org.jnode.vm.compiler.NativeCodeCompiler (1 import)
+#### 28. org.jnode.vm.compiler.NativeCodeCompiler (1 import)
 **File:** `core/src/core/org/jnode/vm/compiler/NativeCodeCompiler.java`
 
 **Imports from rt:**
 - `java.io.Writer`
 
-#### 31. org.jnode.vm.compiler.CompiledExceptionHandler (1 import)
+#### 29. org.jnode.vm.compiler.CompiledExceptionHandler (1 import)
 **File:** `core/src/core/org/jnode/vm/compiler/CompiledExceptionHandler.java`
 
 **Imports from rt:**
 - `java.io.PrintStream`
 
-#### 32. org.jnode.vm.x86.GDT (1 import)
+#### 30. org.jnode.vm.x86.GDT (1 import)
 **File:** `core/src/core/org/jnode/vm/x86/GDT.java`
 
 **Imports from rt:**
 - `java.io.PrintStream`
 
-#### 33. org.jnode.vm.x86.PIC8259A (1 import)
+#### 31. org.jnode.vm.x86.PIC8259A (1 import)
 **File:** `core/src/core/org/jnode/vm/x86/PIC8259A.java`
 
 **Imports from rt:**
 - `javax.naming.NameNotFoundException`
 
-#### 34. org.jnode.vm.x86.VmX86Processor (1 import)
+#### 32. org.jnode.vm.x86.VmX86Processor (1 import)
 **File:** `core/src/core/org/jnode/vm/x86/VmX86Processor.java`
 
 **Imports from rt:**
 - `java.io.PrintWriter`
 
-#### 35. org.jnode.vm.memmgr.def.DefaultHeapManager (1 import)
+#### 33. org.jnode.vm.memmgr.def.DefaultHeapManager (1 import)
 **File:** `core/src/core/org/jnode/vm/memmgr/def/DefaultHeapManager.java`
 
 **Imports from rt:**
 - `java.io.PrintWriter`
 
-#### 36. org.jnode.vm.compiler.ir.IRBasicBlock (1 import)
+#### 34. org.jnode.vm.compiler.ir.IRBasicBlock (1 import)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/IRBasicBlock.java`
 
 **Imports from rt:**
 - `java.util.List`
 
-#### 37. org.jnode.vm.compiler.ir.SSAStack (1 import)
+#### 35. org.jnode.vm.compiler.ir.SSAStack (1 import)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/SSAStack.java`
 
 **Imports from rt:**
 - `java.util.List`
 
-#### 38. org.jnode.vm.compiler.ir.PhiOperand (1 import)
+#### 36. org.jnode.vm.compiler.ir.PhiOperand (1 import)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/PhiOperand.java`
 
 **Imports from rt:**
 - `java.util.List`
 
-#### 39. org.jnode.vm.compiler.ir.quad.TableswitchQuad (1 import)
+#### 37. org.jnode.vm.compiler.ir.quad.TableswitchQuad (1 import)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/quad/TableswitchQuad.java`
 
 **Imports from rt:**
 - `java.util.Arrays`
 
-#### 40. org.jnode.vm.compiler.ir.quad.LookupswitchQuad (1 import)
+#### 38. org.jnode.vm.compiler.ir.quad.LookupswitchQuad (1 import)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/quad/LookupswitchQuad.java`
 
 **Imports from rt:**
 - `java.util.Arrays`
 
-#### 41. org.jnode.vm.compiler.ir.quad.PhiAssignQuad (1 import)
+#### 39. org.jnode.vm.compiler.ir.quad.PhiAssignQuad (1 import)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/quad/PhiAssignQuad.java`
 
 **Imports from rt:**
 - `java.util.List`
 
-#### 42. org.jnode.vm.x86.compiler.AbstractX86Compiler (1 import)
+#### 40. org.jnode.vm.x86.compiler.AbstractX86Compiler (1 import)
 **File:** `core/src/core/org/jnode/vm/x86/compiler/AbstractX86Compiler.java`
 
 **Imports from rt:**
 - `java.io.Writer`
 
-#### 43. org.jnode.vm.x86.compiler.l1b.ItemFactory (1 import)
+#### 41. org.jnode.vm.x86.compiler.l1b.ItemFactory (1 import)
 **File:** `core/src/core/org/jnode/vm/x86/compiler/l1b/ItemFactory.java`
 
 **Imports from rt:**
 - `java.util.ArrayList`
 
-#### 44. org.jnode.vm.x86.compiler.l1a.ItemFactory (1 import)
+#### 42. org.jnode.vm.x86.compiler.l1a.ItemFactory (1 import)
 **File:** `core/src/core/org/jnode/vm/x86/compiler/l1a/ItemFactory.java`
 
 **Imports from rt:**
 - `java.util.ArrayList`
 
-#### 45. org.jnode.vm.Unsafe (2 imports)
-**File:** `core/src/core/org/jnode/vm/Unsafe.java`
-
-**Imports from rt:**
-- `java.io.PrintWriter`
-- `java.io.StringWriter`
-
-#### 46. org.jnode.vm.MemoryResourceImpl (2 imports)
+#### 43. org.jnode.vm.MemoryResourceImpl (2 imports)
 **File:** `core/src/core/org/jnode/vm/MemoryResourceImpl.java`
 
 **Imports from rt:**
 - `java.nio.ByteBuffer`
 - `java.nio.MemoryRawData`
 
-#### 47. org.jnode.vm.VmAbstractClassLoader (2 imports)
+#### 44. org.jnode.vm.BaseVmArchitecture (2 imports)
+**File:** `core/src/core/org/jnode/vm/BaseVmArchitecture.java`
+
+**Imports from rt:**
+- `java.nio.ByteOrder`
+- `org.jnode.permission.JNodePermission`
+
+#### 45. org.jnode.vm.VmAbstractClassLoader (2 imports)
 **File:** `core/src/core/org/jnode/vm/VmAbstractClassLoader.java`
 
 **Imports from rt:**
 - `java.nio.ByteBuffer`
 - `java.security.ProtectionDomain`
 
-#### 48. org.jnode.vm.VmJavaClassLoader (2 imports)
+#### 46. org.jnode.vm.VmJavaClassLoader (2 imports)
 **File:** `core/src/core/org/jnode/vm/VmJavaClassLoader.java`
 
 **Imports from rt:**
 - `java.io.Writer`
 - `java.util.HashMap`
 
-#### 49. org.jnode.vm.ResourceLoader (2 imports)
+#### 47. org.jnode.vm.ResourceLoader (2 imports)
 **File:** `core/src/core/org/jnode/vm/ResourceLoader.java`
 
 **Imports from rt:**
 - `java.net.URL`
 - `java.nio.ByteBuffer`
 
-#### 50. org.jnode.vm.bytecode.BasicBlockFinder (2 imports)
+#### 48. org.jnode.vm.bytecode.BasicBlockFinder (2 imports)
 **File:** `core/src/core/org/jnode/vm/bytecode/BasicBlockFinder.java`
 
 **Imports from rt:**
 - `java.util.Comparator`
 - `java.util.TreeMap`
 
-#### 51. org.jnode.vm.bytecode.BasicBlock (2 imports)
+#### 49. org.jnode.vm.bytecode.BasicBlock (2 imports)
 **File:** `core/src/core/org/jnode/vm/bytecode/BasicBlock.java`
 
 **Imports from rt:**
 - `java.util.HashSet`
 - `java.util.Set`
 
-#### 52. org.jnode.vm.facade.VmUtils (2 imports)
+#### 50. org.jnode.vm.facade.VmUtils (2 imports)
 **File:** `core/src/core/org/jnode/vm/facade/VmUtils.java`
 
 **Imports from rt:**
 - `gnu.java.lang.VMClassHelper`
 - `java.io.PrintWriter`
 
-#### 53. org.jnode.vm.objects.CounterGroup (2 imports)
+#### 51. org.jnode.vm.objects.CounterGroup (2 imports)
 **File:** `core/src/core/org/jnode/vm/objects/CounterGroup.java`
 
 **Imports from rt:**
 - `java.util.Map`
 - `java.util.TreeMap`
 
-#### 54. org.jnode.vm.classmgr.VmArrayClass (2 imports)
+#### 52. org.jnode.vm.classmgr.VmArrayClass (2 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmArrayClass.java`
 
 **Imports from rt:**
 - `java.security.ProtectionDomain`
 - `java.util.HashSet`
 
-#### 55. org.jnode.vm.classmgr.VmMethod (2 imports)
+#### 53. org.jnode.vm.classmgr.VmMethod (2 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmMethod.java`
 
 **Imports from rt:**
 - `java.lang.reflect.Member`
 - `sun.reflect.ReflectionFactory`
 
-#### 56. org.jnode.vm.classmgr.VmUTF8Convert (2 imports)
+#### 54. org.jnode.vm.classmgr.VmUTF8Convert (2 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmUTF8Convert.java`
 
 **Imports from rt:**
 - `java.io.UTFDataFormatException`
 - `java.nio.ByteBuffer`
 
-#### 57. org.jnode.vm.classmgr.VmAnnotatedElement (2 imports)
+#### 55. org.jnode.vm.classmgr.VmAnnotatedElement (2 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmAnnotatedElement.java`
 
 **Imports from rt:**
 - `java.lang.annotation.Annotation`
 - `java.lang.reflect.AnnotatedElement`
 
-#### 58. org.jnode.vm.classmgr.VmField (2 imports)
+#### 56. org.jnode.vm.classmgr.VmField (2 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmField.java`
 
 **Imports from rt:**
 - `java.lang.reflect.Field`
 - `sun.reflect.ReflectionFactory`
 
-#### 59. org.jnode.vm.classmgr.VmInterfaceClass (2 imports)
+#### 57. org.jnode.vm.classmgr.VmInterfaceClass (2 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmInterfaceClass.java`
 
 **Imports from rt:**
 - `java.security.ProtectionDomain`
 - `java.util.HashSet`
 
-#### 60. org.jnode.vm.classmgr.VmStatics (2 imports)
+#### 58. org.jnode.vm.classmgr.VmStatics (2 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmStatics.java`
 
 **Imports from rt:**
 - `java.io.PrintWriter`
 - `java.nio.ByteOrder`
 
-#### 61. org.jnode.vm.classmgr.VmAddressMap (2 imports)
+#### 59. org.jnode.vm.classmgr.VmAddressMap (2 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmAddressMap.java`
 
 **Imports from rt:**
 - `java.io.PrintStream`
 - `java.util.ArrayList`
 
-#### 62. org.jnode.vm.isolate.IsolateThread (2 imports)
+#### 60. org.jnode.vm.isolate.IsolateThread (2 imports)
 **File:** `core/src/core/org/jnode/vm/isolate/IsolateThread.java`
 
 **Imports from rt:**
 - `java.io.InputStream`
 - `java.io.PrintStream`
 
-#### 63. org.jnode.vm.x86.VmX86Architecture (2 imports)
+#### 61. org.jnode.vm.x86.VmX86Architecture (2 imports)
 **File:** `core/src/core/org/jnode/vm/x86/VmX86Architecture.java`
 
 **Imports from rt:**
 - `java.nio.ByteOrder`
 - `java.util.HashMap`
 
-#### 64. org.jnode.vm.memmgr.def.DefHeapStatistics (2 imports)
+#### 62. org.jnode.vm.memmgr.def.DefHeapStatistics (2 imports)
 **File:** `core/src/core/org/jnode/vm/memmgr/def/DefHeapStatistics.java`
 
 **Imports from rt:**
 - `java.io.IOException`
 - `java.util.TreeMap`
 
-#### 65. org.jnode.vm.compiler.ir.IRGenerator (2 imports)
+#### 63. org.jnode.vm.compiler.ir.IRGenerator (2 imports)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/IRGenerator.java`
 
 **Imports from rt:**
 - `java.util.Iterator`
 - `java.util.List`
 
-#### 66. org.jnode.vm.compiler.ir.quad.AssignQuad (2 imports)
+#### 64. org.jnode.vm.compiler.ir.quad.AssignQuad (2 imports)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/quad/AssignQuad.java`
 
 **Imports from rt:**
 - `java.util.Collection`
 - `java.util.List`
 
-#### 67. org.jnode.vm.compiler.ir.quad.Quad (2 imports)
+#### 65. org.jnode.vm.compiler.ir.quad.Quad (2 imports)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/quad/Quad.java`
 
 **Imports from rt:**
 - `java.util.Collection`
 - `java.util.List`
 
-#### 68. org.jnode.vm.x86.performance.X86PerformanceCounters (2 imports)
+#### 66. org.jnode.vm.x86.performance.X86PerformanceCounters (2 imports)
 **File:** `core/src/core/org/jnode/vm/x86/performance/X86PerformanceCounters.java`
 
 **Imports from rt:**
 - `java.util.Collections`
 - `java.util.Set`
 
-#### 69. org.jnode.vm.x86.compiler.X86CompilerHelper (2 imports)
+#### 67. org.jnode.vm.x86.compiler.X86CompilerHelper (2 imports)
 **File:** `core/src/core/org/jnode/vm/x86/compiler/X86CompilerHelper.java`
 
 **Imports from rt:**
 - `java.util.HashMap`
 - `java.util.Map`
 
-#### 70. org.jnode.vm.x86.compiler.l1b.X86BytecodeVisitor (2 imports)
+#### 68. org.jnode.vm.x86.compiler.l1b.X86BytecodeVisitor (2 imports)
 **File:** `core/src/core/org/jnode/vm/x86/compiler/l1b/X86BytecodeVisitor.java`
 
 **Imports from rt:**
 - `java.util.HashMap`
 - `java.util.Map`
 
-#### 71. org.jnode.vm.x86.compiler.l2.X86Level2Compiler (2 imports)
+#### 69. org.jnode.vm.x86.compiler.l2.X86Level2Compiler (2 imports)
 **File:** `core/src/core/org/jnode/vm/x86/compiler/l2/X86Level2Compiler.java`
 
 **Imports from rt:**
 - `java.util.Collection`
 - `java.util.List`
 
-#### 72. org.jnode.assembler.NativeStream (3 imports)
+#### 70. org.jnode.assembler.NativeStream (3 imports)
 **File:** `core/src/core/org/jnode/assembler/NativeStream.java`
 
 **Imports from rt:**
@@ -475,7 +463,15 @@
 - `java.io.OutputStream`
 - `java.util.Collection`
 
-#### 73. org.jnode.vm.LoadCompileService (3 imports)
+#### 71. org.jnode.vm.Unsafe (3 imports)
+**File:** `core/src/core/org/jnode/vm/Unsafe.java`
+
+**Imports from rt:**
+- `java.io.PrintWriter`
+- `java.io.StringWriter`
+- `org.jnode.permission.JNodePermission`
+
+#### 72. org.jnode.vm.LoadCompileService (3 imports)
 **File:** `core/src/core/org/jnode/vm/LoadCompileService.java`
 
 **Imports from rt:**
@@ -483,7 +479,7 @@
 - `java.security.ProtectionDomain`
 - `java.util.ArrayList`
 
-#### 74. org.jnode.vm.BootLogImpl (3 imports)
+#### 73. org.jnode.vm.BootLogImpl (3 imports)
 **File:** `core/src/core/org/jnode/vm/BootLogImpl.java`
 
 **Imports from rt:**
@@ -491,7 +487,7 @@
 - `javax.naming.NameAlreadyBoundException`
 - `javax.naming.NamingException`
 
-#### 75. org.jnode.assembler.x86.X86Assembler (3 imports)
+#### 74. org.jnode.assembler.x86.X86Assembler (3 imports)
 **File:** `core/src/core/org/jnode/assembler/x86/X86Assembler.java`
 
 **Imports from rt:**
@@ -499,7 +495,7 @@
 - `java.io.OutputStream`
 - `java.util.Collection`
 
-#### 76. org.jnode.vm.classmgr.VmClassType (3 imports)
+#### 75. org.jnode.vm.classmgr.VmClassType (3 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmClassType.java`
 
 **Imports from rt:**
@@ -507,7 +503,7 @@
 - `java.util.ArrayList`
 - `java.util.HashSet`
 
-#### 77. org.jnode.vm.classmgr.TIBBuilder (3 imports)
+#### 76. org.jnode.vm.classmgr.TIBBuilder (3 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/TIBBuilder.java`
 
 **Imports from rt:**
@@ -515,7 +511,7 @@
 - `java.util.ArrayList`
 - `java.util.HashMap`
 
-#### 78. org.jnode.vm.classmgr.VmConstantPool (3 imports)
+#### 77. org.jnode.vm.classmgr.VmConstantPool (3 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmConstantPool.java`
 
 **Imports from rt:**
@@ -523,7 +519,7 @@
 - `java.lang.reflect.Member`
 - `sun.reflect.ConstantPool`
 
-#### 79. org.jnode.vm.classmgr.VmClassLoader (3 imports)
+#### 78. org.jnode.vm.classmgr.VmClassLoader (3 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmClassLoader.java`
 
 **Imports from rt:**
@@ -531,7 +527,7 @@
 - `java.nio.ByteBuffer`
 - `java.security.ProtectionDomain`
 
-#### 80. org.jnode.vm.x86.MPConfigTable (3 imports)
+#### 79. org.jnode.vm.x86.MPConfigTable (3 imports)
 **File:** `core/src/core/org/jnode/vm/x86/MPConfigTable.java`
 
 **Imports from rt:**
@@ -539,7 +535,7 @@
 - `java.util.ArrayList`
 - `java.util.List`
 
-#### 81. org.jnode.vm.x86.IOAPIC (3 imports)
+#### 80. org.jnode.vm.x86.IOAPIC (3 imports)
 **File:** `core/src/core/org/jnode/vm/x86/IOAPIC.java`
 
 **Imports from rt:**
@@ -547,7 +543,7 @@
 - `java.util.ArrayList`
 - `java.util.List`
 
-#### 82. org.jnode.vm.memmgr.mmtk.BaseMmtkHeapManager (4 imports)
+#### 81. org.jnode.vm.memmgr.mmtk.BaseMmtkHeapManager (4 imports)
 **File:** `core/src/mmtk-vm/org/jnode/vm/memmgr/mmtk/BaseMmtkHeapManager.java`
 
 **Imports from rt:**
@@ -556,7 +552,7 @@
 - `java.lang.reflect.InvocationTargetException`
 - `javax.naming.NameNotFoundException`
 
-#### 83. org.jnode.vm.IOContext (4 imports)
+#### 82. org.jnode.vm.IOContext (4 imports)
 **File:** `core/src/core/org/jnode/vm/IOContext.java`
 
 **Imports from rt:**
@@ -565,7 +561,7 @@
 - `java.util.Map`
 - `java.util.Properties`
 
-#### 84. org.jnode.vm.VmIOContext (4 imports)
+#### 83. org.jnode.vm.VmIOContext (4 imports)
 **File:** `core/src/core/org/jnode/vm/VmIOContext.java`
 
 **Imports from rt:**
@@ -574,7 +570,7 @@
 - `java.util.Map`
 - `java.util.Properties`
 
-#### 85. org.jnode.vm.bytecode.BytecodeWriter (4 imports)
+#### 84. org.jnode.vm.bytecode.BytecodeWriter (4 imports)
 **File:** `core/src/core/org/jnode/vm/bytecode/BytecodeWriter.java`
 
 **Imports from rt:**
@@ -583,7 +579,7 @@
 - `java.util.HashSet`
 - `java.util.List`
 
-#### 86. org.jnode.vm.objects.BootableHashMap (4 imports)
+#### 85. org.jnode.vm.objects.BootableHashMap (4 imports)
 **File:** `core/src/core/org/jnode/vm/objects/BootableHashMap.java`
 
 **Imports from rt:**
@@ -592,7 +588,7 @@
 - `java.util.Map`
 - `java.util.Set`
 
-#### 87. org.jnode.vm.classmgr.VmByteCode (4 imports)
+#### 86. org.jnode.vm.classmgr.VmByteCode (4 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmByteCode.java`
 
 **Imports from rt:**
@@ -601,7 +597,7 @@
 - `java.util.Collections`
 - `java.util.List`
 
-#### 88. org.jnode.vm.isolate.IsolateThreadFactory (4 imports)
+#### 87. org.jnode.vm.isolate.IsolateThreadFactory (4 imports)
 **File:** `core/src/core/org/jnode/vm/isolate/IsolateThreadFactory.java`
 
 **Imports from rt:**
@@ -610,7 +606,7 @@
 - `java.util.concurrent.atomic.AtomicInteger`
 - `java.util.concurrent.atomic.AtomicInteger`
 
-#### 89. org.jnode.vm.isolate.LinkMessageFactory (4 imports)
+#### 88. org.jnode.vm.isolate.LinkMessageFactory (4 imports)
 **File:** `core/src/core/org/jnode/vm/isolate/LinkMessageFactory.java`
 
 **Imports from rt:**
@@ -619,7 +615,7 @@
 - `javax.isolate.Link`
 - `javax.isolate.LinkMessage`
 
-#### 90. org.jnode.vm.compiler.ir.IRBasicBlockFinder (4 imports)
+#### 89. org.jnode.vm.compiler.ir.IRBasicBlockFinder (4 imports)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/IRBasicBlockFinder.java`
 
 **Imports from rt:**
@@ -628,7 +624,7 @@
 - `java.util.Comparator`
 - `java.util.List`
 
-#### 91. org.jnode.vm.x86.performance.DualMSRPerformanceCounters (4 imports)
+#### 90. org.jnode.vm.x86.performance.DualMSRPerformanceCounters (4 imports)
 **File:** `core/src/core/org/jnode/vm/x86/performance/DualMSRPerformanceCounters.java`
 
 **Imports from rt:**
@@ -637,7 +633,7 @@
 - `java.util.Set`
 - `java.util.TreeSet`
 
-#### 92. org.jnode.vm.VmAccessControlContext (5 imports)
+#### 91. org.jnode.vm.VmAccessControlContext (5 imports)
 **File:** `core/src/core/org/jnode/vm/VmAccessControlContext.java`
 
 **Imports from rt:**
@@ -647,7 +643,7 @@
 - `java.util.ArrayList`
 - `java.util.List`
 
-#### 93. org.jnode.vm.VmImpl (5 imports)
+#### 92. org.jnode.vm.VmImpl (5 imports)
 **File:** `core/src/core/org/jnode/vm/VmImpl.java`
 
 **Imports from rt:**
@@ -657,7 +653,7 @@
 - `java.util.Map`
 - `java.util.TreeMap`
 
-#### 94. org.jnode.assembler.x86.X86TextAssembler (5 imports)
+#### 93. org.jnode.assembler.x86.X86TextAssembler (5 imports)
 **File:** `core/src/core/org/jnode/assembler/x86/X86TextAssembler.java`
 
 **Imports from rt:**
@@ -667,7 +663,7 @@
 - `java.io.Writer`
 - `java.util.Collection`
 
-#### 95. org.jnode.vm.compiler.ir.LinearScanAllocator (5 imports)
+#### 94. org.jnode.vm.compiler.ir.LinearScanAllocator (5 imports)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/LinearScanAllocator.java`
 
 **Imports from rt:**
@@ -677,7 +673,7 @@
 - `java.util.Comparator`
 - `java.util.List`
 
-#### 96. org.jnode.vm.VmAccessController (6 imports)
+#### 95. org.jnode.vm.VmAccessController (6 imports)
 **File:** `core/src/core/org/jnode/vm/VmAccessController.java`
 
 **Imports from rt:**
@@ -688,7 +684,7 @@
 - `java.security.PrivilegedExceptionAction`
 - `java.security.ProtectionDomain`
 
-#### 97. org.jnode.vm.VmProcess (6 imports)
+#### 96. org.jnode.vm.VmProcess (6 imports)
 **File:** `core/src/core/org/jnode/vm/VmProcess.java`
 
 **Imports from rt:**
@@ -699,7 +695,7 @@
 - `java.lang.reflect.InvocationTargetException`
 - `java.lang.reflect.Method`
 
-#### 98. org.jnode.assembler.x86.X86BinaryAssembler (6 imports)
+#### 97. org.jnode.assembler.x86.X86BinaryAssembler (6 imports)
 **File:** `core/src/core/org/jnode/assembler/x86/X86BinaryAssembler.java`
 
 **Imports from rt:**
@@ -710,7 +706,7 @@
 - `java.util.LinkedList`
 - `java.util.Map`
 
-#### 99. org.jnode.vm.classmgr.ClassDecoder (6 imports)
+#### 98. org.jnode.vm.classmgr.ClassDecoder (6 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/ClassDecoder.java`
 
 **Imports from rt:**
@@ -721,7 +717,7 @@
 - `sun.reflect.annotation.AnnotationParser`
 - `sun.reflect.annotation.ExceptionProxy`
 
-#### 100. org.jnode.vm.isolate.LinkImpl (6 imports)
+#### 99. org.jnode.vm.isolate.LinkImpl (6 imports)
 **File:** `core/src/core/org/jnode/vm/isolate/LinkImpl.java`
 
 **Imports from rt:**
@@ -732,7 +728,7 @@
 - `javax.isolate.Link`
 - `javax.isolate.LinkMessage`
 
-#### 101. org.jnode.vm.compiler.ir.NativeTest (6 imports)
+#### 100. org.jnode.vm.compiler.ir.NativeTest (6 imports)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/NativeTest.java`
 
 **Imports from rt:**
@@ -743,7 +739,7 @@
 - `java.io.OutputStreamWriter`
 - `java.net.MalformedURLException`
 
-#### 102. org.jnode.vm.x86.performance.P4FamilyPerformanceCounters (6 imports)
+#### 101. org.jnode.vm.x86.performance.P4FamilyPerformanceCounters (6 imports)
 **File:** `core/src/core/org/jnode/vm/x86/performance/P4FamilyPerformanceCounters.java`
 
 **Imports from rt:**
@@ -754,7 +750,7 @@
 - `java.util.Set`
 - `java.util.TreeSet`
 
-#### 103. org.jnode.vm.DefaultNameSpace (7 imports)
+#### 102. org.jnode.vm.DefaultNameSpace (7 imports)
 **File:** `core/src/core/org/jnode/vm/DefaultNameSpace.java`
 
 **Imports from rt:**
@@ -766,7 +762,7 @@
 - `javax.naming.NameNotFoundException`
 - `javax.naming.NamingException`
 
-#### 104. org.jnode.vm.objects.BootableArrayList (7 imports)
+#### 103. org.jnode.vm.objects.BootableArrayList (7 imports)
 **File:** `core/src/core/org/jnode/vm/objects/BootableArrayList.java`
 
 **Imports from rt:**
@@ -778,7 +774,7 @@
 - `java.util.ListIterator`
 - `java.util.RandomAccess`
 
-#### 105. org.jnode.vm.isolate.VmLink (7 imports)
+#### 104. org.jnode.vm.isolate.VmLink (7 imports)
 **File:** `core/src/core/org/jnode/vm/isolate/VmLink.java`
 
 **Imports from rt:**
@@ -790,7 +786,7 @@
 - `javax.isolate.Link`
 - `javax.isolate.LinkMessage`
 
-#### 106. org.jnode.vm.compiler.ir.IRTest (7 imports)
+#### 105. org.jnode.vm.compiler.ir.IRTest (7 imports)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/IRTest.java`
 
 **Imports from rt:**
@@ -802,7 +798,7 @@
 - `java.net.URL`
 - `java.util.List`
 
-#### 107. org.jnode.vm.compiler.ir.IRControlFlowGraph (7 imports)
+#### 106. org.jnode.vm.compiler.ir.IRControlFlowGraph (7 imports)
 **File:** `core/src/core/org/jnode/vm/compiler/ir/IRControlFlowGraph.java`
 
 **Imports from rt:**
@@ -814,7 +810,7 @@
 - `java.util.List`
 - `java.util.Map`
 
-#### 108. org.jnode.vm.classmgr.VmAnnotation (8 imports)
+#### 107. org.jnode.vm.classmgr.VmAnnotation (8 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmAnnotation.java`
 
 **Imports from rt:**
@@ -827,7 +823,7 @@
 - `java.util.Set`
 - `sun.reflect.annotation.AnnotationParser`
 
-#### 109. org.jnode.vm.classmgr.VmType (8 imports)
+#### 108. org.jnode.vm.classmgr.VmType (9 imports)
 **File:** `core/src/core/org/jnode/vm/classmgr/VmType.java`
 
 **Imports from rt:**
@@ -839,8 +835,9 @@
 - `java.util.Arrays`
 - `java.util.Comparator`
 - `java.util.HashSet`
+- `org.jnode.permission.JNodePermission`
 
-#### 110. org.jnode.vm.isolate.VmStreamBindings (9 imports)
+#### 109. org.jnode.vm.isolate.VmStreamBindings (9 imports)
 **File:** `core/src/core/org/jnode/vm/isolate/VmStreamBindings.java`
 
 **Imports from rt:**
@@ -854,7 +851,7 @@
 - `java.io.PrintStream`
 - `java.net.Socket`
 
-#### 111. org.jnode.vm.VmSystem (10 imports)
+#### 110. org.jnode.vm.VmSystem (11 imports)
 **File:** `core/src/core/org/jnode/vm/VmSystem.java`
 
 **Imports from rt:**
@@ -866,10 +863,11 @@
 - `java.util.Locale`
 - `java.util.Properties`
 - `javax.naming.NameNotFoundException`
+- `org.jnode.permission.JNodePermission`
 - `sun.nio.ch.Interruptible`
 - `sun.reflect.annotation.AnnotationType`
 
-#### 112. org.jnode.vm.VmSystemClassLoader (15 imports)
+#### 111. org.jnode.vm.VmSystemClassLoader (15 imports)
 **File:** `core/src/core/org/jnode/vm/VmSystemClassLoader.java`
 
 **Imports from rt:**
@@ -889,7 +887,7 @@
 - `java.util.Map`
 - `java.util.TreeMap`
 
-#### 113. org.jnode.vm.isolate.VmIsolate (20 imports)
+#### 112. org.jnode.vm.isolate.VmIsolate (20 imports)
 **File:** `core/src/core/org/jnode/vm/isolate/VmIsolate.java`
 
 **Imports from rt:**
@@ -942,97 +940,96 @@
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.isolate.VmLink`
 
-#### 5. java.lang.VMSecurityManager (1 import)
+#### 5. java.lang.ThreadHelper (1 import)
+**File:** `core/src/classpath/vm/java/lang/ThreadHelper.java`
+
+**Imports from org.jnode.vm.core:**
+- `org.jnode.vm.scheduler.VmThread`
+
+#### 6. java.lang.VMSecurityManager (1 import)
 **File:** `core/src/classpath/vm/java/lang/VMSecurityManager.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmSystem`
 
-#### 6. java.security.NativeAccessControlContext (1 import)
+#### 7. java.security.NativeAccessControlContext (1 import)
 **File:** `core/src/classpath/vm/java/security/NativeAccessControlContext.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmAccessControlContext`
 
-#### 7. gnu.classpath.NativeVMStackWalker (1 import)
+#### 8. gnu.classpath.NativeVMStackWalker (1 import)
 **File:** `core/src/classpath/vm/gnu/classpath/NativeVMStackWalker.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmSystem`
 
-#### 8. gnu.classpath.NativeSystemProperties (1 import)
+#### 9. gnu.classpath.NativeSystemProperties (1 import)
 **File:** `core/src/classpath/vm/gnu/classpath/NativeSystemProperties.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmSystem`
 
-#### 9. java.io.NativeObjectInputStream (1 import)
+#### 10. java.io.NativeObjectInputStream (1 import)
 **File:** `core/src/openjdk/vm/java/io/NativeObjectInputStream.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmSystem`
 
-#### 10. java.awt.NativeToolkit (1 import)
+#### 11. java.awt.NativeToolkit (1 import)
 **File:** `core/src/openjdk/vm/java/awt/NativeToolkit.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmSystem`
 
-#### 11. java.lang.NativeDouble (1 import)
+#### 12. java.lang.NativeDouble (1 import)
 **File:** `core/src/openjdk/vm/java/lang/NativeDouble.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmMagic`
 
-#### 12. java.lang.NativeFloat (1 import)
+#### 13. java.lang.NativeFloat (1 import)
 **File:** `core/src/openjdk/vm/java/lang/NativeFloat.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmMagic`
 
-#### 13. java.lang.NativeCompiler (1 import)
+#### 14. java.lang.NativeCompiler (1 import)
 **File:** `core/src/openjdk/vm/java/lang/NativeCompiler.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.classmgr.VmType`
 
-#### 14. java.lang.NativeSystem (1 import)
+#### 15. java.lang.NativeSystem (1 import)
 **File:** `core/src/openjdk/vm/java/lang/NativeSystem.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmSystem`
 
-#### 15. java.util.NativeResourceBundle (1 import)
+#### 16. java.util.NativeResourceBundle (1 import)
 **File:** `core/src/openjdk/vm/java/util/NativeResourceBundle.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmSystem`
 
-#### 16. java.lang.reflect.NativeProxy (1 import)
+#### 17. java.lang.reflect.NativeProxy (1 import)
 **File:** `core/src/openjdk/vm/java/lang/reflect/NativeProxy.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.classmgr.VmClassLoader`
 
-#### 17. com.sun.management.NativeUnixOperatingSystem (1 import)
+#### 18. com.sun.management.NativeUnixOperatingSystem (1 import)
 **File:** `core/src/openjdk/vm/com/sun/management/NativeUnixOperatingSystem.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmSystem`
 
-#### 18. java.lang.NativeVMClassLoader (2 imports)
+#### 19. java.lang.NativeVMClassLoader (2 imports)
 **File:** `core/src/classpath/vm/java/lang/NativeVMClassLoader.java`
 
 **Imports from org.jnode.vm.core:**
 - `org.jnode.vm.VmSystem`
 - `org.jnode.vm.classmgr.VmType`
-
-#### 19. java.lang.ThreadHelper (2 imports)
-**File:** `core/src/classpath/vm/java/lang/ThreadHelper.java`
-
-**Imports from org.jnode.vm.core:**
-- `org.jnode.permission.JNodePermission`
-- `org.jnode.vm.scheduler.VmThread`
 
 #### 20. java.io.NativeObjectStreamClass (2 imports)
 **File:** `core/src/openjdk/vm/java/io/NativeObjectStreamClass.java`
@@ -1130,7 +1127,16 @@
 - `org.jnode.vm.facade.VmThreadVisitor`
 - `org.jnode.vm.facade.VmUtils`
 
-#### 33. java.lang.VMRuntime (5 imports)
+#### 33. java.lang.NativeClassLoader (4 imports)
+**File:** `core/src/classpath/vm/java/lang/NativeClassLoader.java`
+
+**Imports from org.jnode.vm.core:**
+- `org.jnode.vm.VmJavaClassLoader`
+- `org.jnode.vm.VmSystem`
+- `org.jnode.vm.classmgr.VmClassLoader`
+- `org.jnode.vm.classmgr.VmType`
+
+#### 34. java.lang.VMRuntime (5 imports)
 **File:** `core/src/classpath/vm/java/lang/VMRuntime.java`
 
 **Imports from org.jnode.vm.core:**
@@ -1139,16 +1145,6 @@
 - `org.jnode.vm.VmSystem`
 - `org.jnode.vm.facade.VmUtils`
 - `org.jnode.vm.isolate.VmIsolate`
-
-#### 34. java.lang.NativeClassLoader (5 imports)
-**File:** `core/src/classpath/vm/java/lang/NativeClassLoader.java`
-
-**Imports from org.jnode.vm.core:**
-- `org.jnode.permission.JNodePermission`
-- `org.jnode.vm.VmJavaClassLoader`
-- `org.jnode.vm.VmSystem`
-- `org.jnode.vm.classmgr.VmClassLoader`
-- `org.jnode.vm.classmgr.VmType`
 
 #### 35. java.lang.NativeThread (5 imports)
 **File:** `core/src/classpath/vm/java/lang/NativeThread.java`
@@ -1256,17 +1252,17 @@ Start with classes that have the least dependencies (listed above):
 
 **From org.jnode.vm.core to rt (or new plugin):**
 - `org.jnode.vm.VmSystemSettings` (1 dependency/dependencies)
-- `org.jnode.permission.JNodePermission` (1 dependency/dependencies)
-- `org.jnode.vm.BaseVmArchitecture` (1 dependency/dependencies)
 - `org.jnode.vm.VmReflection` (1 dependency/dependencies)
 - `org.jnode.vm.ResourceManagerImpl` (1 dependency/dependencies)
+- `org.jnode.vm.VmProcessClassLoader` (1 dependency/dependencies)
+- `org.jnode.vm.performance.PerformanceCounters` (1 dependency/dependencies)
 
 **From rt to org.jnode.vm.core (or new plugin):**
 - `javax.isolate.LinkMessage` (1 dependency/dependencies)
 - `javax.isolate.Isolate` (1 dependency/dependencies)
 - `javax.isolate.StreamBindings` (1 dependency/dependencies)
 - `javax.isolate.Link` (1 dependency/dependencies)
-- `java.lang.VMSecurityManager` (1 dependency/dependencies)
+- `java.lang.ThreadHelper` (1 dependency/dependencies)
 
 ### Strategy 3: Dependency Inversion
 
