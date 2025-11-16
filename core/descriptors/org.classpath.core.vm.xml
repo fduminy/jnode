@@ -58,7 +58,6 @@
         <!--  export name="sun.security.provider.*"/ -->
 
         <export name="javax.isolate.*"/>
-        <export name="org.jnode.permission.*"/>
     </library>
   </runtime>
 </plugin>
