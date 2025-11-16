@@ -32,14 +32,14 @@ Plugins impliqués:
   - org.jnode.vm.core
     Fichier: core/descriptors/org.jnode.vm.core.xml
     Sous-projet: core
-    Fichiers Java: 289
+    Fichiers Java: 288
   - rt
     Fichier: core/descriptors/org.classpath.core.xml
     Sous-projet: core
-    Fichiers Java: 96
+    Fichiers Java: 97
 
 Dépendances circulaires (au niveau du code source):
-  org.jnode.plugin → org.jnode.vm.core
+  org.jnode.plugin → rt
   org.jnode.runtime.core.resource → rt
   org.jnode.vm → org.jnode.runtime.core.resource
   org.jnode.vm → org.jnode.vm.core
